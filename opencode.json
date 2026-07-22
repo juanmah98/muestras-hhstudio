@@ -1,0 +1,22 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "mcp": {
+    "supabase-hhstudio": {
+      "enabled": false
+    },
+    "supabase-ithake": {
+      "enabled": false
+    },
+    "supabase-ithaki": {
+      "enabled": false
+    },
+    "stitch": {
+      "type": "remote",
+      "url": "https://stitch.googleapis.com/mcp",
+      "enabled": true,
+      "headers": {
+        "X-Goog-Api-Key": "AQ.Ab8RN6JZjMHiGuKcwJMj5BJro1ci2AbuAzI6KFj76y-WRLHjVg"
+      }
+    }
+  }
+}

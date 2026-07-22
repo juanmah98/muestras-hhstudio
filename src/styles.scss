@@ -1,1 +1,45 @@
-/* You can add global styles to this file, and also import other style files */
+// ============================================================
+// HH Studio — Design Tokens & Global Styles
+// Tema oscuro oficial
+// ============================================================
+
+// --- Bootstrap overrides (deben ir antes de @import) ---
+$body-bg: #121418;
+$body-color: #f1f5f9;
+$link-color: #4e6a7f;
+$link-hover-color: #5f7e94;
+$card-bg: #1a1d23;
+$border-color: #2d323c;
+
+// --- HH Studio Design Tokens ---
+:root {
+  --hh-bg: #121418;
+  --hh-primary: #4e6a7f;
+  --hh-secondary: #e8dcc4;
+  --hh-accent: #e5cc98;
+  --hh-surface: #1a1d23;
+  --hh-text-primary: #f1f5f9;
+  --hh-text-secondary: #a0aab2;
+  --hh-text-muted: #64748b;
+  --hh-border: #2d323c;
+  --hh-success: #22c55e;
+  --hh-error: #ef4444;
+  --hh-warning: #f59e0b;
+}
+
+// --- Tipografía ---
+* {
+  font-family: 'Montserrat', 'Open Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+body {
+  background-color: var(--hh-bg);
+  color: var(--hh-text-primary);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+}

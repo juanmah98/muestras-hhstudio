@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "hh-base-angular19": {
+    "muestras-hhstudio": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -17,7 +17,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "dist/hh-base-angular19",
+            "outputPath": "dist/muestras-hhstudio",
             "index": "src/index.html",
             "browser": "src/main.ts",
             "polyfills": [],
@@ -63,13 +63,13 @@
           "defaultConfiguration": "production"
         },
         "serve": {
-          "builder": "@angular-devkit/build-angular:dev-server",
+          "builder": "@angular/build:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "hh-base-angular19:build:production"
+              "buildTarget": "muestras-hhstudio:build:production"
             },
             "development": {
-              "buildTarget": "hh-base-angular19:build:development"
+              "buildTarget": "muestras-hhstudio:build:development"
             }
           },
           "defaultConfiguration": "development"

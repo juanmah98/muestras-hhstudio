@@ -1,0 +1,56 @@
+<main class="home">
+  <header class="home__header">
+    <div class="home__brand">HH Studio</div>
+    <p class="home__tagline">Showcase de proyectos y tecnologías</p>
+  </header>
+
+  <section class="home__grid">
+    <div class="container">
+      <div class="row g-4">
+        @for (section of sections; track section.slug) {
+          <div class="col-12 col-md-6 col-lg-4">
+            @if (section.status === 'available') {
+              <a
+                class="home__card home__card--link"
+                [routerLink]="['/', section.slug]"
+                #sectionCard
+              >
+                <div class="home__card-icon">
+                  <i [class]="section.icon"></i>
+                </div>
+                <h3 class="home__card-title">{{ section.title }}</h3>
+                <p class="home__card-desc">{{ section.description }}</p>
+                <div class="home__card-tags">
+                  @for (tag of section.tags; track tag) {
+                    <span class="home__tag">{{ tag }}</span>
+                  }
+                </div>
+              </a>
+            } @else {
+              <div class="home__card home__card--disabled" #sectionCard>
+                <div class="home__card-icon">
+                  <i [class]="section.icon"></i>
+                </div>
+                <h3 class="home__card-title">{{ section.title }}</h3>
+                <p class="home__card-desc">{{ section.description }}</p>
+                <div class="home__card-tags">
+                  @for (tag of section.tags; track tag) {
+                    <span class="home__tag">{{ tag }}</span>
+                  }
+                </div>
+                <span class="home__badge">Próximamente</span>
+              </div>
+            }
+          </div>
+        }
+      </div>
+    </div>
+  </section>
+
+  <footer class="home__footer">
+    <p>
+      HH Studio &copy; {{ currentYear }} &mdash;
+      <a href="https://hhstudio.com.ar" target="_blank" rel="noopener">hhstudio.com.ar</a>
+    </p>
+  </footer>
+</main>

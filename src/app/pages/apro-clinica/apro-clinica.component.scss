@@ -1,0 +1,994 @@
+// ============================================================
+// Apro Clínica — Design Tokens (local al componente)
+// Tema claro, cálido, elegante. Exclusivo de esta landing.
+// ============================================================
+
+$terra-brown: #8b5e3c;
+$primary: #6f4627;
+$primary-container: #8b5e3c;
+$arena-beige: #e0d3c3;
+$soft-sand: #f2ebe3;
+$clinical-white: #ffffff;
+$surface: #fbf9f7;
+$surface-container-low: #f5f3f1;
+$deep-ink: #2d2926;
+$on-surface: #1b1c1b;
+$on-surface-variant: #51443c;
+$outline: #83746b;
+$outline-variant: #d5c3b8;
+$secondary-container: #eee1d0;
+
+// ============================================================
+// Block: apro
+// ============================================================
+
+.apro {
+  background-color: $surface;
+  color: $on-surface;
+  font-family: 'Montserrat', sans-serif;
+  min-height: 100vh;
+  overflow-x: hidden;
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: 'Playfair Display', serif;
+    color: $deep-ink;
+  }
+
+  p {
+    color: $on-surface-variant;
+  }
+
+  // Shared section header
+  &__section-header {
+    text-align: center;
+    margin-bottom: 3rem;
+
+    &-badge {
+      display: inline-block;
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: $terra-brown;
+      margin-bottom: 0.75rem;
+    }
+
+    &-title {
+      font-size: clamp(1.5rem, 3vw, 2rem);
+      font-weight: 700;
+      color: $deep-ink;
+      position: relative;
+      display: inline-block;
+
+      &::after {
+        content: '';
+        display: block;
+        width: 60px;
+        height: 3px;
+        background: $terra-brown;
+        margin: 0.75rem auto 0;
+        border-radius: 2px;
+      }
+    }
+
+    &--no-line &-title::after {
+      display: none;
+    }
+  }
+}
+
+// ============================================================
+// 1. NAVIGATION
+// ============================================================
+
+.apro__nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1030;
+  background: rgba($clinical-white, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid $outline-variant;
+  padding: 0.75rem 0;
+}
+
+.apro__nav-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.apro__nav-brand {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: $terra-brown;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  text-decoration: none;
+
+  &:hover {
+    color: $terra-brown;
+  }
+}
+
+.apro__nav-links {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+
+  a {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: $on-surface-variant;
+    text-decoration: none;
+    cursor: pointer;
+    transition: color 0.2s ease;
+
+    &:hover {
+      color: $terra-brown;
+    }
+  }
+
+  &--mobile {
+    display: none;
+  }
+}
+
+.apro__nav-cta {
+  background: $terra-brown !important;
+  color: $clinical-white !important;
+  padding: 0.5rem 1.25rem;
+  border-radius: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 600 !important;
+  font-size: 0.8rem !important;
+  transition: background 0.2s ease !important;
+
+  &:hover {
+    background: $primary !important;
+    color: $clinical-white !important;
+  }
+}
+
+.apro__nav-toggle {
+  display: none;
+  background: none;
+  border: none;
+  font-size: 1.75rem;
+  color: $deep-ink;
+  cursor: pointer;
+  padding: 0;
+  line-height: 1;
+}
+
+// ============================================================
+// 2. HERO
+// ============================================================
+
+.apro__hero {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  background-image: url('/assets/images/apro-clinica/hero.webp');
+  background-size: cover;
+  background-position: center;
+  position: relative;
+  padding: 6rem 0 4rem;
+
+  // Gradiente overlay: blanco → transparente (izquierda → derecha)
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      to right,
+      rgba(255, 255, 255, 0.92) 0%,
+      rgba(255, 255, 255, 0.7) 35%,
+      rgba(255, 255, 255, 0.3) 60%,
+      transparent 85%
+    );
+    z-index: 1;
+  }
+
+  // Contenido por encima del overlay
+  .container {
+    position: relative;
+    z-index: 2;
+  }
+}
+
+.apro__hero-badge {
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.40em;
+  color: $terra-brown;
+  /* background: rgba($terra-brown, 0.08); */
+  /* padding: 0.4rem 1rem; */
+  border-radius: 50px;
+  margin-bottom: 1.5rem;
+}
+
+.apro__hero-title {
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  font-weight: 700;
+  color: $deep-ink;
+  line-height: 1.15;
+  margin-bottom: 1.25rem;
+
+  em {
+    font-style: italic;
+    font-weight: 500;
+  }
+}
+
+.apro__hero-desc {
+  font-size: 1.05rem;
+  line-height: 1.7;
+  color: $on-surface-variant;
+  margin-bottom: 2rem;
+  max-width: 540px;
+}
+
+.apro__hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+// ============================================================
+// Shared: Buttons
+// ============================================================
+
+.apro__btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.75rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-radius: 4px;
+  text-decoration: none;
+  cursor: pointer;
+  transition:
+    background 0.2s ease,
+    color 0.2s ease,
+    border-color 0.2s ease;
+  border: 2px solid transparent;
+
+  &--solid {
+    background: $terra-brown;
+    color: $clinical-white;
+    border-color: $terra-brown;
+
+    &:hover {
+      background: $primary;
+      border-color: $primary;
+      color: $clinical-white;
+    }
+  }
+
+  &--outline {
+    background: transparent;
+    color: $terra-brown;
+    border-color: $terra-brown;
+
+    &:hover {
+      background: $terra-brown;
+      color: $clinical-white;
+    }
+  }
+
+  &--text {
+    background: transparent;
+    color: $terra-brown;
+    border: none;
+    padding: 0.25rem 0;
+    font-weight: 600;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+
+    &:hover {
+      color: $primary;
+    }
+
+    i {
+      font-size: 0.8rem;
+    }
+  }
+
+  &--small {
+    padding: 0.5rem 1.25rem;
+    font-size: 0.8rem;
+  }
+}
+
+// ============================================================
+// 3. SERVICES (Bento Grid)
+// ============================================================
+
+.apro__services {
+  padding: 5rem 0;
+}
+
+.apro__services-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: auto auto;
+  gap: 1.5rem;
+
+  @media (max-width: 991px) {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto;
+  }
+}
+
+// Base card
+.apro__service-card {
+  background: $clinical-white;
+  border-radius: 8px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition:
+    transform 300ms ease,
+    box-shadow 300ms ease;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+  }
+}
+
+.apro__service-card-image {
+  width: 100%;
+  overflow: hidden;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.4s ease;
+  }
+
+  .apro__service-card:hover & img {
+    transform: scale(1.04);
+  }
+}
+
+.apro__service-card-body {
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.apro__service-card-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: $deep-ink;
+  margin: 0 0 0.5rem;
+}
+
+.apro__service-card-desc {
+  font-size: 0.875rem;
+  line-height: 1.65;
+  color: $on-surface-variant;
+  margin: 0 0 1rem;
+}
+
+.apro__service-card-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+
+  li {
+    font-size: 0.875rem;
+    color: $on-surface-variant;
+    padding-left: 1.2rem;
+    position: relative;
+
+    &::before {
+      content: '•';
+      color: $terra-brown;
+      font-weight: bold;
+      position: absolute;
+      left: 0;
+    }
+  }
+}
+
+.apro__service-card-price {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: $terra-brown;
+  margin-top: auto;
+  padding-top: 0.75rem;
+}
+
+// Variant: large — Facial (vertical: imagen arriba, texto abajo)
+.apro__service-card--large {
+  grid-column: 1 / 3;
+  grid-row: 1 / 3;
+
+  .apro__service-card-image {
+    height: 240px;
+
+    img {
+      height: 100%;
+    }
+  }
+
+  @media (max-width: 991px) {
+    grid-column: auto;
+    grid-row: auto;
+  }
+}
+
+// Variant: horizontal — Manicura (texto izquierda, imagen derecha)
+.apro__service-card--horizontal {
+  grid-column: 3 / 5;
+  grid-row: 1 / 2;
+  display: flex;
+  flex-direction: row;
+
+  .apro__service-card-image {
+    flex: 0 0 40%;
+    min-height: 220px;
+
+    @media (max-width: 991px) {
+      flex: none;
+      min-height: 180px;
+    }
+  }
+
+  .apro__service-card-body {
+    flex: 1;
+    justify-content: center;
+  }
+
+  @media (max-width: 991px) {
+    grid-column: auto;
+    grid-row: auto;
+    flex-direction: column;
+  }
+}
+
+// Variant: compact — Masajes & Depilación (1 col × 1 row, auto-placement)
+.apro__service-card--compact {
+  grid-column: auto;
+  grid-row: auto;
+
+  @media (max-width: 991px) {
+    grid-column: auto;
+    grid-row: auto;
+  }
+}
+
+// Service card icon (compact cards)
+.apro__service-card-icon {
+  font-size: 2rem;
+  color: $terra-brown;
+  margin-bottom: 1rem;
+  display: block;
+  line-height: 1;
+}
+
+// Variant: sand background
+.apro__service-card--sand {
+  background: $soft-sand;
+}
+
+// ============================================================
+// 4. GALLERY
+// ============================================================
+
+.apro__gallery {
+  background-color: $surface-container-low;
+  padding: 5rem 0;
+}
+
+.apro__gallery-main {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  border-radius: 12px;
+  overflow: hidden;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+}
+
+.apro__gallery-side {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  height: 100%;
+}
+
+.apro__gallery-small {
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  border-radius: 12px;
+  overflow: hidden;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+}
+
+.apro__gallery-quote {
+  flex: 1;
+  background: $terra-brown;
+  border-radius: 12px;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  i {
+    font-size: 2rem;
+    color: rgba($clinical-white, 0.4);
+    margin-bottom: 1rem;
+  }
+
+  blockquote {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.15rem;
+    font-style: italic;
+    font-weight: 400;
+    line-height: 1.65;
+    color: $clinical-white;
+    margin: 0 0 1.5rem;
+    border: none;
+  }
+
+  cite {
+    font-size: 0.8rem;
+    font-style: normal;
+    color: rgba($clinical-white, 0.8);
+    font-weight: 500;
+  }
+}
+
+// ============================================================
+// 5. REVIEWS
+// ============================================================
+
+.apro__reviews {
+  padding: 5rem 0;
+}
+
+.apro__reviews-stars {
+  display: flex;
+  justify-content: center;
+  gap: 0.25rem;
+  margin-bottom: 0.75rem;
+
+  i {
+    font-size: 1.25rem;
+    color: $terra-brown;
+  }
+}
+
+.apro__review-card {
+  background: $clinical-white;
+  border: 1px solid $outline-variant;
+  border-radius: 12px;
+  padding: 2rem;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  border-bottom: 3px solid $terra-brown;
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba($deep-ink, 0.06);
+  }
+
+  &--alt {
+    border-bottom-color: $arena-beige;
+  }
+
+  &--accent {
+    border-bottom-color: $terra-brown;
+  }
+}
+
+.apro__review-quote {
+  font-size: 1.5rem;
+  color: rgba($terra-brown, 0.25);
+  margin-bottom: 0.75rem;
+}
+
+.apro__review-text {
+  font-style: italic;
+  font-size: 0.925rem;
+  line-height: 1.7;
+  color: $on-surface-variant;
+  flex: 1;
+  margin-bottom: 1.5rem;
+}
+
+.apro__review-author {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-top: auto;
+}
+
+.apro__review-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: $secondary-container;
+  color: $terra-brown;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 0.9rem;
+  flex-shrink: 0;
+}
+
+.apro__review-name {
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: $deep-ink;
+}
+
+.apro__review-date {
+  font-size: 0.75rem;
+  color: $on-surface-variant;
+}
+
+// ============================================================
+// 6. CONTACT
+// ============================================================
+
+.apro__contact {
+  padding: 5rem 0;
+  background-color: $surface-container-low;
+}
+
+.apro__contact-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.apro__contact-item {
+  display: flex;
+  gap: 1rem;
+
+  i {
+    font-size: 1.5rem;
+    color: $terra-brown;
+    flex-shrink: 0;
+    margin-top: 0.15rem;
+  }
+}
+
+.apro__contact-label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: $on-surface-variant;
+  margin-bottom: 0.25rem;
+}
+
+.apro__contact-value {
+  font-size: 0.95rem;
+  color: $deep-ink;
+  font-weight: 500;
+}
+
+.apro__contact-hours {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+
+  li {
+    font-size: 0.9rem;
+    color: $on-surface-variant;
+    padding: 0.2rem 0;
+    display: flex;
+    justify-content: space-between;
+    max-width: 220px;
+
+    span:last-child {
+      font-weight: 500;
+      color: $deep-ink;
+    }
+  }
+}
+
+.apro__contact-map {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  border-radius: 12px;
+  position: relative;
+  overflow: hidden;
+
+  &-iframe {
+    width: 100%;
+    height: 100%;
+    border: 0;
+    display: block;
+  }
+}
+
+// ============================================================
+// 7. FOOTER
+// ============================================================
+
+.apro__footer {
+  background-color: $surface-container-low;
+  border-top: 1px solid $outline-variant;
+  padding: 3rem 0 1.5rem;
+}
+
+.apro__footer-brand {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.35rem;
+  font-weight: 600;
+  color: $terra-brown;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  margin-bottom: 0.75rem;
+}
+
+.apro__footer-desc {
+  font-size: 0.875rem;
+  color: $on-surface-variant;
+  line-height: 1.6;
+  max-width: 280px;
+}
+
+.apro__footer-heading {
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: $deep-ink;
+  margin-bottom: 1rem;
+}
+
+.apro__footer-links {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+
+  li {
+    margin-bottom: 0.5rem;
+  }
+
+  a {
+    font-size: 0.875rem;
+    color: $on-surface-variant;
+    text-decoration: none;
+    transition: color 0.2s ease;
+
+    &:hover {
+      color: $terra-brown;
+    }
+  }
+}
+
+.apro__footer-social {
+  display: flex;
+  gap: 0.75rem;
+
+  a {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: 1px solid $outline-variant;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: $on-surface-variant;
+    text-decoration: none;
+    font-size: 1rem;
+    transition:
+      background 0.2s ease,
+      color 0.2s ease,
+      border-color 0.2s ease;
+
+    &:hover {
+      background: $terra-brown;
+      border-color: $terra-brown;
+      color: $clinical-white;
+    }
+  }
+}
+
+.apro__footer-bottom {
+  margin-top: 2.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid $outline-variant;
+  text-align: center;
+
+  p {
+    font-size: 0.8rem;
+    color: $on-surface-variant;
+    margin: 0;
+
+    span {
+      color: $terra-brown;
+    }
+  }
+}
+
+// ============================================================
+// 8. FAB (WhatsApp)
+// ============================================================
+
+.apro__fab {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  z-index: 1020;
+}
+
+.apro__fab-btn {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: $terra-brown;
+  color: $clinical-white;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.4rem;
+  cursor: pointer;
+  box-shadow: 0 4px 16px rgba($deep-ink, 0.2);
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    background 0.2s ease;
+  text-decoration: none;
+
+  &:hover {
+    transform: scale(1.08);
+    box-shadow: 0 6px 24px rgba($deep-ink, 0.28);
+    background: $primary;
+  }
+}
+
+.apro__fab-tooltip {
+  position: absolute;
+  right: calc(100% + 0.75rem);
+  top: 50%;
+  transform: translateY(-50%);
+  background: $deep-ink;
+  color: $clinical-white;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+
+  .apro__fab-btn:hover + &,
+  &:hover {
+    opacity: 1;
+  }
+}
+
+// ============================================================
+// RESPONSIVE
+// ============================================================
+
+// Mobile nav breakpoint
+@media (max-width: 991.98px) {
+  .apro__nav-links {
+    display: none;
+
+    &--mobile {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.75rem;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      background: $clinical-white;
+      padding: 1.5rem;
+      border-bottom: 1px solid $outline-variant;
+      box-shadow: 0 8px 24px rgba($deep-ink, 0.06);
+    }
+
+    &--open {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.75rem;
+    }
+  }
+
+  .apro__nav-toggle {
+    display: block;
+  }
+}
+
+// Medium devices and below
+@media (max-width: 767.98px) {
+  .apro__hero {
+    text-align: center;
+    padding: 5rem 0 3rem;
+
+    &-desc {
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    &-actions {
+      justify-content: center;
+    }
+  }
+
+  .apro__gallery-side {
+    margin-top: 1.5rem;
+  }
+
+  .apro__reviews .row {
+    justify-content: center;
+  }
+
+  .apro__footer .col-md-4,
+  .apro__footer .col-md-3 {
+    margin-bottom: 2rem;
+  }
+}
+
+// Print and reduced motion
+@media print {
+  .apro__nav,
+  .apro__fab {
+    display: none;
+  }
+
+  .apro__hero {
+    min-height: auto;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .apro__review-card,
+  .apro__fab-btn {
+    transition: none;
+  }
+}
