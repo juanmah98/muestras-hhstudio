@@ -1,101 +1,72 @@
-# HH Studio — Plantilla Base Angular 22
+# HHStudio — Showcase de Proyectos
 
-Plantilla base para proyectos **Angular 22 SPA** de alto rendimiento mantenida por [HH Studio](https://hhstudio.com.ar).
+Showcase público de [HH Studio](https://hhstudio.com.ar), desplegado en **Vercel** (free tier) como vidriera para captar nuevos clientes. Cada sección del sitio representa un rubro o especialidad — no hay una página principal tradicional, sino un índice simple que lista las categorías y redirige a cada demo.
 
-## Stack Tecnológico
+## 🧠 Filosofía
 
-| Tecnología | Versión | Uso |
+- **Zero-bloat landing**: sin hero inflado, sin scroll interminable. Un listado directo con acceso a cada sección.
+- **Crecimiento progresivo**: los rubros y demos se agregan incrementalmente — cada uno es una ruta nueva que puede cargarse de forma lazy.
+- **Show, don't tell**: el sitio es la prueba viva de lo que hacemos. Cada demo habla por sí misma.
+
+## 🏗️ Stack
+
+| Tecnología | Versión | Rol |
 |-----------|---------|-----|
-| [Angular](https://angular.dev) | 22.0+ | Framework SPA, standalone components, zoneless CD |
-| [TypeScript](https://www.typescriptlang.org) | 6.0+ | Type-safe JavaScript superset |
-| [Bootstrap](https://getbootstrap.com) | 5.3+ | Sistema de grillas y componentes UI |
-| [Bootstrap Icons](https://icons.getbootstrap.com) | 1.13+ | Iconografía vectorial |
-| [GSAP](https://gsap.com) | 3.14+ | Animaciones de alto rendimiento |
-| [Supabase](https://supabase.com) | 2.x | Backend-as-a-Service (auth, DB, storage) |
-| ESLint | 8.x | Linting TypeScript + plantillas Angular |
-| Prettier | 3.x | Formateo automático de código |
-| Vitest | 4.x | Unit testing (zoneless-ready) |
+| [Angular](https://angular.dev) | 22.x | Framework SPA, standalone, zoneless |
+| [Bootstrap](https://getbootstrap.com) | 5.3.x | Grid system + componentes UI |
+| [Bootstrap Icons](https://icons.getbootstrap.com) | 1.13.x | Iconografía |
+| [GSAP](https://gsap.com) | 3.14.x | Animaciones de alto rendimiento |
+| [Supabase](https://supabase.com) | 2.x | Backend-as-a-Service (si se necesita) |
+| [Vitest](https://vitest.dev) | 4.x | Testing zoneless-ready |
+| TypeScript | 6.0.x | Type safety |
 
-## Guía de Uso Rápido (5 Pasos)
+## 🚀 Deploy
 
-### Paso 1 — Crear el repo desde esta plantilla
-
-En GitHub, hacé clic en **"Use this template"** → **"Create a new repository"**.
-Elegí un nombre para tu proyecto (ej: `mi-app-angular`) y crealo.
-
-### Paso 2 — Clonar localmente
+El sitio se despliega en **Vercel** usando el builder de SSR híbrido de Angular 22.
 
 ```bash
-git clone https://github.com/tu-usuario/mi-app-angular.git
-cd mi-app-angular
+npm run build    # Producción (AOT + SSR + hashed assets)
 ```
 
-### Paso 3 — Instalar dependencias
+La salida va a `dist/hh-base-angular19/`. Vercel detecta automáticamente el proyecto Angular y aplica el adaptador SSR.
+
+## 📁 Estructura
+
+```
+src/app/
+├── core/           # Servicios globales (SEO, Supabase)
+├── forms/          # Showcase: Signal Forms (Angular 22)
+├── shared/         # Componentes reutilizables (cards, badges, loaders)
+├── layouts/        # Layouts (main con header/footer minimal)
+└── pages/          # Páginas — un directorio por rubro/sección
+    └── home/       # Índice de rubros y secciones
+
+public/             # Assets estáticos (logo, imágenes, favicon)
+```
+
+Cada rubro nuevo se agrega como una ruta lazy-loading en `app.routes.ts` y una carpeta propia en `pages/`.
+
+## 🔧 Desarrollo
 
 ```bash
-npm install
+npm install         # Instalar dependencias
+npm start           # Dev server en http://localhost:4200
+npm test            # Unit tests (Vitest)
+npm run build       # Build de producción
 ```
 
-### Paso 4 — Personalizar el proyecto
+## 📋 Convenciones
 
-Antes de empezar a codear, actualizá estos archivos con los datos de tu proyecto:
+- **Componentes**: standalone, zoneless, `styleUrl` por componente
+- **Nombres de negocio**: español (`Producto`, `Pedido`)
+- **Nombres técnicos**: inglés (`HttpClient`, `Observable`)
+- **Estilos**: metodología BEM con SCSS
+- **Testing**: Vitest, archivos `.spec.ts` junto al componente
 
-1. **`package.json`** — cambiá `name`, `description`, `author`
-2. **`src/index.html`** — actualizá `<title>`, meta tags (SEO, Open Graph), canonical URL
-3. **`.env`** — configurá las credenciales de Supabase y Google Analytics
-4. **`CONTEXT.md`** — completá los links de Figma, paleta de colores y tipografías
-5. **`PRD.md`** — documentá el propósito, features y criterios de éxito del proyecto
+## 🔗 Recursos
 
-### Paso 5 — Iniciar el servidor de desarrollo
-
-```bash
-ng serve
-```
-
-Abrí `http://localhost:4200/` en tu navegador. La app usa **SSR híbrido** con incremental hydration por defecto y **change detection zoneless**.
-
-## Comandos Disponibles
-
-```bash
-# Desarrollo
-npm start              # ng serve
-npm run watch          # ng build --watch
-
-# Calidad de código
-npm run lint           # ESLint
-npm run format         # Prettier (formatea todo)
-npm run format:check   # Verificar formato sin escribir
-
-# Testing
-npm test               # Unit tests (Vitest)
-
-# Build
-npm run build          # Producción (AOT, SSR híbrido, minificado, hashed)
-```
-
-## Arquitectura del Proyecto
-
-```
-src/
-├── app/
-│   ├── core/           # Servicios globales, interceptores, guards
-│   │   └── services/   # Supabase, SEO, Analytics
-│   ├── forms/          # Showcase: Signal Forms example (Angular 22)
-│   ├── shared/         # Componentes, pipes y directivas reutilizables
-│   ├── layouts/        # Layouts de página (header, footer, sidebar)
-│   └── pages/          # Páginas de la aplicación
-├── environments/       # Variables de entorno por ambiente
-├── styles.scss         # Estilos globales
-└── index.html          # HTML raíz con SEO tags
-```
-
-Para más detalles sobre la arquitectura y convenciones, consultá **[ESTRUCTURA.md](ESTRUCTURA.md)**.
-
-## Recursos
-
-- [Documentación oficial de Angular](https://angular.dev)
-- [Angular CLI](https://angular.dev/tools/cli)
-- [Signal Forms API](https://angular.dev/guide/forms/signals)
+- [Documentación Angular](https://angular.dev)
 - [Bootstrap 5 Docs](https://getbootstrap.com/docs/5.3)
-- [Supabase Docs](https://supabase.com/docs)
 - [GSAP Docs](https://gsap.com/docs/)
+- [Supabase Docs](https://supabase.com/docs)
+- [Vercel + Angular](https://vercel.com/docs/frameworks/angular)

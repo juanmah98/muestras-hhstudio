@@ -1,0 +1,50 @@
+.not-found {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 2rem;
+
+  &__code {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(4rem, 10vw, 8rem);
+    font-weight: 700;
+    color: var(--hh-accent);
+    line-height: 1;
+    margin-bottom: 1rem;
+  }
+
+  &__title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--hh-text-primary);
+    margin-bottom: 0.5rem;
+  }
+
+  &__desc {
+    font-size: 1rem;
+    color: var(--hh-text-secondary);
+    margin-bottom: 2rem;
+    max-width: 400px;
+  }
+
+  &__link {
+    display: inline-block;
+    padding: 0.6rem 1.5rem;
+    border: 1px solid var(--hh-accent);
+    border-radius: 6px;
+    color: var(--hh-accent);
+    text-decoration: none;
+    font-weight: 500;
+    transition:
+      background-color 0.2s ease,
+      color 0.2s ease;
+
+    &:hover {
+      background-color: var(--hh-accent);
+      color: var(--hh-bg);
+    }
+  }
+}

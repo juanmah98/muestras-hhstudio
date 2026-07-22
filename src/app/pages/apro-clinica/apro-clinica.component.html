@@ -1,0 +1,432 @@
+<!-- ============================================================
+  Apro Clínica — Landing Page
+  Centro médico-estético. Tema claro, cálido, elegante.
+  ============================================================ -->
+
+<main class="apro">
+  <!-- ===================================================
+    1. NAVIGATION (fixed top)
+    =================================================== -->
+  <nav class="apro__nav">
+    <div class="container">
+      <div class="apro__nav-inner">
+        <a class="apro__nav-brand" href="#">Apro</a>
+
+        <!-- Desktop links -->
+        <div class="apro__nav-links d-none d-lg-flex">
+          <a role="button" tabindex="0" (click)="scrollTo('inicio')" (keydown.enter)="scrollTo('inicio')">Inicio</a>
+          <a role="button" tabindex="0" (click)="scrollTo('servicios')" (keydown.enter)="scrollTo('servicios')">Servicios</a>
+          <a role="button" tabindex="0" (click)="scrollTo('galeria')" (keydown.enter)="scrollTo('galeria')">Galería</a>
+          <a role="button" tabindex="0" (click)="scrollTo('resenas')" (keydown.enter)="scrollTo('resenas')">Reseñas</a>
+          <a role="button" tabindex="0" (click)="scrollTo('contacto')" (keydown.enter)="scrollTo('contacto')">Contacto</a>
+          <a class="apro__nav-cta" role="button" tabindex="0" (click)="scrollTo('contacto')" (keydown.enter)="scrollTo('contacto')">Reservar Cita</a>
+        </div>
+
+        <!-- Mobile toggle -->
+        <button class="apro__nav-toggle d-lg-none" (click)="toggleMobileMenu()"
+          aria-label="Abrir menú">
+          <i class="bi bi-list"></i>
+        </button>
+      </div>
+
+      <!-- Mobile dropdown -->
+      @if (mobileMenuOpen) {
+        <div class="apro__nav-links--mobile">
+          <a role="button" tabindex="0" (click)="scrollTo('inicio')" (keydown.enter)="scrollTo('inicio')">Inicio</a>
+          <a role="button" tabindex="0" (click)="scrollTo('servicios')" (keydown.enter)="scrollTo('servicios')">Servicios</a>
+          <a role="button" tabindex="0" (click)="scrollTo('galeria')" (keydown.enter)="scrollTo('galeria')">Galería</a>
+          <a role="button" tabindex="0" (click)="scrollTo('resenas')" (keydown.enter)="scrollTo('resenas')">Reseñas</a>
+          <a role="button" tabindex="0" (click)="scrollTo('contacto')" (keydown.enter)="scrollTo('contacto')">Contacto</a>
+          <a class="apro__nav-cta" role="button" tabindex="0" (click)="scrollTo('contacto')" (keydown.enter)="scrollTo('contacto')">Reservar Cita</a>
+        </div>
+      }
+    </div>
+  </nav>
+
+  <!-- ===================================================
+    2. HERO SECTION
+    =================================================== -->
+  <section id="inicio" class="apro__hero" #animateSection>
+    <div class="container">
+      <div class="row align-items-center">
+        <div class="col-lg-7">
+          <span class="apro__hero-badge">Elite Medical Beauty</span>
+          <h1 class="apro__hero-title">
+            Bienvenida a la <em>Excelencia Estética</em>
+          </h1>
+          <p class="apro__hero-desc">
+            Descubra un espacio donde la ciencia y la estética se fusionan para
+            realzar su belleza natural. Protocolos personalizados, tecnología de
+            vanguardia y un equipo médico comprometido con su bienestar.
+          </p>
+          <div class="apro__hero-actions">
+            <a class="apro__btn apro__btn--solid" role="button" tabindex="0"
+              (click)="scrollTo('servicios')" (keydown.enter)="scrollTo('servicios')">
+              Explorar Servicios
+              <i class="bi bi-arrow-right"></i>
+            </a>
+            <a class="apro__btn apro__btn--outline" role="button" tabindex="0"
+              (click)="scrollTo('galeria')" (keydown.enter)="scrollTo('galeria')">
+              Nuestra Clínica
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================================================
+    3. SERVICES (Bento Grid)
+    =================================================== -->
+  <section id="servicios" class="apro__services" #animateSection>
+    <div class="container">
+      <div class="apro__section-header">
+        <h2 class="apro__section-header-title">Servicios Exclusivos</h2>
+      </div>
+
+      <div class="apro__services-grid">
+        <!-- Card 1 — Tratamientos Faciales (large) -->
+        <div class="apro__service-card apro__service-card--large">
+          <div class="apro__service-card-image">
+            <img
+              src="https://lh3.googleusercontent.com/aida-public/AB6AXuDb-SgOgXwvB3CPSAIMs7VvE3UCKnw0gXhTT3KnFy7O2yYv_0zg3yHndYY3d29slwdpigpGIKzJBQpGdGDppnCkJ9LHGCLvrxQhKHtNbaxV9CXchN8lLVK3Ut8GjffQnrxO5AoxV7uYzAGKRGBEGCrS5RZt-WSYBkojpE0rDEm4tHfwM6WdujceQ7_Kx8g-_T_BQjrXtp_5ErFCA0GRa81yXGjzDM2sWJoIcziylYzUhBBXe4mDy215"
+              alt="Tratamientos Faciales"
+              loading="lazy"
+            >
+          </div>
+          <div class="apro__service-card-body">
+            <h3 class="apro__service-card-title">Tratamientos Faciales</h3>
+            <p class="apro__service-card-desc">
+              Limpieza de cutis profunda, hidrafacial, peeling químico y
+              radiofrecuencia con productos Eberlin.
+            </p>
+            <ul class="apro__service-card-list">
+              <li>Limpieza de Cutis Profunda</li>
+              <li>Hidrafacial</li>
+              <li>Peeling Químico</li>
+              <li>Radiofrecuencia Facial</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Card 2 — Manicura & Pedicura (horizontal) -->
+        <div class="apro__service-card apro__service-card--horizontal">
+          <div class="apro__service-card-body">
+            <h3 class="apro__service-card-title">Manicura &amp; Pedicura</h3>
+            <p class="apro__service-card-desc">
+              Esmaltado semipermanente, manicura completa, pedicura y
+              decoración de uñas acrílicas o en gel.
+            </p>
+            <a class="apro__btn apro__btn--text" role="button" tabindex="0"
+              (click)="scrollTo('contacto')" (keydown.enter)="scrollTo('contacto')">
+              Ver Detalles <i class="bi bi-arrow-right"></i>
+            </a>
+          </div>
+          <div class="apro__service-card-image">
+            <img
+              src="https://lh3.googleusercontent.com/aida-public/AB6AXuDZF9DdLBR0islX28lBOBoZudkYlKnqutJOl4W5V5OXp7_2TSUG5uXHqr1KUT51OHJiuaHMfeVolF42Zasy_3nnijJvrFlp9gNMUyebyCrYLcE1bgHvJc0rgrPl2ns4vMeATi8tV--uEsQ8AXt7IEm4_PTqH37GSrFxXiIQxCbaNfWhlWui4xeI-jvd-f6WiNsHiyVdunutTP9PwG15GFWxXatLVaw6AkBhtccExIIIL7J7fbr5gjrv"
+              alt="Manicura & Pedicura"
+              loading="lazy"
+            >
+          </div>
+        </div>
+
+        <!-- Card 3 — Masajes & Spa (compact, sand) -->
+        <div class="apro__service-card apro__service-card--compact apro__service-card--sand">
+          <div class="apro__service-card-body">
+            <i class="bi bi-flower1 apro__service-card-icon"></i>
+            <h3 class="apro__service-card-title">Masajes &amp; Spa</h3>
+            <p class="apro__service-card-desc">
+              Masaje con exfoliación, envolturas corporales, drenaje linfático
+              y presoterapia.
+            </p>
+            <a class="apro__btn apro__btn--text" role="button" tabindex="0"
+              (click)="scrollTo('contacto')" (keydown.enter)="scrollTo('contacto')">
+              Descubrir <i class="bi bi-arrow-right"></i>
+            </a>
+          </div>
+        </div>
+
+        <!-- Card 4 — Depilación (compact, white) -->
+        <div class="apro__service-card apro__service-card--compact">
+          <div class="apro__service-card-body">
+            <i class="bi bi-droplet apro__service-card-icon"></i>
+            <h3 class="apro__service-card-title">Depilación Láser &amp; Cera</h3>
+            <p class="apro__service-card-desc">
+              Depilación láser de diodo, depilación tradicional con cera
+              premium. Zonas: piernas, ingles, axilas, facial y cuerpo
+              completo.
+            </p>
+            <span class="apro__service-card-price">Desde 15&euro;</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================================================
+    4. GALLERY
+    =================================================== -->
+  <section id="galeria" class="apro__gallery" #animateSection>
+    <div class="container">
+      <div class="apro__section-header">
+        <h2 class="apro__section-header-title">Un Entorno de Calma</h2>
+      </div>
+
+      <div class="row g-4">
+        <!-- Main image (7/12) -->
+        <div class="col-lg-7">
+          <div class="apro__gallery-main">
+            <img
+              src="assets/images/apro-clinica/gallery-main.jpg"
+              alt="Instalaciones de Apro Clínica — detalle de toallas"
+              loading="lazy"
+            >
+          </div>
+        </div>
+
+        <!-- Side column (5/12): small image + quote card -->
+        <div class="col-lg-5">
+          <div class="apro__gallery-side">
+            <div class="apro__gallery-small">
+              <img
+                src="assets/images/apro-clinica/gallery-small.jpg"
+                alt="Tratamiento de cera premium en cabina privada"
+                loading="lazy"
+              >
+            </div>
+            <div class="apro__gallery-quote">
+              <i class="bi bi-quote"></i>
+              <blockquote>
+                Cada detalle de nuestro espacio fue pensado para transmitir
+                calma, confort y profesionalismo médico.
+              </blockquote>
+              <cite>&mdash; Dra. Isabel Fuentes, Directora Médica</cite>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================================================
+    5. REVIEWS
+    =================================================== -->
+  <section id="resenas" class="apro__reviews" #animateSection>
+    <div class="container">
+      <div class="apro__section-header apro__section-header--no-line">
+        <div class="apro__reviews-stars">
+          <i class="bi bi-star-fill"></i>
+          <i class="bi bi-star-fill"></i>
+          <i class="bi bi-star-fill"></i>
+          <i class="bi bi-star-fill"></i>
+          <i class="bi bi-star-fill"></i>
+        </div>
+        <h2 class="apro__section-header-title">Lo Que Dicen Nuestros Clientes</h2>
+      </div>
+
+      <div class="row g-4">
+        <!-- Review 1 -->
+        <div class="col-md-6 col-lg-4">
+          <div class="apro__review-card apro__review-card--accent">
+            <i class="bi bi-quote apro__review-quote"></i>
+            <p class="apro__review-text">
+              Una experiencia transformadora. El equipo de Apro Clínica me hizo
+              sentir en las mejores manos desde el primer momento. Salí renovada
+              por dentro y por fuera.
+            </p>
+            <div class="apro__review-author">
+              <div class="apro__review-avatar">M</div>
+              <div>
+                <div class="apro__review-name">María G.</div>
+                <div class="apro__review-date">Hace 3 semanas</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Review 2 -->
+        <div class="col-md-6 col-lg-4">
+          <div class="apro__review-card apro__review-card--alt">
+            <i class="bi bi-quote apro__review-quote"></i>
+            <p class="apro__review-text">
+              Los tratamientos faciales son excepcionales. Mi piel nunca había
+              lucido tan radiante. La tecnología que usan está a otro nivel.
+              ¡Totalmente recomendado!
+            </p>
+            <div class="apro__review-author">
+              <div class="apro__review-avatar">C</div>
+              <div>
+                <div class="apro__review-name">Carlos R.</div>
+                <div class="apro__review-date">Hace 1 mes</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Review 3 -->
+        <div class="col-md-6 col-lg-4">
+          <div class="apro__review-card apro__review-card--accent">
+            <i class="bi bi-quote apro__review-quote"></i>
+            <p class="apro__review-text">
+              El ambiente es un remanso de paz. Cada detalle está cuidado para
+              que te sientas especial. Vuelvo siempre que necesito un reset de
+              bienestar.
+            </p>
+            <div class="apro__review-author">
+              <div class="apro__review-avatar">E</div>
+              <div>
+                <div class="apro__review-name">Elena V.</div>
+                <div class="apro__review-date">Hace 2 meses</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================================================
+    6. CONTACT
+    =================================================== -->
+  <section id="contacto" class="apro__contact" #animateSection>
+    <div class="container">
+      <div class="apro__section-header">
+        <h2 class="apro__section-header-title">Contacto</h2>
+      </div>
+
+      <div class="row g-5">
+        <!-- Info column -->
+        <div class="col-lg-6">
+          <div class="apro__contact-info">
+            <!-- Location -->
+            <div class="apro__contact-item">
+              <i class="bi bi-geo-alt"></i>
+              <div>
+                <div class="apro__contact-label">Ubicación</div>
+                <div class="apro__contact-value">Av. Riu Ebre, 19<br />12540 Vila-real, Castelló</div>
+              </div>
+            </div>
+
+            <!-- Schedule -->
+            <div class="apro__contact-item">
+              <i class="bi bi-clock"></i>
+              <div>
+                <div class="apro__contact-label">Horario</div>
+                <ul class="apro__contact-hours">
+                  <li><span>Lunes a Viernes</span><span>09:30 &ndash; 20:00</span></li>
+                  <li><span>Sábados</span><span>09:30 &ndash; 14:00</span></li>
+                  <li><span>Domingos</span><span>Cerrado</span></li>
+                </ul>
+              </div>
+            </div>
+
+            <!-- Phone -->
+            <div class="apro__contact-item">
+              <i class="bi bi-telephone"></i>
+              <div>
+                <div class="apro__contact-label">Teléfono</div>
+                <div class="apro__contact-value">96 414 30 90 / 672 141 613</div>
+              </div>
+            </div>
+
+            <!-- Email -->
+            <div class="apro__contact-item">
+              <i class="bi bi-envelope"></i>
+              <div>
+                <div class="apro__contact-label">Email</div>
+                <a class="apro__contact-value" href="mailto:clinicaapro@gmail.com">clinicaapro&#64;gmail.com</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Map column -->
+        <div class="col-lg-6">
+          <div class="apro__contact-map">
+            <iframe
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3058.895920658416!2d-0.09755192361580749!3d39.943717684292245!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd60070bcab86237%3A0xac77e910737dfe0e!2zQVBSTyBDbMOtbmljYSBNw6lkaWNvIEVzdMOpdGljYQ!5e0!3m2!1ses!2ses!4v1784709821610!5m2!1ses!2ses"
+              class="apro__contact-map-iframe"
+              allowfullscreen=""
+              loading="lazy"
+              referrerpolicy="strict-origin-when-cross-origin"
+              title="Ubicación de Apro Clínica">
+            </iframe>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================================================
+    7. FOOTER
+    =================================================== -->
+  <footer class="apro__footer">
+    <div class="container">
+      <div class="row g-4">
+        <!-- Brand -->
+        <div class="col-md-4">
+          <div class="apro__footer-brand">Apro</div>
+          <p class="apro__footer-desc">
+            Centro médico-estético de excelencia. Donde la ciencia y la belleza
+            se encuentran para realzar su mejor versión.
+          </p>
+        </div>
+
+        <!-- Navigation -->
+        <div class="col-6 col-md-3">
+          <div class="apro__footer-heading">Navegación</div>
+          <ul class="apro__footer-links">
+            <li><a role="button" tabindex="0" (click)="scrollTo('inicio')" (keydown.enter)="scrollTo('inicio')">Inicio</a></li>
+            <li><a role="button" tabindex="0" (click)="scrollTo('servicios')" (keydown.enter)="scrollTo('servicios')">Servicios</a></li>
+            <li><a role="button" tabindex="0" (click)="scrollTo('galeria')" (keydown.enter)="scrollTo('galeria')">Galería</a></li>
+            <li><a role="button" tabindex="0" (click)="scrollTo('resenas')" (keydown.enter)="scrollTo('resenas')">Reseñas</a></li>
+            <li><a role="button" tabindex="0" (click)="scrollTo('contacto')" (keydown.enter)="scrollTo('contacto')">Contacto</a></li>
+          </ul>
+        </div>
+
+        <!-- Legal -->
+        <div class="col-6 col-md-3">
+          <div class="apro__footer-heading">Legal</div>
+          <ul class="apro__footer-links">
+            <li><a href="#">Aviso Legal</a></li>
+            <li><a href="#">Privacidad</a></li>
+            <li><a href="#">Cookies</a></li>
+            <li><a href="#">Términos</a></li>
+          </ul>
+        </div>
+
+        <!-- Social -->
+        <div class="col-md-2">
+          <div class="apro__footer-heading">Síguenos</div>
+          <div class="apro__footer-social">
+            <a href="#" aria-label="Instagram"><i class="bi bi-instagram"></i></a>
+            <a href="#" aria-label="Facebook"><i class="bi bi-facebook"></i></a>
+            <a href="#" aria-label="WhatsApp"><i class="bi bi-whatsapp"></i></a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bottom bar -->
+      <div class="apro__footer-bottom">
+        <p>
+          &copy; {{ currentYear }} &mdash; Diseño Premium por <span>Apro Clínica</span>
+        </p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ===================================================
+    8. FAB (WhatsApp)
+    =================================================== -->
+  <div class="apro__fab">
+    <a class="apro__fab-btn"
+       href="https://wa.me/34672141613?text=Hola%2C%20quisiera%20informaci%C3%B3n%20sobre%20sus%20tratamientos."
+       target="_blank"
+       rel="noopener"
+       aria-label="Reserva por WhatsApp">
+      <i class="bi bi-whatsapp"></i>
+    </a>
+    <span class="apro__fab-tooltip">Reserva por WhatsApp</span>
+  </div>
+</main>
