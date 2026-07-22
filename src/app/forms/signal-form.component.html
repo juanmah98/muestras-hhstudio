@@ -1,0 +1,36 @@
+<form [formRoot]="contactForm" novalidate>
+  <div class="mb-3">
+    <label for="name" class="form-label">Name</label>
+    <input
+      id="name"
+      type="text"
+      class="form-control"
+      [value]="contactForm.name().value()"
+      (input)="contactForm.name().value.set(($any($event.target).value))"
+    />
+  </div>
+
+  <div class="mb-3">
+    <label for="email" class="form-label">Email</label>
+    <input
+      id="email"
+      type="email"
+      class="form-control"
+      [value]="contactForm.email().value()"
+      (input)="contactForm.email().value.set(($any($event.target).value))"
+    />
+  </div>
+
+  <div class="mb-3">
+    <label for="message" class="form-label">Message</label>
+    <textarea
+      id="message"
+      class="form-control"
+      rows="4"
+      [value]="contactForm.message().value()"
+      (input)="contactForm.message().value.set(($any($event.target).value))"
+    ></textarea>
+  </div>
+
+  <button type="submit" class="btn btn-primary">Submit</button>
+</form>
