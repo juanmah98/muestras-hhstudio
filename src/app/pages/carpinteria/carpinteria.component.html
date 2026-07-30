@@ -1,0 +1,214 @@
+<div class="alamo">
+  <!-- ===== 1. NAVIGATION ===== -->
+  <nav class="alamo__nav">
+    <div class="container">
+      <div class="alamo__nav-inner">
+        <a class="alamo__logo" routerLink="/">ÁLAMO</a>
+
+        <ul class="alamo__nav-links" [class.alamo__nav-links--open]="mobileMenuOpen">
+          <li><a class="alamo__nav-link" (click)="scrollTo('hero')">Home</a></li>
+          <li><a class="alamo__nav-link" (click)="scrollTo('services')">Services</a></li>
+          <li><a class="alamo__nav-link" (click)="scrollTo('projects')">Projects</a></li>
+          <li><a class="alamo__nav-link" (click)="scrollTo('about')">About</a></li>
+          <li><a class="alamo__nav-link" (click)="scrollTo('contact')">Contact</a></li>
+          <li class="alamo__nav-cta-mobile">
+            <button class="alamo__btn alamo__btn--primary" (click)="scrollTo('contact'); closeMobileMenu()">Get a Quote</button>
+          </li>
+        </ul>
+
+        <button class="alamo__btn alamo__btn--primary alamo__nav-cta" (click)="scrollTo('contact')">Get a Quote</button>
+
+        <button
+          class="alamo__hamburger"
+          [class.alamo__hamburger--open]="mobileMenuOpen"
+          (click)="toggleMobileMenu()"
+          aria-label="Toggle navigation"
+        >
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ===== 2. HERO ===== -->
+  <section class="alamo__hero" id="hero">
+    <div class="container">
+      <div class="row">
+        <div class="col-12 col-lg-7" #heroContent>
+          <span class="alamo__hero-pill">Est. 2024</span>
+          <h1 class="alamo__hero-title">
+            Bespoke Craftsmanship.<br><span class="alamo__hero-title-accent">Timeless Design.</span>
+          </h1>
+          <p class="alamo__hero-subtitle">
+            Premium custom tables and artisanal woodwork, handcrafted with precision for the discerning home. Every piece is a unique narrative in wood.
+          </p>
+          <div class="alamo__hero-ctas">
+            <button class="alamo__btn alamo__btn--primary" (click)="scrollTo('contact')">Get a Quote</button>
+            <button class="alamo__btn alamo__btn--outline" (click)="scrollTo('projects')">View Projects</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 3. SERVICES ===== -->
+  <section class="alamo__services" id="services" #animateSection>
+    <div class="container">
+      <h2 class="alamo__section-title">
+        Our Services
+        <div class="alamo__section-rule"></div>
+      </h2>
+
+      @for (svc of services; track svc.title; let i = $index) {
+        <div class="row alamo__service-row" [class.alamo__service-row--reverse]="svc.layout === 'right'">
+          <div class="col-12 col-lg-7">
+            <div class="alamo__service-image">
+              <img [src]="svc.image" [alt]="svc.title" loading="lazy" />
+            </div>
+          </div>
+          <div class="col-12 col-lg-5">
+            <div class="alamo__service-content">
+              <span class="alamo__service-index">{{ i + 1 | number:'2.0' }}</span>
+              <span class="alamo__material-icon">{{ svc.icon }}</span>
+              <h3 class="alamo__service-title">{{ svc.title }}</h3>
+              <p class="alamo__service-desc">{{ svc.description }}</p>
+              @if (svc.chips.length) {
+                <div class="alamo__chips">
+                  @for (chip of svc.chips; track chip) {
+                    <span class="alamo__chip">{{ chip }}</span>
+                  }
+                </div>
+              }
+            </div>
+          </div>
+        </div>
+      }
+    </div>
+  </section>
+
+  <!-- ===== 4. SELECTED WORKS ===== -->
+  <section class="alamo__works" id="projects" #animateSection>
+    <div class="container">
+      <h2 class="alamo__section-title">
+        Selected Works
+        <div class="alamo__section-rule"></div>
+      </h2>
+
+      <div class="alamo__bento">
+        @for (project of projects; track project.title) {
+          <div class="alamo__work-card" [class]="project.layoutClass">
+            <div class="alamo__work-image">
+              <img
+                [src]="project.image"
+                [alt]="project.title"
+                loading="lazy"
+              />
+              <span class="alamo__work-chip">{{ project.chip }}</span>
+              <div class="alamo__work-overlay">
+                <div class="alamo__work-overlay-content">
+                  <div class="alamo__work-overlay-icon">
+                    <span class="alamo__material-icon">trending_flat</span>
+                  </div>
+                  <h3 class="alamo__work-overlay-title">{{ project.title }}</h3>
+                </div>
+              </div>
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 5. THE ÁLAMO STANDARD ===== -->
+  <section class="alamo__standard" id="about" #animateSection>
+    <div class="container">
+      <h2 class="alamo__section-title alamo__section-title--center">
+        The ÁLAMO Standard
+        <div class="alamo__section-rule"></div>
+      </h2>
+      <p class="alamo__standard-headline">
+        Frustrated with mass-produced furniture that doesn't fit? We create pieces that tell your story.
+      </p>
+      <div class="row g-4 justify-content-center">
+        @for (value of values; track value.title) {
+          <div class="col-12 col-md-6 col-lg-4">
+            <div class="alamo__value-card">
+              <div class="alamo__value-icon">
+                <span class="alamo__material-icon">{{ value.icon }}</span>
+              </div>
+              <h3 class="alamo__value-title">{{ value.title }}</h3>
+              <p class="alamo__value-desc">{{ value.description }}</p>
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. CONTACT SECTION ===== -->
+  <section class="alamo__contact" id="contact" #animateSection>
+    <div class="container">
+      <div class="row">
+        <div class="col-12 col-lg-5">
+          <div class="alamo__contact-card">
+            <h2 class="alamo__section-title">Commission a Piece</h2>
+            <p class="alamo__contact-desc">Begin the conversation about your custom project.</p>
+            <form class="alamo__form" (submit)="$event.preventDefault()">
+              <div class="alamo__field">
+                <label class="alamo__label" for="name">Name</label>
+                <input class="alamo__input" type="text" id="name" name="name" placeholder="Your full name" />
+              </div>
+              <div class="alamo__field">
+                <label class="alamo__label" for="email">Email</label>
+                <input class="alamo__input" type="email" id="email" name="email" placeholder="your@email.com" />
+              </div>
+              <div class="alamo__field">
+                <label class="alamo__label" for="details">Project Details</label>
+                <textarea class="alamo__input" id="details" name="details" rows="5" placeholder="Tell us about your project, dimensions, wood preferences..."></textarea>
+              </div>
+              <button class="alamo__btn alamo__btn--primary alamo__btn--full" type="submit">Submit Enquiry</button>
+            </form>
+          </div>
+        </div>
+        <div class="col-12 col-lg-7">
+          <div class="alamo__map">
+            <img [src]="mapImage" alt="Workshop location" loading="lazy" />
+            <div class="alamo__map-card">
+              <h3 class="alamo__map-title">The Workshop</h3>
+              <p class="alamo__map-text">Visits by appointment only.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 7. FOOTER ===== -->
+  <footer class="alamo__footer">
+    <div class="container">
+      <div class="alamo__footer-brand">ÁLAMO</div>
+      <div class="alamo__footer-bottom">
+        <span class="alamo__footer-copy">&copy; {{ currentYear }} ÁLAMO Carpentry. Handcrafted with precision.</span>
+        <nav class="alamo__footer-links">
+          <a href="#" class="alamo__footer-link">Instagram</a>
+          <a href="#" class="alamo__footer-link">Pinterest</a>
+          <a href="#" class="alamo__footer-link">LinkedIn</a>
+          <a href="#" class="alamo__footer-link">Privacy Policy</a>
+        </nav>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Floating WhatsApp -->
+  <a
+    class="alamo__whatsapp"
+    href="https://wa.me/34999999999"
+    target="_blank"
+    rel="noopener"
+    aria-label="Contactar por WhatsApp"
+  >
+    <i class="bi bi-whatsapp"></i>
+  </a>
+</div>

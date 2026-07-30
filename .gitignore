@@ -41,6 +41,12 @@ testem.log
 .env
 .env.local
 
+# Client proposals & sensitive commercial docs
+propuesta-*.html
+
+# Internal strategy docs (uncomment to hide)
+# docs/interno/
+
 # System files
 .DS_Store
 Thumbs.db

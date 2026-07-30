@@ -29,6 +29,60 @@ export class HomeComponent implements AfterViewInit {
       status: 'available',
       icon: 'bi bi-building',
     },
+    {
+      slug: 'salud',
+      title: 'Salud',
+      description:
+        'Landing page para centros de salud, clínicas y consultorios médicos.',
+      tags: ['Landing Page', 'Salud', 'Consultorios'],
+      status: 'coming-soon',
+      icon: 'bi bi-heart-pulse-fill',
+    },
+    {
+      slug: 'carpinteria',
+      title: 'Carpintería',
+      description:
+        'Showcase para carpinterías, mueblerías y talleres de madera a medida.',
+      tags: ['Landing Page', 'Carpintería', 'Muebles'],
+      status: 'available',
+      icon: 'bi bi-hammer',
+    },
+    {
+      slug: 'reformas',
+      title: 'Reformas & Fontanería',
+      description:
+        'Landing page para empresas de reformas, plomería y servicios del hogar.',
+      tags: ['Landing Page', 'Reformas', 'Fontanería'],
+      status: 'coming-soon',
+      icon: 'bi bi-tools',
+    },
+    {
+      slug: 'electricista',
+      title: 'Electricista',
+      description:
+        'Landing page para electricistas, instaladores y servicios de electricidad.',
+      tags: ['Landing Page', 'Electricidad', 'Instalaciones'],
+      status: 'coming-soon',
+      icon: 'bi bi-lightning-charge-fill',
+    },
+    {
+      slug: 'estetica',
+      title: 'Estética',
+      description:
+        'Landing page para centros de estética, salones de belleza y cosmética.',
+      tags: ['Landing Page', 'Estética', 'Belleza'],
+      status: 'coming-soon',
+      icon: 'bi bi-stars',
+    },
+    {
+      slug: 'pasteleria',
+      title: 'Pastelería',
+      description:
+        'Landing page para pastelerías, reposterías y tiendas de productos dulces.',
+      tags: ['Landing Page', 'Pastelería', 'Repostería'],
+      status: 'coming-soon',
+      icon: 'bi bi-cake2-fill',
+    },
   ];
 
   readonly currentYear = new Date().getFullYear();

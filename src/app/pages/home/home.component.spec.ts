@@ -44,6 +44,6 @@ describe('HomeComponent', () => {
   it('should have sections defined', () => {
     const fixture = TestBed.createComponent(HomeComponent);
     const component = fixture.componentInstance;
-    expect(component.sections.length).toBeGreaterThan(0);
+    expect(component.sections.length).toBe(7);
   });
 });
