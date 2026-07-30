@@ -56,6 +56,13 @@ export const routes: Routes = [
       ),
   },
   {
+    path: 'seo-ia',
+    loadComponent: () =>
+      import('./pages/seo-ia/seo-ia.component').then(
+        (m) => m.SeoIaComponent,
+      ),
+  },
+  {
     path: '**',
     loadComponent: () =>
       import('./pages/not-found/not-found.component').then(

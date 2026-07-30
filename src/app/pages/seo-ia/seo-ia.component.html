@@ -1,0 +1,286 @@
+<div class="seo-ia">
+  <!-- ===== HERO ===== -->
+  <header class="seo-ia__hero">
+    <div class="container">
+      <a class="seo-ia__back" routerLink="/">
+        <i class="bi bi-arrow-left"></i> HH Studio
+      </a>
+      <span class="seo-ia__hero-pill">Documento Interno</span>
+      <h1 class="seo-ia__hero-title">
+        Cómo la <span class="seo-ia__hero-title-accent">IA</span> descubre
+        negocios locales
+      </h1>
+      <p class="seo-ia__hero-subtitle">
+        Estrategia de posicionamiento para búsquedas con IA. Entendé qué mira
+        ChatGPT, Perplexity y Gemini cuando un usuario pregunta por una clínica
+        en Castellón.
+      </p>
+    </div>
+    <div class="seo-ia__hero-visual">
+      <div class="seo-ia__hero-node seo-ia__hero-node--user">
+        <i class="bi bi-person-fill"></i>
+        <span>Usuario</span>
+      </div>
+      <div class="seo-ia__hero-arrow">
+        <i class="bi bi-arrow-right"></i>
+      </div>
+      <div class="seo-ia__hero-node seo-ia__hero-node--ai">
+        <i class="bi bi-cpu-fill"></i>
+        <span>LLM</span>
+      </div>
+      <div class="seo-ia__hero-arrow">
+        <i class="bi bi-arrow-right"></i>
+      </div>
+      <div class="seo-ia__hero-sources">
+        <div class="seo-ia__hero-source"><i class="bi bi-geo-alt-fill"></i></div>
+        <div class="seo-ia__hero-source"><i class="bi bi-star-fill"></i></div>
+        <div class="seo-ia__hero-source"><i class="bi bi-code-slash"></i></div>
+        <div class="seo-ia__hero-source"><i class="bi bi-share-fill"></i></div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== INTRO: RAG ===== -->
+  <section class="seo-ia__section" #animateSection>
+    <div class="container">
+      <div class="seo-ia__rag-card">
+        <div class="seo-ia__rag-card-badge">RAG</div>
+        <h2 class="seo-ia__rag-card-title">
+          Retrieval-Augmented Generation
+        </h2>
+        <p class="seo-ia__rag-card-text">
+          Cuando un usuario pregunta <em>«Dame 5 clínicas de estética en
+          Castellón»</em>, la IA <strong>no usa solo su memoria de
+          entrenamiento</strong>. Realiza una búsqueda en tiempo real, recupera
+          documentos relevantes de fuentes externas y genera la respuesta
+          combinando ambos mundos.
+        </p>
+        <div class="seo-ia__rag-steps">
+          <div class="seo-ia__rag-step">
+            <div class="seo-ia__rag-step-num">1</div>
+            <div class="seo-ia__rag-step-label">Recibe la pregunta</div>
+          </div>
+          <div class="seo-ia__rag-step-connector"></div>
+          <div class="seo-ia__rag-step">
+            <div class="seo-ia__rag-step-num">2</div>
+            <div class="seo-ia__rag-step-label">Busca en fuentes externas</div>
+          </div>
+          <div class="seo-ia__rag-step-connector"></div>
+          <div class="seo-ia__rag-step">
+            <div class="seo-ia__rag-step-num">3</div>
+            <div class="seo-ia__rag-step-label">Genera la respuesta</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 4 FUENTES ===== -->
+  <section class="seo-ia__section" #animateSection>
+    <div class="container">
+      <div class="seo-ia__section-header">
+        <span class="seo-ia__section-num">01</span>
+        <h2 class="seo-ia__section-title">Las 4 fuentes que analiza la IA</h2>
+      </div>
+      <div class="seo-ia__sources-grid">
+        @for (source of sources; track source.number) {
+          <article class="seo-ia__source-card" [class]="source.colorClass">
+            <div class="seo-ia__source-card-top">
+              <span class="seo-ia__source-card-num">{{ source.number }}</span>
+              <i class="bi" [class]="'bi-' + source.icon"></i>
+            </div>
+            <h3 class="seo-ia__source-card-title">{{ source.title }}</h3>
+            <p class="seo-ia__source-card-desc">{{ source.description }}</p>
+            <div class="seo-ia__source-card-action">
+              <i class="bi bi-lightning-charge-fill"></i>
+              <span>{{ source.action }}</span>
+            </div>
+          </article>
+        }
+      </div>
+
+      <!-- RAG note -->
+      <div class="seo-ia__note">
+        <i class="bi bi-info-circle-fill"></i>
+        <div>
+          <strong>Nota técnica:</strong> ChatGPT (con browsing), Perplexity y
+          Gemini (con grounding) usan RAG. Claude sin web search y modelos
+          offline usan solo training data. Asumimos RAG como escenario
+          principal para búsquedas locales.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 4 FACTORES CLAVE ===== -->
+  <section class="seo-ia__section" #animateSection>
+    <div class="container">
+      <div class="seo-ia__section-header">
+        <span class="seo-ia__section-num">02</span>
+        <h2 class="seo-ia__section-title">Factores clave de posicionamiento</h2>
+      </div>
+      <div class="seo-ia__factors-stack">
+        @for (factor of factors; track factor.title; let i = $index) {
+          <div class="seo-ia__factor-row" [class.seo-ia__factor-row--reverse]="i % 2 !== 0">
+            <div class="seo-ia__factor-icon-col">
+              <div class="seo-ia__factor-icon-circle">
+                <i class="bi" [class]="'bi-' + factor.icon"></i>
+              </div>
+            </div>
+            <div class="seo-ia__factor-content">
+              <span class="seo-ia__factor-num">{{ i + 1 | number:'2.0' }}</span>
+              <h3 class="seo-ia__factor-title">{{ factor.title }}</h3>
+              <p class="seo-ia__factor-desc">{{ factor.description }}</p>
+              <div class="seo-ia__factor-detail">
+                <i class="bi bi-arrow-return-right"></i>
+                <span>{{ factor.detail }}</span>
+              </div>
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== JSON-LD EXAMPLE ===== -->
+  <section class="seo-ia__section" #animateSection>
+    <div class="container">
+      <div class="seo-ia__section-header">
+        <span class="seo-ia__section-num">03</span>
+        <h2 class="seo-ia__section-title">Ejemplo: Schema JSON-LD para clínica</h2>
+      </div>
+      <div class="seo-ia__code-wrapper">
+        <div class="seo-ia__code-header">
+          <div class="seo-ia__code-dots">
+            <span></span><span></span><span></span>
+          </div>
+          <span class="seo-ia__code-filename">clinica-castellon.jsonld</span>
+          <span class="seo-ia__code-badge">BeautySalon</span>
+        </div>
+        <pre class="seo-ia__code-block"><code>{{ jsonLdExample }}</code></pre>
+      </div>
+      <p class="seo-ia__code-note">
+        <i class="bi bi-exclamation-triangle-fill"></i>
+        El campo <code>areaServed</code> es crítico: sin él, la IA no asocia el
+        negocio a Castellón aunque la dirección esté presente.
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== CHECKLIST ===== -->
+  <section class="seo-ia__section" #animateSection>
+    <div class="container">
+      <div class="seo-ia__section-header">
+        <span class="seo-ia__section-num">04</span>
+        <h2 class="seo-ia__section-title">Checklist por proyecto</h2>
+      </div>
+      <div class="seo-ia__checklist-grid">
+        @for (item of checklist; track item.area) {
+          <div class="seo-ia__checklist-card">
+            <div class="seo-ia__checklist-card-icon">
+              <i class="bi" [class]="'bi-' + item.icon"></i>
+            </div>
+            <h3 class="seo-ia__checklist-card-title">{{ item.area }}</h3>
+            <p class="seo-ia__checklist-card-action">{{ item.action }}</p>
+            <div class="seo-ia__checklist-card-deliverable">
+              <i class="bi bi-box-seam-fill"></i>
+              <span>{{ item.deliverable }}</span>
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== CÓMO USAMOS ESTO ===== -->
+  <section class="seo-ia__section" #animateSection>
+    <div class="container">
+      <div class="seo-ia__section-header">
+        <span class="seo-ia__section-num">05</span>
+        <h2 class="seo-ia__section-title">Integración en el flujo de HH Studio</h2>
+      </div>
+      <div class="seo-ia__flow">
+        <div class="seo-ia__flow-step">
+          <div class="seo-ia__flow-step-dot"></div>
+          <div class="seo-ia__flow-step-content">
+            <h4>Fase de Venta</h4>
+            <p>Compartir el checklist con el cliente para demostrar expertise técnico en IA.</p>
+          </div>
+        </div>
+        <div class="seo-ia__flow-step">
+          <div class="seo-ia__flow-step-dot"></div>
+          <div class="seo-ia__flow-step-content">
+            <h4>Fase de Diseño</h4>
+            <p>Decidir tipos de Schema según el rubro: BeautySalon, MedicalBusiness, HomeAndConstructionBusiness.</p>
+          </div>
+        </div>
+        <div class="seo-ia__flow-step">
+          <div class="seo-ia__flow-step-dot"></div>
+          <div class="seo-ia__flow-step-content">
+            <h4>Fase de Desarrollo</h4>
+            <p>Implementar JSON-LD en el index.html o vía servicio Angular (SSR-friendly).</p>
+          </div>
+        </div>
+        <div class="seo-ia__flow-step">
+          <div class="seo-ia__flow-step-dot"></div>
+          <div class="seo-ia__flow-step-content">
+            <h4>Fase de Entrega</h4>
+            <p>Incluir el checklist completado como parte del paquete de lanzamiento.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== RESOURCES ===== -->
+  <section class="seo-ia__section" #animateSection>
+    <div class="container">
+      <div class="seo-ia__section-header">
+        <span class="seo-ia__section-num">06</span>
+        <h2 class="seo-ia__section-title">Recursos y validación</h2>
+      </div>
+      <div class="seo-ia__resources-grid">
+        <a href="https://schema.org/BeautySalon" target="_blank" rel="noopener" class="seo-ia__resource-card">
+          <i class="bi bi-diagram-3-fill"></i>
+          <span>Schema.org — BeautySalon</span>
+          <i class="bi bi-box-arrow-up-right seo-ia__resource-external"></i>
+        </a>
+        <a href="https://schema.org/LocalBusiness" target="_blank" rel="noopener" class="seo-ia__resource-card">
+          <i class="bi bi-shop"></i>
+          <span>Schema.org — LocalBusiness</span>
+          <i class="bi bi-box-arrow-up-right seo-ia__resource-external"></i>
+        </a>
+        <a href="https://search.google.com/test/rich-results" target="_blank" rel="noopener" class="seo-ia__resource-card">
+          <i class="bi bi-google"></i>
+          <span>Google Rich Results Test</span>
+          <i class="bi bi-box-arrow-up-right seo-ia__resource-external"></i>
+        </a>
+        <a href="https://validator.schema.org/" target="_blank" rel="noopener" class="seo-ia__resource-card">
+          <i class="bi bi-patch-check-fill"></i>
+          <span>Schema Markup Validator</span>
+          <i class="bi bi-box-arrow-up-right seo-ia__resource-external"></i>
+        </a>
+        <a href="https://support.google.com/business/answer/3038063" target="_blank" rel="noopener" class="seo-ia__resource-card">
+          <i class="bi bi-building-fill"></i>
+          <span>Google Business Profile Guide</span>
+          <i class="bi bi-box-arrow-up-right seo-ia__resource-external"></i>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="seo-ia__footer">
+    <div class="container">
+      <div class="seo-ia__footer-inner">
+        <a class="seo-ia__footer-brand" routerLink="/">HH Studio</a>
+        <p class="seo-ia__footer-text">
+          Documento interno — Estrategia de Posicionamiento para Búsquedas con IA
+        </p>
+        <p class="seo-ia__footer-meta">
+          Validado técnicamente. Última revisión: Julio 2026.
+        </p>
+      </div>
+    </div>
+  </footer>
+</div>
