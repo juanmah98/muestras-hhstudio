@@ -1,6 +1,7 @@
 import {
   Component,
   AfterViewInit,
+  HostListener,
   ElementRef,
   ViewChild,
   ViewChildren,
@@ -42,10 +43,11 @@ interface Value {
 export class CarpinteriaComponent implements AfterViewInit {
   readonly currentYear = new Date().getFullYear();
   mobileMenuOpen = false;
+  scrolled = false;
 
   readonly services: Service[] = [
     {
-      icon: 'table_bar',
+      icon: 'table_restaurant',
       title: 'Custom Dining Tables',
       description:
         'Our primary focus. We design and build heirloom-quality dining tables tailored to your space, crafted from solid, ethically sourced hardwoods.',
@@ -65,7 +67,7 @@ export class CarpinteriaComponent implements AfterViewInit {
       layout: 'right',
     },
     {
-      icon: 'architecture',
+      icon: 'handyman',
       title: 'Artisanal Woodwork',
       description:
         'From custom shelving to architectural accents, we apply meticulous attention to detail to elevate any interior space.',
@@ -112,7 +114,7 @@ export class CarpinteriaComponent implements AfterViewInit {
       icon: 'straighten',
       title: 'Perfectly Proportioned',
       description:
-        "Stop settling for 'almost fits.' We design precisely for your spatial requirements and aesthetic vision.",
+        'Stop settling for "almost fits." We design precisely for your spatial requirements and aesthetic vision.',
     },
     {
       icon: 'forest',
@@ -137,6 +139,11 @@ export class CarpinteriaComponent implements AfterViewInit {
     ElementRef<HTMLElement>
   >;
 
+  @HostListener('window:scroll')
+  onWindowScroll(): void {
+    this.scrolled = window.scrollY > 50;
+  }
+
   ngAfterViewInit(): void {
     if (typeof window === 'undefined') return;
 
@@ -145,7 +152,6 @@ export class CarpinteriaComponent implements AfterViewInit {
     ).matches;
     if (prefersReducedMotion) return;
 
-    // --- Hero: animate immediately on load with stagger ---
     if (this.heroContent) {
       const heroChildren = this.heroContent.nativeElement.children;
       gsap.fromTo(
@@ -161,7 +167,6 @@ export class CarpinteriaComponent implements AfterViewInit {
       );
     }
 
-    // --- Scroll sections: animate on intersection ---
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {

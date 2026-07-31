@@ -1,21 +1,26 @@
 // ============================================================
 // ÁLAMO Carpintería Artesanal Moderna — Design Tokens
-// Light theme — Cormorant Garamond + Inter, rounded elements
+// Dark cinematic theme — Cormorant Garamond + Inter
 // ============================================================
 
 @use 'sass:color';
 
-// --- Local design tokens (light theme) ---
+// --- Local design tokens ---
 $color-primary: #3d2b1f;
-$color-primary-light: #26170c;
+$color-primary-dark: #26170c;
 $color-secondary: #d9c5b2;
 $color-tertiary: #f5f2ee;
 $color-neutral: #1a1a1a;
-$color-bg: #fcf9f8;
-$color-surface: #fcf9f8;
+$color-bg-dark: #1a1513;
+$color-bg-cream: #fcf9f8;
+$color-surface-cream: #fcf9f8;
 $color-surface-container: #f0eded;
 $color-outline: #81756e;
 $color-error: #ba1a1a;
+$color-gold: #c8a87c;
+$color-warm-white: #f5f2ee;
+$color-warm-grey: rgba(245, 242, 238, 0.7);
+$color-warm-muted: rgba(245, 242, 238, 0.45);
 
 $font-headlines: 'Cormorant Garamond', serif;
 $font-body: 'Inter', 'Manrope', sans-serif;
@@ -29,18 +34,22 @@ $section-pad-mobile: 56px;
 // ============================================================
 
 .alamo {
-  background-color: $color-bg;
-  color: $color-neutral;
+  background-color: $color-bg-dark;
+  color: $color-warm-white;
   font-family: $font-body;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 
-  // --- SECTION RULE (decorative line under title) ---
+  // --- SECTION RULE ---
   &__section-rule {
     width: 96px;
     height: 1px;
     background-color: rgba($color-secondary, 0.4);
     margin: 0.5rem 0 0 0;
+
+    &--gold {
+      background-color: rgba($color-gold, 0.5);
+    }
   }
 
   // --- SECTION TITLE ---
@@ -66,6 +75,10 @@ $section-pad-mobile: 56px;
         margin-right: auto;
       }
     }
+
+    &--light {
+      color: $color-warm-white;
+    }
   }
 
   // --- BUTTONS ---
@@ -85,7 +98,7 @@ $section-pad-mobile: 56px;
     outline: none;
 
     &:focus-visible {
-      outline: 2px solid $color-primary;
+      outline: 2px solid $color-gold;
       outline-offset: 2px;
     }
 
@@ -100,6 +113,17 @@ $section-pad-mobile: 56px;
       }
     }
 
+    &--filled {
+      background-color: $color-primary;
+      color: $color-warm-white;
+      border-color: $color-primary;
+
+      &:hover {
+        background-color: color.adjust($color-primary, $lightness: 10%);
+        border-color: color.adjust($color-primary, $lightness: 10%);
+      }
+    }
+
     &--outline {
       background-color: transparent;
       color: $color-primary;
@@ -108,6 +132,28 @@ $section-pad-mobile: 56px;
       &:hover {
         background-color: $color-primary;
         color: $color-tertiary;
+      }
+    }
+
+    &--outline-gold {
+      background-color: transparent;
+      color: $color-gold;
+      border-color: $color-gold;
+
+      &:hover {
+        background-color: $color-gold;
+        color: $color-bg-dark;
+      }
+    }
+
+    &--gold {
+      background-color: $color-gold;
+      color: $color-bg-dark;
+      border-color: $color-gold;
+
+      &:hover {
+        background-color: color.adjust($color-gold, $lightness: -8%);
+        border-color: color.adjust($color-gold, $lightness: -8%);
       }
     }
 
@@ -143,8 +189,9 @@ $section-pad-mobile: 56px;
     letter-spacing: 0.12em;
     text-transform: uppercase;
     padding: 0.25rem 0.75rem;
-    background-color: rgba($color-secondary, 0.3);
+    background-color: transparent;
     color: $color-primary;
+    border: 1px solid rgba($color-primary, 0.25);
     border-radius: $radius-md;
   }
 
@@ -152,6 +199,17 @@ $section-pad-mobile: 56px;
     display: flex;
     flex-wrap: wrap;
     gap: 0.5rem;
+  }
+
+  // --- LABEL ---
+  &__label {
+    font-family: $font-body;
+    font-size: 0.8rem;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: $color-warm-muted;
+    margin-bottom: 0.5rem;
   }
 
   // ============================================================
@@ -164,10 +222,17 @@ $section-pad-mobile: 56px;
     left: 0;
     right: 0;
     z-index: 100;
-    background-color: rgba($color-bg, 0.95);
-    backdrop-filter: blur(8px);
-    border-bottom: 1px solid rgba($color-secondary, 0.4);
+    background-color: rgba($color-bg-dark, 0.5);
+    backdrop-filter: blur(6px);
+    border-bottom: 1px solid rgba($color-gold, 0.1);
     padding: 0.875rem 0;
+    transition: background-color 0.35s ease, backdrop-filter 0.35s ease, border-color 0.35s ease;
+
+    &--scrolled {
+      background-color: rgba($color-bg-dark, 0.92);
+      backdrop-filter: blur(16px);
+      border-bottom-color: rgba($color-gold, 0.2);
+    }
   }
 
   &__nav-inner {
@@ -180,9 +245,14 @@ $section-pad-mobile: 56px;
     font-family: $font-headlines;
     font-size: 1.5rem;
     font-weight: 500;
-    color: $color-primary;
+    color: $color-gold;
     text-decoration: none;
     letter-spacing: 0.08em;
+    transition: color 0.2s ease;
+
+    &:hover {
+      color: color.adjust($color-gold, $lightness: 10%);
+    }
   }
 
   &__nav-links {
@@ -197,7 +267,7 @@ $section-pad-mobile: 56px;
   &__nav-link {
     font-family: $font-body;
     font-size: 0.925rem;
-    color: $color-neutral;
+    color: $color-warm-grey;
     text-decoration: none;
     cursor: pointer;
     transition: color 0.2s ease;
@@ -205,8 +275,8 @@ $section-pad-mobile: 56px;
     padding-bottom: 0.25rem;
 
     &:hover {
-      color: $color-primary;
-      border-bottom-color: $color-primary;
+      color: $color-warm-white;
+      border-bottom-color: $color-gold;
     }
   }
 
@@ -235,7 +305,7 @@ $section-pad-mobile: 56px;
       display: block;
       width: 100%;
       height: 2px;
-      background-color: $color-primary;
+      background-color: $color-gold;
       transition: transform 0.3s ease, opacity 0.3s ease;
       transform-origin: center;
     }
@@ -254,7 +324,7 @@ $section-pad-mobile: 56px;
   }
 
   // ============================================================
-  // 2. HERO
+  // 2. HERO — Full-bleed dark cinematic
   // ============================================================
 
   &__hero {
@@ -263,16 +333,85 @@ $section-pad-mobile: 56px;
     display: flex;
     align-items: center;
     padding: 0;
-    background:
-      linear-gradient(90deg, $color-bg 0%, rgba($color-bg, 0.9) 40%, rgba($color-bg, 0.15) 100%),
-      url('/assets/images/carpinteria/hero-dining.jpg') center/cover no-repeat;
+    overflow: hidden;
+    background-color: $color-bg-dark;
+    background-image:
+      repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 2px,
+        rgba(217, 197, 178, 0.018) 2px,
+        rgba(217, 197, 178, 0.018) 4px
+      ),
+      repeating-linear-gradient(
+        90deg,
+        transparent,
+        transparent 60px,
+        rgba(200, 168, 124, 0.012) 60px,
+        rgba(200, 168, 124, 0.012) 61px
+      ),
+      linear-gradient(180deg, rgba(26, 21, 19, 0.82) 0%, rgba(26, 21, 19, 0.65) 50%, rgba(26, 21, 19, 0.88) 100%),
+      url('/assets/images/carpinteria/hero-dining.jpg');
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+
+    // Decorative "Á" watermark
+    &::after {
+      content: 'Á';
+      position: absolute;
+      right: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      font-family: $font-headlines;
+      font-size: clamp(8rem, 15vw, 16rem);
+      font-weight: 700;
+      color: rgba($color-secondary, 0.05);
+      pointer-events: none;
+      line-height: 1;
+      user-select: none;
+
+      @media (max-width: 991px) {
+        display: none;
+      }
+    }
 
     @media (max-width: 768px) {
       min-height: 100vh;
       padding: 0;
-      background:
-        linear-gradient(0deg, rgba($color-bg, 0.92) 0%, rgba($color-bg, 0.7) 100%),
-        url('/assets/images/carpinteria/hero-dining.jpg') center/cover no-repeat;
+      background-image:
+        repeating-linear-gradient(
+          0deg,
+          transparent,
+          transparent 2px,
+          rgba(217, 197, 178, 0.018) 2px,
+          rgba(217, 197, 178, 0.018) 4px
+        ),
+        linear-gradient(0deg, rgba(26, 21, 19, 0.92) 0%, rgba(26, 21, 19, 0.7) 100%),
+        url('/assets/images/carpinteria/hero-dining.jpg');
+      background-position: center;
+      background-size: cover;
+      background-repeat: no-repeat;
+    }
+  }
+
+  &__hero-content {
+    position: relative;
+    padding-left: 2.5rem;
+
+    // Gold vertical line
+    &::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 2px;
+      height: 120px;
+      background-color: $color-gold;
+
+      @media (max-width: 768px) {
+        height: 80px;
+      }
     }
   }
 
@@ -284,10 +423,10 @@ $section-pad-mobile: 56px;
     letter-spacing: 0.12em;
     text-transform: uppercase;
     padding: 0.35rem 1rem;
-    border: 1px solid rgba($color-secondary, 0.4);
+    border: 1px solid rgba($color-gold, 0.4);
     border-radius: $radius-md;
-    background-color: $color-surface;
-    color: $color-primary;
+    background-color: transparent;
+    color: $color-gold;
     margin-bottom: 1.5rem;
   }
 
@@ -297,7 +436,7 @@ $section-pad-mobile: 56px;
     line-height: 1.1;
     font-weight: 500;
     letter-spacing: -0.01em;
-    color: $color-primary;
+    color: $color-warm-white;
     margin-bottom: 1.5rem;
 
     @media (max-width: 768px) {
@@ -305,14 +444,10 @@ $section-pad-mobile: 56px;
     }
   }
 
-  &__hero-title-accent {
-    color: $color-secondary;
-  }
-
   &__hero-subtitle {
     font-size: 1.1rem;
     line-height: 1.7;
-    color: rgba($color-neutral, 0.8);
+    color: $color-warm-grey;
     max-width: 540px;
     margin-bottom: 2rem;
   }
@@ -324,12 +459,85 @@ $section-pad-mobile: 56px;
   }
 
   // ============================================================
-  // 3. SERVICES
+  // 3. EL PROCESO
+  // ============================================================
+
+  &__process {
+    padding: $section-pad-desktop 0;
+    background-color: $color-bg-dark;
+
+    @media (max-width: 768px) {
+      padding: $section-pad-mobile 0;
+    }
+  }
+
+  &__process-steps {
+    position: relative;
+  }
+
+  &__process-step {
+    position: relative;
+    text-align: center;
+
+    // Timeline connector
+    &:not(:last-child)::after {
+      content: '';
+      position: absolute;
+      right: -1rem;
+      top: 3rem;
+      width: calc(100% + 2rem);
+      height: 1px;
+      background: linear-gradient(to right, rgba($color-gold, 0.3), rgba($color-gold, 0.1));
+
+      @media (max-width: 991px) {
+        display: none;
+      }
+    }
+
+    @media (max-width: 991px) {
+      margin-bottom: 3rem;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+  }
+
+  &__process-number {
+    display: block;
+    font-family: $font-headlines;
+    font-size: clamp(3rem, 6vw, 5rem);
+    font-weight: 700;
+    color: rgba($color-gold, 0.12);
+    line-height: 1;
+    margin-bottom: -0.75rem;
+    pointer-events: none;
+    user-select: none;
+  }
+
+  &__process-title {
+    font-family: $font-headlines;
+    font-size: 1.5rem;
+    font-weight: 500;
+    color: $color-warm-white;
+    margin-bottom: 0.75rem;
+  }
+
+  &__process-desc {
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: $color-warm-grey;
+    max-width: 320px;
+    margin: 0 auto;
+  }
+
+  // ============================================================
+  // 4. SERVICIOS
   // ============================================================
 
   &__services {
     padding: $section-pad-desktop 0;
-    background-color: $color-surface;
+    background-color: $color-bg-cream;
 
     @media (max-width: 768px) {
       padding: $section-pad-mobile 0;
@@ -350,6 +558,7 @@ $section-pad-mobile: 56px;
   }
 
   &__service-image {
+    position: relative;
     width: 100%;
     aspect-ratio: 4 / 3;
     overflow: hidden;
@@ -363,31 +572,58 @@ $section-pad-mobile: 56px;
       transition: transform 0.5s ease;
     }
 
-    &:hover img {
-      transform: scale(1.03);
+    &::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba($color-primary, 0.2) 0%, transparent 60%);
+      opacity: 0;
+      transition: opacity 0.4s ease;
+      pointer-events: none;
+    }
+
+    &:hover {
+      img {
+        transform: scale(1.03);
+      }
+
+      &::after {
+        opacity: 1;
+      }
+    }
+  }
+
+  &__service-image-number {
+    position: absolute;
+    bottom: 1rem;
+    left: -0.5rem;
+    font-family: $font-headlines;
+    font-size: 5rem;
+    font-weight: 700;
+    line-height: 0.7;
+    color: rgba($color-gold, 0.35);
+    pointer-events: none;
+    z-index: 1;
+
+    @media (max-width: 768px) {
+      font-size: 3.5rem;
+      left: 0;
+      bottom: 0.5rem;
     }
   }
 
   &__service-content {
-    padding: 1rem 0;
+    position: relative;
+    padding: 1rem 0 1rem 1.5rem;
+    border-left: 2px solid $color-gold;
 
     @media (min-width: 992px) {
-      padding: 1rem 2rem;
+      padding: 1rem 2rem 1rem 2rem;
     }
 
     @media (max-width: 991px) {
       margin-top: 1.5rem;
     }
-  }
-
-  &__service-index {
-    display: block;
-    font-family: $font-headlines;
-    font-size: 3rem;
-    line-height: 1;
-    font-weight: 300;
-    color: rgba($color-secondary, 0.5);
-    margin-bottom: 0.5rem;
   }
 
   &__service-title {
@@ -407,12 +643,12 @@ $section-pad-mobile: 56px;
   }
 
   // ============================================================
-  // 4. SELECTED WORKS (Bento Grid)
+  // 5. OBRAS SELECCIONADAS (Bento Grid)
   // ============================================================
 
   &__works {
     padding: $section-pad-desktop 0;
-    background-color: $color-bg;
+    background-color: $color-bg-cream;
 
     @media (max-width: 768px) {
       padding: $section-pad-mobile 0;
@@ -439,7 +675,7 @@ $section-pad-mobile: 56px;
   &__work-card {
     border-radius: $radius-md;
     overflow: hidden;
-    border: 1px solid rgba($color-secondary, 0.2);
+    border: 1px solid rgba($color-secondary, 0.35);
 
     &--large {
       grid-column: span 2;
@@ -478,7 +714,7 @@ $section-pad-mobile: 56px;
   &__work-overlay {
     position: absolute;
     inset: 0;
-    background: linear-gradient(to top, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0.15) 50%, transparent 100%);
+    background: linear-gradient(to top, rgba(26, 21, 19, 0.85) 0%, rgba(26, 21, 19, 0.2) 50%, transparent 100%);
     opacity: 0;
     transition: opacity 0.35s ease;
     display: flex;
@@ -491,32 +727,22 @@ $section-pad-mobile: 56px;
   &__work-overlay-content {
     display: flex;
     flex-direction: column;
-    gap: 1.5rem;
+    gap: 0.75rem;
     transform: translateY(12px);
     transition: transform 0.35s ease;
   }
 
-  &__work-overlay-icon {
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-    border: 1px solid rgba($color-secondary, 0.5);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: $color-secondary;
-
-    .alamo__material-icon {
-      font-size: 1.25rem;
-      color: inherit;
-    }
+  &__work-overlay-arrow {
+    font-size: 1.5rem;
+    color: $color-gold;
+    line-height: 1;
   }
 
   &__work-overlay-title {
     font-family: $font-headlines;
     font-size: 1.25rem;
     font-weight: 500;
-    color: #ffffff;
+    color: $color-warm-white;
     margin: 0;
   }
 
@@ -544,26 +770,47 @@ $section-pad-mobile: 56px;
     letter-spacing: 0.12em;
     text-transform: uppercase;
     padding: 0.25rem 0.65rem;
-    background-color: rgba($color-bg, 0.9);
-    color: $color-primary;
+    background-color: rgba($color-bg-dark, 0.8);
+    color: $color-gold;
     border-radius: $radius-md;
     z-index: 2;
+    border: 1px solid rgba($color-gold, 0.25);
   }
 
   // ============================================================
-  // 5. THE ÁLAMO STANDARD
+  // 6. NUESTRA FILOSOFÍA
   // ============================================================
 
-  &__standard {
-    padding: $section-pad-desktop 0;
-    background-color: $color-surface-container;
+  &__filosofia {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 2rem;
+    padding: 5rem 0;
+    background-color: $color-bg-cream;
+    position: relative;
 
     @media (max-width: 768px) {
-      padding: $section-pad-mobile 0;
+      padding: 3rem 0;
+      gap: 1.5rem;
     }
   }
 
-  &__standard-headline {
+  &__filosofia-rule {
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(
+      to right,
+      transparent 0%,
+      rgba($color-gold, 0.3) 20%,
+      rgba($color-gold, 0.5) 50%,
+      rgba($color-gold, 0.3) 80%,
+      transparent 100%
+    );
+  }
+
+  &__filosofia-headline {
     font-family: $font-headlines;
     font-size: 1.5rem;
     line-height: 1.35;
@@ -580,14 +827,23 @@ $section-pad-mobile: 56px;
 
   &__value-card {
     text-align: center;
-    padding: 1rem 0.5rem;
+    padding: 2rem 1.5rem;
+    background-color: $color-bg-dark;
+    border-radius: $radius-md;
+    border: 1px solid rgba($color-gold, 0.15);
+    transition: border-color 0.3s ease, transform 0.3s ease;
+
+    &:hover {
+      border-color: rgba($color-gold, 0.4);
+      transform: translateY(-4px);
+    }
   }
 
   &__value-icon {
     width: 64px;
     height: 64px;
     border-radius: 50%;
-    border: 1px solid rgba($color-secondary, 0.2);
+    border: 1px solid rgba($color-gold, 0.25);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -596,17 +852,17 @@ $section-pad-mobile: 56px;
 
     .alamo__material-icon {
       font-size: 1.75rem;
-      color: $color-primary;
+      color: $color-gold;
       transition: color 0.25s ease;
     }
   }
 
   &__value-card:hover &__value-icon {
-    background-color: $color-primary;
-    border-color: $color-primary;
+    background-color: $color-gold;
+    border-color: $color-gold;
 
     .alamo__material-icon {
-      color: #ffffff;
+      color: $color-bg-dark;
     }
   }
 
@@ -615,24 +871,24 @@ $section-pad-mobile: 56px;
     font-size: 1.25rem;
     line-height: 1.4;
     font-weight: 500;
-    color: $color-primary;
+    color: $color-warm-white;
     margin-bottom: 0.5rem;
   }
 
   &__value-desc {
     font-size: 0.95rem;
     line-height: 1.55;
-    color: rgba($color-neutral, 0.8);
+    color: $color-warm-grey;
     margin: 0;
   }
 
   // ============================================================
-  // 6. CONTACT
+  // 7. CONTACTO
   // ============================================================
 
   &__contact {
     padding: $section-pad-desktop 0;
-    background-color: $color-bg;
+    background-color: $color-bg-dark;
 
     @media (max-width: 768px) {
       padding: $section-pad-mobile 0;
@@ -640,7 +896,7 @@ $section-pad-mobile: 56px;
   }
 
   &__contact-card {
-    border: 1px solid rgba($color-secondary, 0.4);
+    border: 1px solid rgba($color-gold, 0.2);
     border-radius: $radius-md;
     padding: 2.5rem 2rem;
     height: 100%;
@@ -653,7 +909,7 @@ $section-pad-mobile: 56px;
   &__contact-desc {
     font-size: 1rem;
     line-height: 1.6;
-    color: rgba($color-neutral, 0.8);
+    color: $color-warm-grey;
     margin-bottom: 2rem;
   }
 
@@ -671,23 +927,28 @@ $section-pad-mobile: 56px;
   &__input {
     font-family: $font-body;
     font-size: 0.95rem;
-    padding: 0.75rem 0;
-    border: none;
-    border-radius: 0;
-    border-bottom: 1px solid rgba($color-secondary, 0.5);
-    background-color: transparent;
-    color: $color-neutral;
+    padding: 0.85rem 0.75rem;
+    border: 1px solid rgba($color-warm-white, 0.12);
+    border-radius: $radius-md;
+    background-color: rgba($color-warm-white, 0.04);
+    color: $color-warm-white;
     outline: none;
-    transition: border-color 0.2s ease;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
 
     &::placeholder {
-      color: rgba($color-outline, 0.5);
+      color: rgba($color-warm-white, 0.3);
     }
 
     &:focus {
-      border-bottom-color: $color-primary;
-      border-bottom-width: 2px;
+      border-color: $color-gold;
+      box-shadow: 0 0 0 3px rgba($color-gold, 0.15);
+      background-color: rgba($color-warm-white, 0.06);
     }
+  }
+
+  textarea.alamo__input {
+    resize: vertical;
+    min-height: 120px;
   }
 
   &__map {
@@ -696,7 +957,7 @@ $section-pad-mobile: 56px;
     min-height: 400px;
     border-radius: $radius-md;
     overflow: hidden;
-    border: 1px solid rgba($color-secondary, 0.4);
+    border: 1px solid rgba($color-gold, 0.2);
 
     img {
       width: 100%;
@@ -706,40 +967,47 @@ $section-pad-mobile: 56px;
     }
   }
 
+  &__map-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba($color-primary, 0.35) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
   &__map-card {
     position: absolute;
     bottom: 1.5rem;
     left: 1.5rem;
     right: 1.5rem;
-    background-color: rgba($color-bg, 0.95);
-    backdrop-filter: blur(4px);
+    background-color: rgba($color-bg-dark, 0.9);
+    backdrop-filter: blur(8px);
     border-radius: $radius-md;
     padding: 1rem 1.25rem;
-    border: 1px solid rgba($color-secondary, 0.3);
+    border: 1px solid rgba($color-gold, 0.25);
   }
 
   &__map-title {
     font-family: $font-headlines;
     font-size: 1.1rem;
     font-weight: 500;
-    color: $color-primary;
+    color: $color-warm-white;
     margin: 0 0 0.25rem 0;
   }
 
   &__map-text {
     font-size: 0.9rem;
-    color: rgba($color-neutral, 0.7);
+    color: $color-warm-muted;
     margin: 0;
   }
 
   // ============================================================
-  // 7. FOOTER
+  // 8. FOOTER
   // ============================================================
 
   &__footer {
     padding: 3rem 0 1.5rem;
-    background-color: $color-bg;
-    border-top: 1px solid rgba($color-secondary, 0.4);
+    background-color: $color-bg-dark;
+    border-top: 1px solid rgba($color-gold, 0.15);
   }
 
   &__footer-brand {
@@ -747,7 +1015,7 @@ $section-pad-mobile: 56px;
     font-size: 2.5rem;
     font-weight: 500;
     letter-spacing: 0.08em;
-    color: $color-primary;
+    color: $color-gold;
     margin-bottom: 1.5rem;
 
     @media (max-width: 768px) {
@@ -765,7 +1033,7 @@ $section-pad-mobile: 56px;
 
   &__footer-copy {
     font-size: 0.85rem;
-    color: $color-outline;
+    color: $color-warm-muted;
   }
 
   &__footer-links {
@@ -777,12 +1045,12 @@ $section-pad-mobile: 56px;
 
   &__footer-link {
     font-size: 0.875rem;
-    color: $color-primary;
+    color: $color-warm-grey;
     text-decoration: none;
-    transition: opacity 0.2s ease;
+    transition: color 0.2s ease;
 
     &:hover {
-      opacity: 0.6;
+      color: $color-gold;
     }
   }
 
@@ -800,7 +1068,7 @@ $section-pad-mobile: 56px;
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      background-color: $color-bg;
+      background-color: $color-bg-dark;
       opacity: 0;
       pointer-events: none;
       transition: opacity 0.3s ease;
@@ -828,7 +1096,7 @@ $section-pad-mobile: 56px;
   }
 
   // ============================================================
-  // FLOATING WHATSAPP
+  // FLOATING WHATSAPP — Gold
   // ============================================================
 
   &__whatsapp {
@@ -842,18 +1110,18 @@ $section-pad-mobile: 56px;
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: #25d366;
-    color: #ffffff;
+    background-color: $color-gold;
+    color: $color-bg-dark;
     font-size: 1.75rem;
     text-decoration: none;
-    box-shadow: 0px 4px 16px rgba(37, 211, 102, 0.3);
+    box-shadow: 0px 4px 16px rgba(200, 168, 124, 0.3);
     transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
 
     &:hover {
       transform: scale(1.1);
-      box-shadow: 0px 6px 24px rgba(37, 211, 102, 0.45);
-      background-color: #1ea952;
-      color: #ffffff;
+      box-shadow: 0px 6px 24px rgba(200, 168, 124, 0.5);
+      background-color: color.adjust($color-gold, $lightness: -6%);
+      color: $color-bg-dark;
     }
 
     @media (max-width: 768px) {

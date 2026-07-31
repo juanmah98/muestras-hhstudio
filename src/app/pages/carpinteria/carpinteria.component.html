@@ -1,22 +1,23 @@
 <div class="alamo">
   <!-- ===== 1. NAVIGATION ===== -->
-  <nav class="alamo__nav">
+  <nav class="alamo__nav" [class.alamo__nav--scrolled]="scrolled">
     <div class="container">
       <div class="alamo__nav-inner">
         <a class="alamo__logo" routerLink="/">ÁLAMO</a>
 
         <ul class="alamo__nav-links" [class.alamo__nav-links--open]="mobileMenuOpen">
           <li><a class="alamo__nav-link" (click)="scrollTo('hero')">Home</a></li>
+          <li><a class="alamo__nav-link" (click)="scrollTo('process')">Process</a></li>
           <li><a class="alamo__nav-link" (click)="scrollTo('services')">Services</a></li>
-          <li><a class="alamo__nav-link" (click)="scrollTo('projects')">Projects</a></li>
-          <li><a class="alamo__nav-link" (click)="scrollTo('about')">About</a></li>
+          <li><a class="alamo__nav-link" (click)="scrollTo('projects')">Works</a></li>
+          <li><a class="alamo__nav-link" (click)="scrollTo('about')">Philosophy</a></li>
           <li><a class="alamo__nav-link" (click)="scrollTo('contact')">Contact</a></li>
           <li class="alamo__nav-cta-mobile">
-            <button class="alamo__btn alamo__btn--primary" (click)="scrollTo('contact'); closeMobileMenu()">Get a Quote</button>
+            <button class="alamo__btn alamo__btn--gold" (click)="scrollTo('contact'); closeMobileMenu()">Request a Quote</button>
           </li>
         </ul>
 
-        <button class="alamo__btn alamo__btn--primary alamo__nav-cta" (click)="scrollTo('contact')">Get a Quote</button>
+        <button class="alamo__btn alamo__btn--gold alamo__nav-cta" (click)="scrollTo('contact')">Request a Quote</button>
 
         <button
           class="alamo__hamburger"
@@ -36,24 +37,52 @@
   <section class="alamo__hero" id="hero">
     <div class="container">
       <div class="row">
-        <div class="col-12 col-lg-7" #heroContent>
-          <span class="alamo__hero-pill">Est. 2024</span>
-          <h1 class="alamo__hero-title">
-            Bespoke Craftsmanship.<br><span class="alamo__hero-title-accent">Timeless Design.</span>
-          </h1>
-          <p class="alamo__hero-subtitle">
-            Premium custom tables and artisanal woodwork, handcrafted with precision for the discerning home. Every piece is a unique narrative in wood.
-          </p>
-          <div class="alamo__hero-ctas">
-            <button class="alamo__btn alamo__btn--primary" (click)="scrollTo('contact')">Get a Quote</button>
-            <button class="alamo__btn alamo__btn--outline" (click)="scrollTo('projects')">View Projects</button>
+        <div class="col-12 col-lg-7">
+          <div class="alamo__hero-content" #heroContent>
+            <span class="alamo__hero-pill">Est. 2024</span>
+            <h1 class="alamo__hero-title">Craftsmanship without compromise.</h1>
+            <p class="alamo__hero-subtitle">
+              Bespoke furniture handcrafted with precision. From raw timber to the piece that will define your space.
+            </p>
+            <div class="alamo__hero-ctas">
+              <button class="alamo__btn alamo__btn--filled" (click)="scrollTo('contact')">Request a Quote</button>
+              <button class="alamo__btn alamo__btn--outline-gold" (click)="scrollTo('projects')">View Projects</button>
+            </div>
           </div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ===== 3. SERVICES ===== -->
+  <!-- ===== 3. EL PROCESO ===== -->
+  <section class="alamo__process" id="process" #animateSection>
+    <div class="container">
+      <h2 class="alamo__section-title alamo__section-title--light">
+        The Process
+        <div class="alamo__section-rule alamo__section-rule--gold"></div>
+      </h2>
+
+      <div class="row alamo__process-steps">
+        <div class="col-12 col-lg-4 alamo__process-step">
+          <span class="alamo__process-number" aria-hidden="true">01</span>
+          <h3 class="alamo__process-title">Selection</h3>
+          <p class="alamo__process-desc">We select the perfect wood for your piece. Oak, walnut, ash. Only the finest.</p>
+        </div>
+        <div class="col-12 col-lg-4 alamo__process-step">
+          <span class="alamo__process-number" aria-hidden="true">02</span>
+          <h3 class="alamo__process-title">Creation</h3>
+          <p class="alamo__process-desc">Our master carpenters shape your vision using centuries-old techniques.</p>
+        </div>
+        <div class="col-12 col-lg-4 alamo__process-step">
+          <span class="alamo__process-number" aria-hidden="true">03</span>
+          <h3 class="alamo__process-title">Revelation</h3>
+          <p class="alamo__process-desc">The finished piece comes to life in your space. A work that transcends generations.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 4. SERVICIOS ===== -->
   <section class="alamo__services" id="services" #animateSection>
     <div class="container">
       <h2 class="alamo__section-title">
@@ -66,12 +95,11 @@
           <div class="col-12 col-lg-7">
             <div class="alamo__service-image">
               <img [src]="svc.image" [alt]="svc.title" loading="lazy" />
+              <span class="alamo__service-image-number" aria-hidden="true">{{ i + 1 | number:'2.0' }}</span>
             </div>
           </div>
           <div class="col-12 col-lg-5">
             <div class="alamo__service-content">
-              <span class="alamo__service-index">{{ i + 1 | number:'2.0' }}</span>
-              <span class="alamo__material-icon">{{ svc.icon }}</span>
               <h3 class="alamo__service-title">{{ svc.title }}</h3>
               <p class="alamo__service-desc">{{ svc.description }}</p>
               @if (svc.chips.length) {
@@ -88,7 +116,7 @@
     </div>
   </section>
 
-  <!-- ===== 4. SELECTED WORKS ===== -->
+  <!-- ===== 5. OBRAS SELECCIONADAS ===== -->
   <section class="alamo__works" id="projects" #animateSection>
     <div class="container">
       <h2 class="alamo__section-title">
@@ -108,9 +136,7 @@
               <span class="alamo__work-chip">{{ project.chip }}</span>
               <div class="alamo__work-overlay">
                 <div class="alamo__work-overlay-content">
-                  <div class="alamo__work-overlay-icon">
-                    <span class="alamo__material-icon">trending_flat</span>
-                  </div>
+                  <span class="alamo__work-overlay-arrow">&nearr;</span>
                   <h3 class="alamo__work-overlay-title">{{ project.title }}</h3>
                 </div>
               </div>
@@ -121,14 +147,15 @@
     </div>
   </section>
 
-  <!-- ===== 5. THE ÁLAMO STANDARD ===== -->
-  <section class="alamo__standard" id="about" #animateSection>
+  <!-- ===== 6. NUESTRA FILOSOFÍA ===== -->
+  <section class="alamo__filosofia" id="about" #animateSection>
+    <div class="alamo__filosofia-rule"></div>
     <div class="container">
       <h2 class="alamo__section-title alamo__section-title--center">
-        The ÁLAMO Standard
+        Our Philosophy
         <div class="alamo__section-rule"></div>
       </h2>
-      <p class="alamo__standard-headline">
+      <p class="alamo__filosofia-headline">
         Frustrated with mass-produced furniture that doesn't fit? We create pieces that tell your story.
       </p>
       <div class="row g-4 justify-content-center">
@@ -145,16 +172,22 @@
         }
       </div>
     </div>
+    <div class="alamo__filosofia-rule"></div>
   </section>
 
-  <!-- ===== 6. CONTACT SECTION ===== -->
+  <!-- ===== 7. CONTACTO ===== -->
   <section class="alamo__contact" id="contact" #animateSection>
     <div class="container">
       <div class="row">
         <div class="col-12 col-lg-5">
           <div class="alamo__contact-card">
-            <h2 class="alamo__section-title">Commission a Piece</h2>
-            <p class="alamo__contact-desc">Begin the conversation about your custom project.</p>
+            <h2 class="alamo__section-title alamo__section-title--light">
+              Begin Your Project
+              <div class="alamo__section-rule alamo__section-rule--gold"></div>
+            </h2>
+            <p class="alamo__contact-desc">Begin the conversation about your custom piece.</p>
+
+
             <form class="alamo__form" (submit)="$event.preventDefault()">
               <div class="alamo__field">
                 <label class="alamo__label" for="name">Name</label>
@@ -168,13 +201,14 @@
                 <label class="alamo__label" for="details">Project Details</label>
                 <textarea class="alamo__input" id="details" name="details" rows="5" placeholder="Tell us about your project, dimensions, wood preferences..."></textarea>
               </div>
-              <button class="alamo__btn alamo__btn--primary alamo__btn--full" type="submit">Submit Enquiry</button>
+              <button class="alamo__btn alamo__btn--gold alamo__btn--full" type="submit">Submit Enquiry</button>
             </form>
           </div>
         </div>
         <div class="col-12 col-lg-7">
           <div class="alamo__map">
             <img [src]="mapImage" alt="Workshop location" loading="lazy" />
+            <div class="alamo__map-overlay"></div>
             <div class="alamo__map-card">
               <h3 class="alamo__map-title">The Workshop</h3>
               <p class="alamo__map-text">Visits by appointment only.</p>
@@ -185,7 +219,7 @@
     </div>
   </section>
 
-  <!-- ===== 7. FOOTER ===== -->
+  <!-- ===== 8. FOOTER ===== -->
   <footer class="alamo__footer">
     <div class="container">
       <div class="alamo__footer-brand">ÁLAMO</div>
@@ -195,7 +229,7 @@
           <a href="#" class="alamo__footer-link">Instagram</a>
           <a href="#" class="alamo__footer-link">Pinterest</a>
           <a href="#" class="alamo__footer-link">LinkedIn</a>
-          <a href="#" class="alamo__footer-link">Privacy Policy</a>
+          <a href="#" class="alamo__footer-link">Legal Notice</a>
         </nav>
       </div>
     </div>
@@ -207,7 +241,7 @@
     href="https://wa.me/34999999999"
     target="_blank"
     rel="noopener"
-    aria-label="Contactar por WhatsApp"
+    aria-label="Contact on WhatsApp"
   >
     <i class="bi bi-whatsapp"></i>
   </a>
