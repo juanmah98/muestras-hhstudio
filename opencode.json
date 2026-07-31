@@ -1,6 +1,14 @@
 {
   "$schema": "https://opencode.ai/config.json",
   "mcp": {
+    "open-design": {
+      "enabled": true,
+      "type": "local",
+      "command": ["npx", "-y", "open-design-mcp"],
+      "env": {
+        "OD_DAEMON_URL": "http://127.0.0.1:53853"
+      }
+    },
     "supabase-hhstudio": {
       "enabled": false
     },

@@ -1,10 +1,437 @@
-<i class="bi bi-heart-pulse-fill placeholder__icon"></i>
-<h1 class="placeholder__title">Salud</h1>
-<p class="placeholder__desc">
-  Landing page para centros de salud, clínicas y consultorios médicos.
-  Desarrollo pendiente.
-</p>
-<a class="placeholder__back" routerLink="/">
-  <i class="bi bi-arrow-left"></i>
-  Volver al inicio
-</a>
+<main class="salud">
+  <!-- ===================================================
+    1. NAVBAR
+    =================================================== -->
+  <nav class="salud__navbar" [class.salud__navbar--scrolled]="scrolled">
+    <div class="container">
+      <div class="salud__navbar-inner">
+        <a class="salud__navbar-brand" role="button" tabindex="0"
+          (click)="scrollTo('inicio')" (keydown.enter)="scrollTo('inicio')">
+          <span class="salud__navbar-brand-text">MS LIFE</span>
+        </a>
+
+        <div class="salud__navbar-links d-none d-lg-flex">
+          @for (link of navLinks; track link.fragment) {
+            <a role="button" tabindex="0"
+              (click)="scrollTo(link.fragment)"
+              (keydown.enter)="scrollTo(link.fragment)">
+              {{ link.label }}
+            </a>
+          }
+          <a class="salud__navbar-cta" role="button" tabindex="0"
+            (click)="openBookingModal()" (keydown.enter)="openBookingModal()">
+            Agendar Cita
+          </a>
+        </div>
+
+        <button class="salud__navbar-toggle d-lg-none" (click)="toggleMobileMenu()"
+          [attr.aria-label]="mobileMenuOpen ? 'Cerrar menú' : 'Abrir menú'">
+          <i [class]="mobileMenuOpen ? 'bi bi-x-lg' : 'bi bi-list'"></i>
+        </button>
+      </div>
+
+      @if (mobileMenuOpen) {
+        <div class="salud__navbar-mobile">
+          @for (link of navLinks; track link.fragment) {
+            <a role="button" tabindex="0"
+              (click)="scrollTo(link.fragment)"
+              (keydown.enter)="scrollTo(link.fragment)">
+              {{ link.label }}
+            </a>
+          }
+          <a class="salud__navbar-cta" role="button" tabindex="0"
+            (click)="openBookingModal()" (keydown.enter)="openBookingModal()">
+            Agendar Cita
+          </a>
+        </div>
+      }
+    </div>
+  </nav>
+
+  <!-- ===================================================
+    2. HERO
+    =================================================== -->
+  <section id="inicio" class="salud__hero" #animateSection data-anim="hero">
+    <div class="salud__hero-bg" aria-hidden="true">
+      <div class="salud__hero-blob salud__hero-blob--a"></div>
+      <div class="salud__hero-blob salud__hero-blob--b"></div>
+    </div>
+    <div class="container">
+      <div class="row align-items-center">
+        <div class="col-lg-7">
+          <span class="salud__hero-badge">Clínica Boutique &middot; Zürich</span>
+          <h1 class="salud__hero-title">Tu salud, nuestra prioridad</h1>
+          <p class="salud__hero-subtitle">
+            En MS LIFE combinamos medicina de excelencia con un enfoque humano y
+            cercano. Porque mereces sentirte bien, por dentro y por fuera.
+          </p>
+
+          <div class="salud__hero-stats">
+            @for (stat of heroStats; track stat.label) {
+              <div class="salud__hero-stat">
+                <span class="salud__hero-stat-number">{{ stat.number }}</span>
+                <span class="salud__hero-stat-label">{{ stat.label }}</span>
+              </div>
+            }
+          </div>
+
+          <div class="salud__hero-actions">
+            <a class="salud__btn salud__btn--solid" role="button" tabindex="0"
+              (click)="openBookingModal()" (keydown.enter)="openBookingModal()">
+              Agendar consulta
+            </a>
+            <a class="salud__btn salud__btn--outline" role="button" tabindex="0"
+              (click)="scrollTo('servicios')" (keydown.enter)="scrollTo('servicios')">
+              Nuestros servicios
+            </a>
+          </div>
+        </div>
+        <div class="col-lg-5 d-none d-lg-block">
+          <div class="salud__hero-image">
+            <img
+              src="assets/images/salud/illustration-organic.png"
+              alt=""
+              class="salud__hero-illustration"
+              aria-hidden="true"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================================================
+    3. FEATURES — 100vh Immersive
+    =================================================== -->
+  <section id="features" class="salud__features" #animateSection data-anim="features">
+    <div class="salud__features-bg" aria-hidden="true">
+      <div class="salud__features-blob salud__features-blob--a"></div>
+      <div class="salud__features-blob salud__features-blob--b"></div>
+      <div class="salud__features-blob salud__features-blob--c"></div>
+    </div>
+    <div class="container">
+      <div class="row align-items-center">
+        <div class="col-lg-5">
+          <div class="salud__features-headline">
+            <div class="salud__features-headline-mark" aria-hidden="true">
+              <i class="bi bi-activity"></i>
+              <span class="salud__features-headline-line"></span>
+            </div>
+            <h2 class="salud__features-headline-title">&iquest;Por qu&eacute; elegir MS LIFE?</h2>
+            <p class="salud__features-headline-subtitle">
+              M&aacute;s que una cl&iacute;nica, un espacio donde la ciencia y la humanidad se encuentran para cuidarte de verdad.
+            </p>
+          </div>
+        </div>
+        <div class="col-lg-7">
+          <div class="salud__features-list">
+            @for (feature of features; track feature.title; let idx = $index) {
+              <div class="salud__features-item">
+                <div class="salud__features-item-number">{{ (idx + 1).toString().padStart(2, '0') }}</div>
+                <div class="salud__features-item-icon">
+                  <i [class]="'bi ' + feature.icon"></i>
+                </div>
+                <div class="salud__features-item-body">
+                  <h3>{{ feature.title }}</h3>
+                  <p>{{ feature.desc }}</p>
+                </div>
+              </div>
+            }
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================================================
+    4. SERVICIOS
+    =================================================== -->
+  <section id="servicios" class="salud__services" #animateSection data-anim="services">
+    <div class="container">
+      <div class="salud__section-header">
+        <h2 class="salud__section-title">Nuestros Servicios</h2>
+        <p class="salud__section-subtitle">
+          Atención médica integral que combina ciencia, tecnolog&iacute;a y calidez humana.
+        </p>
+      </div>
+
+      <div class="row g-4">
+        @for (service of services; track service.title) {
+          <div class="col-12 col-md-6 col-lg-3">
+            <div class="salud__services-card">
+              <i [class]="'bi ' + service.icon + ' salud__services-card-icon'"></i>
+              <h3 class="salud__services-card-title">{{ service.title }}</h3>
+              <p class="salud__services-card-desc">{{ service.desc }}</p>
+              <span class="salud__services-card-more">Ver m&aacute;s &rarr;</span>
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================================================
+    5. NOSOTROS
+    =================================================== -->
+  <section id="nosotros" class="salud__nosotros" #animateSection data-anim="about">
+    <div class="container">
+      <div class="row align-items-center g-5">
+        <div class="col-lg-6">
+          <div class="salud__nosotros-image">
+            <div class="salud__nosotros-illustration" aria-hidden="true">
+              <div class="salud__nosotros-illustration-circle salud__nosotros-illustration-circle--lg"></div>
+              <div class="salud__nosotros-illustration-circle salud__nosotros-illustration-circle--md"></div>
+              <div class="salud__nosotros-illustration-circle salud__nosotros-illustration-circle--sm"></div>
+              <div class="salud__nosotros-illustration-circle salud__nosotros-illustration-circle--xs"></div>
+              <div class="salud__nosotros-illustration-circle salud__nosotros-illustration-circle--accent"></div>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-6">
+          <div class="salud__nosotros-content">
+            <h2 class="salud__section-title salud__section-title--left">
+              Un enfoque diferente
+            </h2>
+            <p class="salud__nosotros-text">
+              En MS LIFE creemos que cada paciente merece ser escuchado, no solo
+              diagnosticado. Nuestro modelo combina tecnolog&iacute;a de vanguardia con una
+              mirada profundamente humana. No tratamos enfermedades: cuidamos personas.
+            </p>
+            <ul class="salud__nosotros-checks">
+              @for (item of checkItems; track item.label) {
+                <li class="salud__nosotros-check">
+                  <i class="bi bi-check-circle-fill"></i>
+                  <span>{{ item.label }}</span>
+                </li>
+              }
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================================================
+    6. TESTIMONIOS
+    =================================================== -->
+  <section id="testimonios" class="salud__testimonials" #animateSection data-anim="testimonials">
+    <div class="container">
+      <div class="salud__section-header">
+        <h2 class="salud__section-title">Lo que dicen nuestros pacientes</h2>
+      </div>
+
+      <div class="row g-4">
+        @for (testimonial of testimonials; track testimonial.author) {
+          <div class="col-md-6 col-lg-4">
+            <div class="salud__testimonials-card">
+              <div class="salud__testimonials-quote-mark" aria-hidden="true">&ldquo;</div>
+              <p class="salud__testimonials-quote">{{ testimonial.quote }}</p>
+              <div class="salud__testimonials-footer">
+                <p class="salud__testimonials-author">{{ testimonial.author }}</p>
+                <p class="salud__testimonials-role">{{ testimonial.role }}</p>
+              </div>
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================================================
+    7. CONTACTO + MAPA
+    =================================================== -->
+  <section id="contacto" class="salud__contact" #animateSection data-anim="contact">
+    <div class="container">
+      <div class="salud__section-header">
+        <h2 class="salud__section-title">Cercan&iacute;a y Confianza</h2>
+        <p class="salud__section-subtitle">
+          Estamos aqu&iacute; para acompañarte en tu bienestar. Encuentra nuestra sede central en el coraz&oacute;n de Z&uuml;rich y agenda una visita con nuestros especialistas.
+        </p>
+      </div>
+
+      <div class="row g-4">
+        <div class="col-lg-7">
+          <div class="salud__contact-map">
+            <div class="salud__contact-map-inner">
+              <div class="salud__contact-map-grid" aria-hidden="true"></div>
+              <div class="salud__contact-map-zoom" aria-hidden="true">
+                <button class="salud__contact-map-zoom-btn" tabindex="-1">+</button>
+                <button class="salud__contact-map-zoom-btn" tabindex="-1">&minus;</button>
+              </div>
+              <div class="salud__contact-map-pin">
+                <i class="bi bi-geo-alt-fill"></i>
+                <div class="salud__contact-map-pulse"></div>
+              </div>
+              <span class="salud__contact-map-label">Sede Central, Z&uuml;rich</span>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-5">
+          <div class="salud__contact-details">
+            <div class="salud__contact-detail">
+              <i class="bi bi-pin-map-fill salud__contact-detail-icon"></i>
+              <div>
+                <div class="salud__contact-detail-label">Ubicaci&oacute;n</div>
+                <div class="salud__contact-detail-value">Sede Central, Z&uuml;rich</div>
+                <div class="salud__contact-detail-sub">Bahnhofstrasse 42, 8001 Z&uuml;rich</div>
+              </div>
+            </div>
+            <div class="salud__contact-detail">
+              <i class="bi bi-telephone-forward-fill salud__contact-detail-icon"></i>
+              <div>
+                <div class="salud__contact-detail-label">Tel&eacute;fono</div>
+                <div class="salud__contact-detail-value">+41 44 123 45 67</div>
+              </div>
+            </div>
+            <div class="salud__contact-detail">
+              <i class="bi bi-envelope-paper-heart-fill salud__contact-detail-icon"></i>
+              <div>
+                <div class="salud__contact-detail-label">Correo</div>
+                <div class="salud__contact-detail-value">hola&#64;mslife.com</div>
+              </div>
+            </div>
+            <div class="salud__contact-detail">
+              <i class="bi bi-calendar2-heart-fill salud__contact-detail-icon"></i>
+              <div>
+                <div class="salud__contact-detail-label">Horarios</div>
+                <div class="salud__contact-detail-value">Lunes a Viernes: 8:00 AM &ndash; 8:00 PM</div>
+                <div class="salud__contact-detail-sub">S&aacute;bados: 9:00 AM &ndash; 2:00 PM</div>
+              </div>
+            </div>
+
+            <a class="salud__btn salud__btn--outline salud__contact-info-btn"
+              role="button" tabindex="0"
+              (click)="openBookingModal()" (keydown.enter)="openBookingModal()">
+              Solicitar informaci&oacute;n
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- CTA Bar -->
+      <div class="salud__contact-cta-bar">
+        <div class="salud__contact-cta-bar-inner">
+          <div class="salud__contact-cta-text">
+            <h3 class="salud__contact-cta-title">&iquest;Listo para empezar?</h3>
+            <p class="salud__contact-cta-subtitle">
+              Da el primer paso hacia tu bienestar. Te esperamos en el coraz&oacute;n de Z&uuml;rich.
+            </p>
+          </div>
+          <a class="salud__btn salud__btn--solid salud__btn--lg"
+            role="button" tabindex="0"
+            (click)="openBookingModal()" (keydown.enter)="openBookingModal()">
+            Agenda tu primera consulta
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================================================
+    8. FOOTER
+    =================================================== -->
+  <footer class="salud__footer">
+    <div class="container">
+      <div class="row g-4">
+        <div class="col-lg-4">
+          <div class="salud__footer-brand">
+            <span class="salud__footer-brand-text">MS LIFE</span>
+          </div>
+          <p class="salud__footer-tagline">
+            Transformando el bienestar un paciente a la vez con un enfoque humano y
+            tecnolog&iacute;a de vanguardia.
+          </p>
+          <div class="salud__footer-social">
+            @for (social of socialLinks; track social.label) {
+              <a [href]="social.href" [attr.aria-label]="social.label">
+                <i [class]="'bi bi-' + social.label.toLowerCase()"></i>
+              </a>
+            }
+          </div>
+        </div>
+
+        <div class="col-6 col-lg-3 offset-lg-1">
+          <div class="salud__footer-heading">Enlaces R&aacute;pidos</div>
+          <ul class="salud__footer-links">
+            @for (link of footerLinks; track link.fragment) {
+              <li>
+                <a role="button" tabindex="0"
+                  (click)="scrollTo(link.fragment)"
+                  (keydown.enter)="scrollTo(link.fragment)">
+                  {{ link.label }}
+                </a>
+              </li>
+            }
+          </ul>
+        </div>
+
+        <div class="col-6 col-lg-4">
+          <div class="salud__footer-heading">Newsletter</div>
+          <p class="salud__footer-newsletter-text">
+            Recibe consejos de salud y novedades directamente en tu correo.
+          </p>
+          <form class="salud__footer-newsletter" (submit)="$event.preventDefault()">
+            <input
+              type="email"
+              class="salud__footer-newsletter-input"
+              placeholder="tu@email.com"
+              aria-label="Correo electr&oacute;nico"
+            />
+            <button type="submit" class="salud__footer-newsletter-btn"
+              aria-label="Suscribirse">
+              <i class="bi bi-send-fill"></i>
+            </button>
+          </form>
+        </div>
+      </div>
+
+      <div class="salud__footer-legal">
+        <a href="#">Privacidad</a>
+        <span aria-hidden="true">|</span>
+        <a href="#">T&eacute;rminos</a>
+        <span aria-hidden="true">|</span>
+        <a href="#">Preguntas Frecuentes</a>
+      </div>
+
+      <div class="salud__footer-bottom">
+        <p>
+          &copy; {{ currentYear }} MS LIFE Clinic. Medicina de excelencia con enfoque humano.
+        </p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ===================================================
+    BOOKING MODAL
+    =================================================== -->
+  @if (showBookingModal) {
+    <div class="salud__modal-overlay" (click)="closeBookingModal()">
+      <div class="salud__modal" (click)="$event.stopPropagation()">
+        <button class="salud__modal-close" (click)="closeBookingModal()" aria-label="Cerrar">&times;</button>
+        @if (bookingSuccess) {
+          <div class="salud__modal-success">
+            <h3>&iexcl;Gracias, {{ bookingForm.name }}!</h3>
+            <p>Te contactaremos pronto.</p>
+          </div>
+        } @else {
+          <h3>Agenda tu primera consulta</h3>
+          <p>D&eacute;janos tus datos y te contactaremos en menos de 24 horas.</p>
+          <form (submit)="submitBooking(); $event.preventDefault()">
+            <input [(ngModel)]="bookingForm.name" name="name" placeholder="Nombre completo" required autocomplete="name" />
+            <input [(ngModel)]="bookingForm.email" name="email" type="email" placeholder="Email" required autocomplete="email" />
+            <input [(ngModel)]="bookingForm.phone" name="phone" type="tel" placeholder="Teléfono" autocomplete="tel" />
+            <select [(ngModel)]="bookingForm.motivo" name="motivo">
+              <option value="">Motivo de consulta</option>
+              <option>Medicina General</option>
+              <option>Nutrici&oacute;n</option>
+              <option>Salud Mental</option>
+              <option>Chequeo Preventivo</option>
+              <option>Otro</option>
+            </select>
+            <button type="submit">Enviar solicitud</button>
+          </form>
+        }
+      </div>
+    </div>
+  }
+</main>

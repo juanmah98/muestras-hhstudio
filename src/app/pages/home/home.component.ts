@@ -35,7 +35,7 @@ export class HomeComponent implements AfterViewInit {
       description:
         'Landing page para centros de salud, clínicas y consultorios médicos.',
       tags: ['Landing Page', 'Salud', 'Consultorios'],
-      status: 'coming-soon',
+      status: 'available',
       icon: 'bi bi-heart-pulse-fill',
     },
     {
