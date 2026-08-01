@@ -1,10 +1,511 @@
-<i class="bi bi-tools placeholder__icon"></i>
-<h1 class="placeholder__title">Reformas & Fontanería</h1>
-<p class="placeholder__desc">
-  Landing page para empresas de reformas, plomería y servicios del hogar.
-  Desarrollo pendiente.
-</p>
-<a class="placeholder__back" routerLink="/">
-  <i class="bi bi-arrow-left"></i>
-  Volver al inicio
-</a>
+<div class="reformas">
+
+  <!-- ===== NAVIGATION ===== -->
+  <nav class="reformas__nav" [class.reformas__nav--scrolled]="scrolled">
+    <div class="reformas__nav-inner">
+      <a class="reformas__logo" routerLink="/">ST REFORMAS</a>
+
+      <ul class="reformas__nav-links" [class.reformas__nav-links--open]="mobileMenuOpen">
+        @for (link of navLinks; track link.fragment) {
+          <li>
+            <a class="reformas__nav-link" (click)="scrollTo(link.fragment)">{{ link.label }}</a>
+          </li>
+        }
+        <li class="reformas__nav-cta-mobile">
+          <button class="reformas__btn reformas__btn--accent" (click)="scrollTo('presupuesto'); closeMobileMenu()">
+            Solicitar Presupuesto
+          </button>
+        </li>
+      </ul>
+
+      <button class="reformas__btn reformas__btn--accent reformas__nav-cta" (click)="scrollTo('presupuesto')">
+        Solicitar Presupuesto
+      </button>
+
+      <button
+        class="reformas__hamburger"
+        [class.reformas__hamburger--open]="mobileMenuOpen"
+        (click)="toggleMobileMenu()"
+        aria-label="Toggle navigation"
+      >
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- ===== 1. HERO ===== -->
+  <section class="reformas__hero" id="inicio">
+    <div class="reformas__hero-overlay"></div>
+    <div class="container">
+      <div class="row">
+        <div class="col-12 col-lg-8">
+          <div class="reformas__hero-content" #heroContent>
+            <h1 class="reformas__hero-title">Reformas Integrales a tu Medida</h1>
+            <p class="reformas__hero-subtitle">
+              Transformamos tu espacio con calidad, seriedad y presupuesto transparente.
+              Desde el primer boceto hasta el último acabado, todo bajo un mismo estándar de excelencia.
+            </p>
+
+            <div class="reformas__hero-badges">
+              @for (badge of trustBadges; track badge.text) {
+                <div class="reformas__hero-badge">
+                  <i class="bi {{ badge.icon }}"></i>
+                  <span>{{ badge.text }}</span>
+                </div>
+              }
+            </div>
+
+            <div class="reformas__hero-ctas">
+              <button class="reformas__btn reformas__btn--accent" (click)="scrollTo('presupuesto')">
+                Solicitar Presupuesto
+              </button>
+              <button class="reformas__btn reformas__btn--outline" (click)="scrollTo('proyectos')">
+                Ver Proyectos
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 2. SERVICIOS ===== -->
+  <section class="reformas__services" id="servicios" #animateSection>
+    <div class="container">
+      <h2 class="reformas__section-title">Nuestros Servicios</h2>
+
+      <div class="row g-4">
+        @for (svc of services; track svc.title; let i = $index) {
+          <div class="col-12 col-sm-6 col-lg-3">
+            <div class="reformas__service-card" [class.reformas__service-card--featured]="i < 2">
+              <div class="reformas__service-card-inner">
+                <div class="reformas__service-icon">
+                  <i class="bi {{ svc.icon }}"></i>
+                </div>
+                <h3 class="reformas__service-title">{{ svc.title }}</h3>
+                <p class="reformas__service-desc">{{ svc.description }}</p>
+              </div>
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 3. ANTES Y DESPUÉS ===== -->
+  <section class="reformas__compare-section" id="trabajos" #animateSection>
+    <div class="container">
+      <h2 class="reformas__section-title reformas__section-title--light">
+        Antes y Después
+      </h2>
+      <p class="reformas__compare-intro">
+        La diferencia está en los detalles. Descubre algunas de nuestras transformaciones más impactantes.
+      </p>
+
+      <div class="row g-4">
+        @for (slider of compareSliders; track slider.beforeLabel) {
+          <div class="col-12 col-md-6 col-lg-4">
+            <div class="reformas__compare" [class.reformas__compare--real-image]="!!slider.imageUrl">
+              <div
+                class="reformas__compare-before"
+                [style.background-image]="slider.imageUrl ? 'url(' + slider.imageUrl + ')' : slider.beforeGradient"
+                [style.width]="slider.position + '%'"
+              >
+                <span class="reformas__compare-label">ANTES</span>
+              </div>
+              <div
+                class="reformas__compare-after"
+                [style.width]="(100 - slider.position) + '%'"
+              >
+                <div
+                  class="reformas__compare-after-bg"
+                  [style.background-image]="slider.imageUrl ? 'url(' + slider.imageUrl + ')' : slider.afterGradient"
+                ></div>
+                <span class="reformas__compare-label reformas__compare-label--after">DESPUÉS</span>
+              </div>
+              <div class="reformas__compare-divider" [style.left]="slider.position + '%'"></div>
+              <div class="reformas__compare-handle" [style.left]="slider.position + '%'">
+                <i class="bi bi-chevron-left"></i>
+                <i class="bi bi-chevron-right"></i>
+              </div>
+              <input
+                type="range"
+                class="reformas__compare-slider"
+                min="5"
+                max="95"
+                [ngModel]="slider.position"
+                (ngModelChange)="slider.position = $event"
+                aria-label="Desliza para comparar"
+              />
+              <div class="reformas__compare-names">
+                <span>{{ slider.beforeLabel }}</span>
+                <span>{{ slider.afterLabel }}</span>
+              </div>
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 4. PROYECTOS REALIZADOS ===== -->
+  <section class="reformas__projects" id="proyectos" #animateSection>
+    <div class="container">
+      <h2 class="reformas__section-title">
+        Proyectos Realizados
+      </h2>
+
+      <div class="row g-4">
+        @for (project of projects; track project.title) {
+          <div class="col-12 col-sm-6 col-lg-4">
+            <div class="reformas__project-card">
+              <div
+                class="reformas__project-image"
+                [style.background]="project.gradient"
+              >
+                <span class="reformas__project-chip">{{ project.category }}</span>
+                <div class="reformas__project-overlay">
+                  <h3 class="reformas__project-title">{{ project.title }}</h3>
+                  <span class="reformas__project-location">
+                    <i class="bi bi-geo-alt"></i>
+                    {{ project.location }}
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 5. CALCULADORA DE PRESUPUESTO ===== -->
+  <section class="reformas__calculator" id="presupuesto" #animateSection>
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-8">
+          <h2 class="reformas__section-title">
+            Calculadora de Presupuesto
+          </h2>
+
+          <div class="reformas__calculator-card">
+            <div class="reformas__calculator-card-inner">
+            <p class="reformas__calculator-intro">
+              Obtén una estimación orientativa para tu proyecto. Recibirás un presupuesto detallado tras la visita técnica gratuita.
+            </p>
+
+            <form class="reformas__calculator-form" (submit)="submitBudget($event)">
+              <div class="row g-3">
+                <div class="col-12 col-md-6">
+                  <div class="reformas__field">
+                    <label class="reformas__label" for="calc-type">Tipo de reforma</label>
+                    <select
+                      class="reformas__select"
+                      id="calc-type"
+                      [(ngModel)]="calculatorType"
+                      name="calc-type"
+                    >
+                      <option value="integral">Reforma Integral</option>
+                      <option value="bano">Baño</option>
+                      <option value="cocina">Cocina</option>
+                      <option value="parcial">Reforma Parcial</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="col-12 col-md-6">
+                  <div class="reformas__field">
+                    <label class="reformas__label" for="calc-sqm">Metros cuadrados</label>
+                    <input
+                      class="reformas__input"
+                      type="number"
+                      id="calc-sqm"
+                      [(ngModel)]="calculatorSqm"
+                      name="calc-sqm"
+                      min="10"
+                      max="500"
+                      placeholder="Ej: 80"
+                    />
+                  </div>
+                </div>
+
+                <div class="col-12 col-md-6">
+                  <div class="reformas__field">
+                    <label class="reformas__label" for="calc-rooms">Número de estancias</label>
+                    <input
+                      class="reformas__input"
+                      type="number"
+                      id="calc-rooms"
+                      [(ngModel)]="calculatorRooms"
+                      name="calc-rooms"
+                      min="1"
+                      max="20"
+                      placeholder="Ej: 4"
+                    />
+                  </div>
+                </div>
+
+                <div class="col-12 col-md-6">
+                  <div class="reformas__field">
+                    <label class="reformas__label" for="calc-quality">Calidad de acabados</label>
+                    <select
+                      class="reformas__select"
+                      id="calc-quality"
+                      [(ngModel)]="calculatorQuality"
+                      name="calc-quality"
+                    >
+                      <option value="basico">Básico (800 €/m²)</option>
+                      <option value="medio">Medio (1.200 €/m²)</option>
+                      <option value="premium">Premium (1.800 €/m²)</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+
+              @if (estimatedPrice > 0) {
+                <div class="reformas__calculator-result">
+                  <span class="reformas__calculator-result-label">Presupuesto estimado</span>
+                  <span class="reformas__calculator-result-price">
+                    {{ estimatedPrice | currency:'EUR':'symbol':'1.0-0' }}
+                  </span>
+                  <span class="reformas__calculator-result-note">
+                    * Estimación orientativa para {{ reformTypeLabel | lowercase }} con acabado {{ qualityRates[calculatorQuality].label | lowercase }}.
+                    El presupuesto definitivo se ajusta tras la visita técnica gratuita.
+                  </span>
+                </div>
+              }
+
+              <button class="reformas__btn reformas__btn--accent reformas__btn--full" type="submit">
+                Solicitar Presupuesto Detallado
+              </button>
+            </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. PREGUNTAS FRECUENTES ===== -->
+  <section class="reformas__faq" id="faq" #animateSection>
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-8">
+          <h2 class="reformas__section-title">
+            Preguntas Frecuentes
+          </h2>
+
+          <div class="reformas__accordion">
+            @for (faq of faqs; track faq.question; let i = $index) {
+              <div class="reformas__accordion-item" [class.reformas__accordion-item--open]="faq.open">
+                <button
+                  class="reformas__accordion-trigger"
+                  (click)="toggleFaq(i)"
+                  [attr.aria-expanded]="faq.open"
+                >
+                  <span>{{ faq.question }}</span>
+                  <i class="bi" [class.bi-chevron-down]="!faq.open" [class.bi-chevron-up]="faq.open"></i>
+                </button>
+                <div class="reformas__accordion-body">
+                  <p>{{ faq.answer }}</p>
+                </div>
+              </div>
+            }
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 7. CONTACTO ===== -->
+  <section class="reformas__contact" id="contacto" #animateSection>
+    <div class="container">
+      <div class="row g-4 align-items-start">
+        <!-- LEFT: Contact Form -->
+        <div class="col-12 col-lg-7">
+          <div class="reformas__contact-card">
+            <div class="reformas__contact-card-inner">
+            <h2 class="reformas__section-title">
+              Solicita tu Presupuesto
+            </h2>
+            <p class="reformas__contact-desc">
+              Cuéntanos tu proyecto y te responderemos en menos de 24 horas con una primera valoración.
+            </p>
+
+            <form class="reformas__form" (submit)="submitContact($event)">
+              <div class="row g-3">
+                <div class="col-12 col-sm-6">
+                  <div class="reformas__field">
+                    <label class="reformas__label" for="contact-name">Nombre completo *</label>
+                    <input
+                      class="reformas__input"
+                      type="text"
+                      id="contact-name"
+                      name="name"
+                      [(ngModel)]="contactForm.name"
+                      placeholder="Tu nombre"
+                      required
+                    />
+                  </div>
+                </div>
+                <div class="col-12 col-sm-6">
+                  <div class="reformas__field">
+                    <label class="reformas__label" for="contact-email">Email *</label>
+                    <input
+                      class="reformas__input"
+                      type="email"
+                      id="contact-email"
+                      name="email"
+                      [(ngModel)]="contactForm.email"
+                      placeholder="tu@email.com"
+                      required
+                    />
+                  </div>
+                </div>
+                <div class="col-12 col-sm-6">
+                  <div class="reformas__field">
+                    <label class="reformas__label" for="contact-phone">Teléfono</label>
+                    <input
+                      class="reformas__input"
+                      type="tel"
+                      id="contact-phone"
+                      name="phone"
+                      [(ngModel)]="contactForm.phone"
+                      placeholder="+34 6XX XXX XXX"
+                    />
+                  </div>
+                </div>
+                <div class="col-12 col-sm-6">
+                  <div class="reformas__field">
+                    <label class="reformas__label" for="contact-message">Cuéntanos tu proyecto</label>
+                    <textarea
+                      class="reformas__input"
+                      id="contact-message"
+                      name="message"
+                      [(ngModel)]="contactForm.message"
+                      rows="4"
+                      placeholder="Describe qué necesitas reformar, medidas aproximadas, preferencias..."
+                    ></textarea>
+                  </div>
+                </div>
+                <div class="col-12">
+                  <button class="reformas__btn reformas__btn--accent reformas__btn--full" type="submit">
+                    <span class="reformas__btn__icon-wrap">
+                      <i class="bi bi-send"></i>
+                    </span>
+                    Solicitar Presupuesto
+                  </button>
+                </div>
+              </div>
+            </form>
+
+            @if (contactSubmitted) {
+              <div class="reformas__contact-success">
+                <i class="bi bi-check-circle-fill"></i>
+                <span>¡Gracias! Nos pondremos en contacto contigo en menos de 24 horas.</span>
+              </div>
+            }
+            </div>
+          </div>
+        </div>
+
+        <!-- RIGHT: Info Cards 2x2 Grid -->
+        <div class="col-12 col-lg-5">
+          <div class="reformas__contact-info-grid">
+            <div class="reformas__contact-info-card">
+              <div class="reformas__contact-info-card-inner">
+              <div class="reformas__contact-info-header">
+                <i class="bi bi-geo-alt"></i>
+                <span>Dónde estamos</span>
+              </div>
+              <p class="reformas__contact-info-text">
+                Calle Serrano, 47, 3º B<br />
+                28001 Madrid
+              </p>
+              </div>
+            </div>
+
+            <div class="reformas__contact-info-card">
+              <div class="reformas__contact-info-card-inner">
+              <div class="reformas__contact-info-header">
+                <i class="bi bi-telephone"></i>
+                <span>Teléfono</span>
+              </div>
+              <a class="reformas__contact-info-link" href="tel:+34911234567">+34 911 234 567</a>
+              </div>
+            </div>
+
+            <div class="reformas__contact-info-card">
+              <div class="reformas__contact-info-card-inner">
+              <div class="reformas__contact-info-header">
+                <i class="bi bi-envelope"></i>
+                <span>Email</span>
+              </div>
+              <a class="reformas__contact-info-link" href="mailto:info@streformas.es">info&#64;streformas.es</a>
+              </div>
+            </div>
+
+            <div class="reformas__contact-info-card reformas__contact-info-card--whatsapp">
+              <div class="reformas__contact-info-card-inner">
+              <div class="reformas__contact-info-header">
+                <i class="bi bi-whatsapp"></i>
+                <span>WhatsApp</span>
+              </div>
+              <a
+                class="reformas__btn reformas__btn--whatsapp"
+                href="https://wa.me/34600000000"
+                target="_blank"
+                rel="noopener"
+              >
+                <i class="bi bi-whatsapp"></i>
+                Enviar WhatsApp
+              </a>
+              <p class="reformas__contact-info-note">Respuesta en menos de 15 minutos en horario laboral</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="reformas__contact-map">
+            <div class="reformas__contact-map-inner">
+              <i class="bi bi-geo-alt-fill"></i>
+              <span>Madrid</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="reformas__footer">
+    <div class="container">
+      <div class="reformas__footer-brand">ST REFORMAS</div>
+      <p class="reformas__footer-tagline">
+        Reformas y Fontanería en Madrid. Calidad, seriedad y compromiso desde 2010.
+      </p>
+      <div class="reformas__footer-bottom">
+        <span class="reformas__footer-copy">
+          &copy; {{ currentYear }} ST Reformas. Todos los derechos reservados.
+        </span>
+        <nav class="reformas__footer-links">
+          <a href="#" class="reformas__footer-link">Aviso Legal</a>
+          <a href="#" class="reformas__footer-link">Política de Privacidad</a>
+          <a href="#" class="reformas__footer-link">Política de Cookies</a>
+        </nav>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Floating WhatsApp -->
+  <a
+    class="reformas__whatsapp"
+    href="https://wa.me/34600000000"
+    target="_blank"
+    rel="noopener"
+    aria-label="Contactar por WhatsApp"
+  >
+    <i class="bi bi-whatsapp"></i>
+  </a>
+</div>

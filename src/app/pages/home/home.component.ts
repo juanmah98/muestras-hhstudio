@@ -49,11 +49,11 @@ export class HomeComponent implements AfterViewInit {
     },
     {
       slug: 'reformas',
-      title: 'Reformas & Fontanería',
+      title: 'ST REFORMAS',
       description:
-        'Landing page para empresas de reformas, plomería y servicios del hogar.',
-      tags: ['Landing Page', 'Reformas', 'Fontanería'],
-      status: 'coming-soon',
+        'Landing page para empresas de reformas integrales. Calculadora de presupuesto, antes/después, 7 secciones full-screen.',
+      tags: ['Landing Page', 'Reformas', 'Presupuestos'],
+      status: 'available',
       icon: 'bi bi-tools',
     },
     {
