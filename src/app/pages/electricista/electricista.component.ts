@@ -6,6 +6,7 @@ import {
   ViewChild,
   ViewChildren,
   QueryList,
+  OnInit,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
@@ -15,6 +16,7 @@ interface ServiceItem {
   icon: string;
   title: string;
   description: string;
+  gridArea: string;
 }
 
 interface ProjectItem {
@@ -22,7 +24,7 @@ interface ProjectItem {
   location: string;
   category: string;
   gradient: string;
-  size: 'lg' | 'md';
+  gridSpan: string;
 }
 
 interface CertificationItem {
@@ -41,6 +43,7 @@ interface ZoneItem {
   name: string;
   areas: string;
   icon: string;
+  angle: number;
 }
 
 interface NavLink {
@@ -60,10 +63,11 @@ interface TrustBadge {
   templateUrl: './electricista.component.html',
   styleUrl: './electricista.component.scss',
 })
-export class ElectricistaComponent implements AfterViewInit {
+export class ElectricistaComponent implements AfterViewInit, OnInit {
   readonly currentYear = new Date().getFullYear();
   mobileMenuOpen = false;
   scrolled = false;
+  heroGlitch = false;
 
   readonly navLinks: NavLink[] = [
     { label: 'Inicio', fragment: 'inicio' },
@@ -88,36 +92,42 @@ export class ElectricistaComponent implements AfterViewInit {
       title: 'Instalaciones Eléctricas',
       description:
         'Instalaciones completas en viviendas, locales y oficinas. Cableado nuevo, puntos de luz, enchufes y protecciones según normativa REBT.',
+      gridArea: 'svc1',
     },
     {
       icon: 'bi-gear',
       title: 'Mantenimiento Industrial',
       description:
-        'Planes de mantenimiento preventivo y correctivo para naves, fábricas y talleres. Evita paradas y asegura el funcionamiento continuo de tu negocio.',
+        'Planes de mantenimiento preventivo y correctivo para naves, fábricas y talleres. Evita paradas y asegura el funcionamiento continuo.',
+      gridArea: 'svc2',
     },
     {
       icon: 'bi-lightning-charge',
       title: 'Cuadros Eléctricos',
       description:
         'Diseño, montaje y renovación de cuadros eléctricos. Protecciones magnetotérmicas, diferenciales y automatismos para máxima seguridad.',
+      gridArea: 'svc3',
     },
     {
       icon: 'bi-lightbulb',
       title: 'Iluminación LED',
       description:
         'Proyectos de iluminación eficiente con tecnología LED. Reforma de luminarias, tiras LED decorativas y sistemas de control inteligente.',
+      gridArea: 'svc4',
     },
     {
       icon: 'bi-house-gear',
       title: 'Domótica',
       description:
         'Automatización de viviendas y edificios. Control de iluminación, climatización, persianas y seguridad desde el móvil o por voz.',
+      gridArea: 'svc5',
     },
     {
       icon: 'bi-shield-exclamation',
       title: 'Emergencias 24h',
       description:
         'Servicio urgente disponible las 24 horas los 365 días del año. Respuesta en menos de 60 minutos en toda la Comunidad de Madrid.',
+      gridArea: 'svc6',
     },
   ];
 
@@ -127,48 +137,48 @@ export class ElectricistaComponent implements AfterViewInit {
       location: 'Getafe, Madrid',
       category: 'Industrial',
       gradient:
-        'linear-gradient(135deg, #1a1d23 0%, #2a2010 30%, #f0a50040 60%, #0f1115 100%)',
-      size: 'lg',
+        'linear-gradient(135deg, #f0a50030 0%, #050505 40%, #1a1d23 100%)',
+      gridSpan: 'span 2',
     },
     {
       title: 'Edificio Oficinas Chamartín',
       location: 'Chamartín, Madrid',
       category: 'Comercial',
       gradient:
-        'linear-gradient(135deg, #06b6d420 0%, #1a1d23 50%, #0f1115 100%)',
-      size: 'md',
+        'linear-gradient(135deg, #06b6d430 0%, #050505 50%, #1a1d23 100%)',
+      gridSpan: 'span 1',
     },
     {
       title: 'Reforma Eléctrica en Retiro',
       location: 'Retiro, Madrid',
       category: 'Residencial',
       gradient:
-        'linear-gradient(135deg, #f0a50020 0%, #1a1d23 40%, #0f1115 100%)',
-      size: 'md',
+        'linear-gradient(135deg, #050505 0%, #f0a50020 40%, #1a1d23 100%)',
+      gridSpan: 'span 1',
     },
     {
       title: 'Restaurante La Latina',
       location: 'La Latina, Madrid',
       category: 'Comercial',
       gradient:
-        'linear-gradient(135deg, #0f1115 0%, #1a1d23 50%, #f0a50020 100%)',
-      size: 'md',
+        'linear-gradient(135deg, #1a1d23 0%, #050505 50%, #f0a50015 100%)',
+      gridSpan: 'span 1',
     },
     {
       title: 'Emergencia Centro Logístico Sanse',
       location: 'San Sebastián de los Reyes',
       category: 'Emergencias',
       gradient:
-        'linear-gradient(135deg, #f0a50030 0%, #0f1115 40%, #1a1d23 100%)',
-      size: 'md',
+        'linear-gradient(135deg, #f0a50025 0%, #050505 40%, #1a1d23 100%)',
+      gridSpan: 'span 2',
     },
     {
       title: 'Instalación Domótica en Moralzarzal',
       location: 'Moralzarzal, Madrid',
       category: 'Residencial',
       gradient:
-        'linear-gradient(135deg, #06b6d420 0%, #0f1115 50%, #1a1d23 100%)',
-      size: 'md',
+        'linear-gradient(135deg, #06b6d420 0%, #050505 50%, #1a1d23 100%)',
+      gridSpan: 'span 1',
     },
   ];
 
@@ -178,6 +188,10 @@ export class ElectricistaComponent implements AfterViewInit {
     { icon: 'bi-journal-check', label: 'Normativa REBT' },
     { icon: 'bi-award', label: '3 Años de Garantía' },
   ];
+
+  get tickerItems(): CertificationItem[] {
+    return [...this.certifications, ...this.certifications, ...this.certifications];
+  }
 
   readonly workSteps: WorkStep[] = [
     {
@@ -206,7 +220,7 @@ export class ElectricistaComponent implements AfterViewInit {
       icon: 'bi-check2-circle',
       title: 'Certificación y Garantía',
       description:
-        'Emitimos el boletín oficial y certificado de instalación. Todo nuestro trabajo incluye 3 años de garantía por escrito.',
+        'Emitimos el boletín oficial y certificado de instalación. Todo nuestro trabajo incluye 3 años de garantía.',
     },
   ];
 
@@ -215,21 +229,25 @@ export class ElectricistaComponent implements AfterViewInit {
       name: 'Madrid Capital',
       areas: 'Todos los distritos, servicio en menos de 45 min',
       icon: 'bi-building',
+      angle: 0,
     },
     {
       name: 'Zona Norte',
       areas: 'Alcobendas, Sanse, Tres Cantos, Colmenar Viejo',
       icon: 'bi-compass',
+      angle: 90,
     },
     {
       name: 'Zona Sur',
       areas: 'Getafe, Leganés, Fuenlabrada, Parla, Móstoles',
       icon: 'bi-compass',
+      angle: 180,
     },
     {
       name: 'Zona Este',
       areas: 'Alcalá de Henares, Torrejón, Coslada, San Fernando',
       icon: 'bi-compass',
+      angle: 270,
     },
   ];
 
@@ -243,6 +261,7 @@ export class ElectricistaComponent implements AfterViewInit {
   contactSubmitted = false;
 
   @ViewChild('heroContent') heroContent!: ElementRef<HTMLElement>;
+  @ViewChild('heroTitle') heroTitle!: ElementRef<HTMLElement>;
 
   @ViewChildren('animateSection') animateSections!: QueryList<
     ElementRef<HTMLElement>
@@ -251,6 +270,14 @@ export class ElectricistaComponent implements AfterViewInit {
   @HostListener('window:scroll')
   onWindowScroll(): void {
     this.scrolled = window.scrollY > 50;
+  }
+
+  ngOnInit(): void {
+    if (typeof window !== 'undefined') {
+      setTimeout(() => {
+        this.heroGlitch = true;
+      }, 300);
+    }
   }
 
   ngAfterViewInit(): void {
@@ -265,14 +292,14 @@ export class ElectricistaComponent implements AfterViewInit {
       const heroChildren = this.heroContent.nativeElement.children;
       gsap.fromTo(
         heroChildren,
-        { y: 48, opacity: 0, filter: 'blur(6px)' },
+        { y: 32, opacity: 0, scale: 0.97 },
         {
           y: 0,
           opacity: 1,
-          filter: 'blur(0px)',
-          duration: 0.7,
-          stagger: 0.12,
-          ease: 'cubic-bezier(0.32, 0.72, 0, 1)',
+          scale: 1,
+          duration: 0.55,
+          stagger: 0.1,
+          ease: 'power3.out',
         },
       );
     }
@@ -283,13 +310,13 @@ export class ElectricistaComponent implements AfterViewInit {
           if (entry.isIntersecting) {
             gsap.fromTo(
               entry.target,
-              { y: 48, opacity: 0, filter: 'blur(6px)' },
+              { y: 40, opacity: 0, scale: 0.96 },
               {
                 y: 0,
                 opacity: 1,
-                filter: 'blur(0px)',
-                duration: 0.7,
-                ease: 'cubic-bezier(0.32, 0.72, 0, 1)',
+                scale: 1,
+                duration: 0.6,
+                ease: 'power2.out',
               },
             );
             observer.unobserve(entry.target);
