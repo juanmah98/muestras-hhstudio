@@ -209,8 +209,8 @@
             <p class="estetica__testimonials-quote">{{ testimonial.quote }}</p>
             <div class="estetica__testimonials-footer">
               <div class="estetica__testimonials-stars">
-                @for (star of []; let s = $index; track s) {
-                  @if (s < testimonial.stars) {
+                @for (star of [1,2,3,4,5]; track star) {
+                  @if (star <= testimonial.stars) {
                     <i class="bi bi-star-fill"></i>
                   }
                 }

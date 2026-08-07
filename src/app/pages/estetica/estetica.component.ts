@@ -9,6 +9,9 @@ import {
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+gsap.registerPlugin(ScrollTrigger);
 
 interface ServiceItem {
   icon: string;
@@ -285,6 +288,30 @@ export class EsteticaComponent implements AfterViewInit {
     );
 
     this.animateSections.forEach((ref) => observer.observe(ref.nativeElement));
+
+    const testimonialsSection = this.animateSections.find(
+      (ref) => ref.nativeElement.id === 'testimonios',
+    );
+    if (testimonialsSection) {
+      ScrollTrigger.create({
+        trigger: testimonialsSection.nativeElement,
+        start: 'top center',
+        onEnter: () => {
+          gsap.fromTo(
+            '.estetica__testimonials-card',
+            { opacity: 0, y: 48, scale: 0.94 },
+            {
+              opacity: 1,
+              y: 0,
+              scale: 1,
+              duration: 0.7,
+              stagger: 0.12,
+              ease: 'cubic-bezier(0.32, 0.72, 0, 1)',
+            },
+          );
+        },
+      });
+    }
   }
 
   toggleMobileMenu(): void {
@@ -306,16 +333,22 @@ export class EsteticaComponent implements AfterViewInit {
   onTestimonialScroll(event: Event): void {
     const container = event.target as HTMLElement;
     const scrollLeft = container.scrollLeft;
-    const cardWidth = container.clientWidth;
-    const index = Math.round(scrollLeft / cardWidth);
+    const gap = 24;
+    const card = container.querySelector('.estetica__testimonials-card') as HTMLElement;
+    if (!card) return;
+    const step = card.offsetWidth + gap;
+    const index = Math.round(scrollLeft / step);
     this.activeTestimonial = index;
   }
 
   scrollToTestimonial(index: number): void {
     const container = document.querySelector('.estetica__testimonials-track');
     if (container) {
-      const cardWidth = container.clientWidth;
-      container.scrollTo({ left: cardWidth * index, behavior: 'smooth' });
+      const gap = 24;
+      const card = container.querySelector('.estetica__testimonials-card') as HTMLElement;
+      if (!card) return;
+      const step = card.offsetWidth + gap;
+      container.scrollTo({ left: step * index, behavior: 'smooth' });
     }
   }
 

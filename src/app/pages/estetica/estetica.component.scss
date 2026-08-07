@@ -131,8 +131,9 @@ $shadow-ambient-hover: 0 8px 40px rgba(61, 43, 31, 0.06);
       color: #ffffff;
       border-color: $color-whatsapp;
       gap: 0.5rem;
-      padding: 0.75rem 1.5rem;
-      font-size: 1rem;
+      padding: 0.75rem 1rem;
+      font-size: 0.85rem;
+      white-space: nowrap;
       box-shadow: 0 4px 24px rgba($color-whatsapp, 0.2);
 
       &:hover {
@@ -965,8 +966,15 @@ $shadow-ambient-hover: 0 8px 40px rgba(61, 43, 31, 0.06);
     scroll-snap-type: x mandatory;
     scroll-behavior: smooth;
     -webkit-overflow-scrolling: touch;
+    padding-left: 1rem;
+    padding-right: 1rem;
     padding-bottom: 1rem;
     margin-bottom: 2rem;
+
+    @media (min-width: 768px) {
+      padding-left: 0;
+      padding-right: 0;
+    }
 
     &::-webkit-scrollbar {
       display: none;
@@ -977,15 +985,18 @@ $shadow-ambient-hover: 0 8px 40px rgba(61, 43, 31, 0.06);
 
   &__testimonials-card {
     scroll-snap-align: center;
-    flex: 0 0 min(100%, 520px);
+    flex: 0 0 85%;
     background: $color-bg-surface;
     border: 1px solid rgba($color-bg-dark, 0.08);
     border-radius: $radius-card;
     padding: 2.5rem 2.25rem;
     position: relative;
 
+    @media (min-width: 768px) {
+      flex: 0 0 min(100%, 520px);
+    }
+
     @media (max-width: 576px) {
-      flex: 0 0 100%;
       padding: 2rem 1.5rem;
     }
   }
@@ -1064,7 +1075,14 @@ $shadow-ambient-hover: 0 8px 40px rgba(61, 43, 31, 0.06);
     &--active {
       background-color: $color-primary;
       transform: scale(1.3);
+      animation: testimonial-dot-pulse 0.5s $ease-editorial;
     }
+  }
+
+  @keyframes testimonial-dot-pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.6); }
+    100% { transform: scale(1.3); }
   }
 
   // ============================================================
@@ -1132,6 +1150,29 @@ $shadow-ambient-hover: 0 8px 40px rgba(61, 43, 31, 0.06);
       font-size: 1.25rem;
       color: #22c55e;
       flex-shrink: 0;
+    }
+  }
+
+  .estetica__booking .estetica__form {
+    .estetica__label {
+      color: $color-text-primary;
+    }
+
+    .estetica__input,
+    .estetica__select {
+      background-color: #ffffff;
+      border-color: $color-border;
+      color: $color-text-primary;
+
+      &::placeholder {
+        color: $color-text-muted;
+      }
+
+      &:focus {
+        border-color: $color-primary;
+        box-shadow: 0 0 0 3px rgba($color-primary, 0.15);
+        background-color: #ffffff;
+      }
     }
   }
 
