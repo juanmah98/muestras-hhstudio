@@ -1,235 +1,213 @@
-<main class="salud">
-  <!-- ===================================================
-    1. NAVBAR
-    =================================================== -->
-  <nav class="salud__navbar" [class.salud__navbar--scrolled]="scrolled">
-    <div class="container">
-      <div class="salud__navbar-inner">
-        <a class="salud__navbar-brand" role="button" tabindex="0"
-          (click)="scrollTo('inicio')" (keydown.enter)="scrollTo('inicio')">
-          <span class="salud__navbar-brand-text">MS LIFE</span>
-        </a>
+<main class="bio">
+  <!-- NAV -->
+  <nav class="bio__nav" [class.bio__nav--scrolled]="scrolled">
+    <div class="bio__nav-inner">
+      <a class="bio__nav-logo" role="button" tabindex="0"
+        (click)="scrollTo('inicio')" (keydown.enter)="scrollTo('inicio')">
+        <span class="bio__nav-logo-text">MS LIFE</span>
+      </a>
 
-        <div class="salud__navbar-links d-none d-lg-flex">
-          @for (link of navLinks; track link.fragment) {
-            <a role="button" tabindex="0"
-              (click)="scrollTo(link.fragment)"
-              (keydown.enter)="scrollTo(link.fragment)">
-              {{ link.label }}
-            </a>
-          }
-          <a class="salud__navbar-cta" role="button" tabindex="0"
-            (click)="openBookingModal()" (keydown.enter)="openBookingModal()">
-            Agendar Cita
+      <div class="bio__nav-links">
+        @for (link of navLinks; track link.fragment) {
+          <a class="bio__nav-link" role="button" tabindex="0"
+            (click)="scrollTo(link.fragment)"
+            (keydown.enter)="scrollTo(link.fragment)">
+            {{ link.label }}
           </a>
-        </div>
-
-        <button class="salud__navbar-toggle d-lg-none" (click)="toggleMobileMenu()"
-          [attr.aria-label]="mobileMenuOpen ? 'Cerrar menú' : 'Abrir menú'">
-          <i [class]="mobileMenuOpen ? 'bi bi-x-lg' : 'bi bi-list'"></i>
-        </button>
+        }
+        <a class="bio__nav-cta" role="button" tabindex="0"
+          (click)="openBookingModal()" (keydown.enter)="openBookingModal()">
+          Agendar Cita
+        </a>
       </div>
 
-      @if (mobileMenuOpen) {
-        <div class="salud__navbar-mobile">
+      <button class="bio__nav-toggle" (click)="toggleMobileMenu()"
+        [attr.aria-label]="mobileMenuOpen ? 'Cerrar menú' : 'Abrir menú'">
+        <span class="bio__nav-toggle-bar" [class.open]="mobileMenuOpen"></span>
+        <span class="bio__nav-toggle-bar" [class.open]="mobileMenuOpen"></span>
+        <span class="bio__nav-toggle-bar" [class.open]="mobileMenuOpen"></span>
+      </button>
+    </div>
+
+    @if (mobileMenuOpen) {
+      <div class="bio__nav-mobile">
+        <div class="bio__nav-mobile-links">
           @for (link of navLinks; track link.fragment) {
-            <a role="button" tabindex="0"
+            <a class="bio__nav-mobile-link" role="button" tabindex="0"
               (click)="scrollTo(link.fragment)"
               (keydown.enter)="scrollTo(link.fragment)">
               {{ link.label }}
             </a>
           }
-          <a class="salud__navbar-cta" role="button" tabindex="0"
-            (click)="openBookingModal()" (keydown.enter)="openBookingModal()">
+          <a class="bio__nav-mobile-cta" role="button" tabindex="0"
+            (click)="openBookingModal(); closeMobileMenu()"
+            (keydown.enter)="openBookingModal(); closeMobileMenu()">
             Agendar Cita
           </a>
         </div>
-      }
-    </div>
+      </div>
+    }
   </nav>
 
-  <!-- ===================================================
-    2. HERO
-    =================================================== -->
-  <section id="inicio" class="salud__hero" #animateSection data-anim="hero">
-    <div class="salud__hero-bg" aria-hidden="true">
-      <div class="salud__hero-blob salud__hero-blob--a"></div>
-      <div class="salud__hero-blob salud__hero-blob--b"></div>
+  <!-- HERO -->
+  <section id="inicio" class="bio__hero" #animateSection data-anim="hero">
+    <div class="bio__hero-leaf" aria-hidden="true">
+      <span class="bio__hero-leaf-shape bio__hero-leaf-shape--a"></span>
+      <span class="bio__hero-leaf-shape bio__hero-leaf-shape--b"></span>
+      <span class="bio__hero-leaf-shape bio__hero-leaf-shape--c"></span>
     </div>
+    <div class="bio__hero-vine" aria-hidden="true"></div>
     <div class="container">
       <div class="row align-items-center">
         <div class="col-lg-7">
-          <span class="salud__hero-badge">Clínica Boutique &middot; Zürich</span>
-          <h1 class="salud__hero-title">Tu salud, nuestra prioridad</h1>
-          <p class="salud__hero-subtitle">
-            En MS LIFE combinamos medicina de excelencia con un enfoque humano y
-            cercano. Porque mereces sentirte bien, por dentro y por fuera.
+          <h1 class="bio__hero-title">Tu bienestar,<br>nuestra naturaleza</h1>
+          <p class="bio__hero-subtitle">
+            En MS LIFE combinamos medicina de excelencia con un entorno que respira calma.
+            Un espacio donde la ciencia y lo humano se encuentran para cuidarte de verdad.
           </p>
 
-          <div class="salud__hero-stats">
+          <div class="bio__hero-stats">
             @for (stat of heroStats; track stat.label) {
-              <div class="salud__hero-stat">
-                <span class="salud__hero-stat-number">{{ stat.number }}</span>
-                <span class="salud__hero-stat-label">{{ stat.label }}</span>
+              <div class="bio__hero-stat">
+                <span class="bio__hero-stat-number">{{ stat.number }}</span>
+                <span class="bio__hero-stat-label">{{ stat.label }}</span>
               </div>
             }
           </div>
 
-          <div class="salud__hero-actions">
-            <a class="salud__btn salud__btn--solid" role="button" tabindex="0"
+          <div class="bio__hero-actions">
+            <a class="bio__btn bio__btn--primary" role="button" tabindex="0"
               (click)="openBookingModal()" (keydown.enter)="openBookingModal()">
-              Agendar consulta
+              Agendar Consulta
             </a>
-            <a class="salud__btn salud__btn--outline" role="button" tabindex="0"
+            <a class="bio__btn bio__btn--outline" role="button" tabindex="0"
               (click)="scrollTo('servicios')" (keydown.enter)="scrollTo('servicios')">
-              Nuestros servicios
+              Nuestros Servicios
             </a>
           </div>
         </div>
-        <div class="col-lg-5 d-none d-lg-block">
-          <div class="salud__hero-image">
-            <img
-              src="assets/images/salud/illustration-organic.png"
-              alt=""
-              class="salud__hero-illustration"
-              aria-hidden="true"
-            />
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ===================================================
-    3. FEATURES — 100vh Immersive
-    =================================================== -->
-  <section id="features" class="salud__features" #animateSection data-anim="features">
-    <div class="salud__features-bg" aria-hidden="true">
-      <div class="salud__features-blob salud__features-blob--a"></div>
-      <div class="salud__features-blob salud__features-blob--b"></div>
-      <div class="salud__features-blob salud__features-blob--c"></div>
-    </div>
-    <div class="container">
-      <div class="row align-items-center">
-        <div class="col-lg-5">
-          <div class="salud__features-headline">
-            <div class="salud__features-headline-mark" aria-hidden="true">
-              <i class="bi bi-activity"></i>
-              <span class="salud__features-headline-line"></span>
+        <div class="col-lg-5 d-none d-lg-flex justify-content-center">
+          <div class="bio__hero-organic" aria-hidden="true">
+            <div class="bio__hero-organic-inner">
+              <span class="bio__hero-organic-dot bio__hero-organic-dot--a"></span>
+              <span class="bio__hero-organic-dot bio__hero-organic-dot--b"></span>
+              <span class="bio__hero-organic-dot bio__hero-organic-dot--c"></span>
+              <i class="bi bi-heart-pulse bio__hero-organic-icon"></i>
             </div>
-            <h2 class="salud__features-headline-title">&iquest;Por qu&eacute; elegir MS LIFE?</h2>
-            <p class="salud__features-headline-subtitle">
-              M&aacute;s que una cl&iacute;nica, un espacio donde la ciencia y la humanidad se encuentran para cuidarte de verdad.
-            </p>
-          </div>
-        </div>
-        <div class="col-lg-7">
-          <div class="salud__features-list">
-            @for (feature of features; track feature.title; let idx = $index) {
-              <div class="salud__features-item">
-                <div class="salud__features-item-number">{{ (idx + 1).toString().padStart(2, '0') }}</div>
-                <div class="salud__features-item-icon">
-                  <i [class]="'bi ' + feature.icon"></i>
-                </div>
-                <div class="salud__features-item-body">
-                  <h3>{{ feature.title }}</h3>
-                  <p>{{ feature.desc }}</p>
-                </div>
-              </div>
-            }
           </div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ===================================================
-    4. SERVICIOS
-    =================================================== -->
-  <section id="servicios" class="salud__services" #animateSection data-anim="services">
-    <div class="container">
-      <div class="salud__section-header">
-        <h2 class="salud__section-title">Nuestros Servicios</h2>
-        <p class="salud__section-subtitle">
-          Atención médica integral que combina ciencia, tecnolog&iacute;a y calidez humana.
+  <!-- SERVICIOS — Horizontal Scroll -->
+  <section id="servicios" class="bio__services" #animateSection data-anim="services">
+    <div class="bio__services-header">
+      <div class="container">
+        <h2 class="bio__section-title">Nuestros Servicios</h2>
+        <p class="bio__section-subtitle">
+          Atención médica integral que combina ciencia, tecnología y un profundo respeto por tu bienestar.
         </p>
       </div>
-
-      <div class="row g-4">
+    </div>
+    <div class="bio__services-scroll">
+      <div class="bio__services-track">
         @for (service of services; track service.title) {
-          <div class="col-12 col-md-6 col-lg-3">
-            <div class="salud__services-card">
-              <i [class]="'bi ' + service.icon + ' salud__services-card-icon'"></i>
-              <h3 class="salud__services-card-title">{{ service.title }}</h3>
-              <p class="salud__services-card-desc">{{ service.desc }}</p>
-              <span class="salud__services-card-more">Ver m&aacute;s &rarr;</span>
+          <div class="bio__services-card">
+            <div class="bio__services-card-icon">
+              <i [class]="'bi ' + service.icon"></i>
             </div>
+            <h3 class="bio__services-card-title">{{ service.title }}</h3>
+            <p class="bio__services-card-desc">{{ service.desc }}</p>
           </div>
         }
       </div>
     </div>
   </section>
 
-  <!-- ===================================================
-    5. NOSOTROS
-    =================================================== -->
-  <section id="nosotros" class="salud__nosotros" #animateSection data-anim="about">
+  <!-- NOSOTROS -->
+  <section id="nosotros" class="bio__nosotros" #animateSection data-anim="about">
     <div class="container">
       <div class="row align-items-center g-5">
         <div class="col-lg-6">
-          <div class="salud__nosotros-image">
-            <div class="salud__nosotros-illustration" aria-hidden="true">
-              <div class="salud__nosotros-illustration-circle salud__nosotros-illustration-circle--lg"></div>
-              <div class="salud__nosotros-illustration-circle salud__nosotros-illustration-circle--md"></div>
-              <div class="salud__nosotros-illustration-circle salud__nosotros-illustration-circle--sm"></div>
-              <div class="salud__nosotros-illustration-circle salud__nosotros-illustration-circle--xs"></div>
-              <div class="salud__nosotros-illustration-circle salud__nosotros-illustration-circle--accent"></div>
+          <div class="bio__nosotros-content">
+            <h2 class="bio__section-title bio__section-title--left">Un enfoque que respeta tu naturaleza</h2>
+            <p class="bio__nosotros-text">
+              En MS LIFE creemos que cada paciente merece ser escuchado, no solo diagnosticado.
+              Nuestro modelo combina tecnología suiza de vanguardia con una mirada profundamente humana.
+              No tratamos enfermedades: cultivamos bienestar.
+            </p>
+            <p class="bio__nosotros-text">
+              Desde 2008, hemos crecido junto a nuestra comunidad en Zürich, construyendo
+              relaciones de confianza que trascienden la consulta médica.
+            </p>
+
+            <div class="bio__nosotros-timeline">
+              @for (item of timeline; track item.year) {
+                <div class="bio__nosotros-timeline-item">
+                  <span class="bio__nosotros-timeline-year">{{ item.year }}</span>
+                  <span class="bio__nosotros-timeline-event">{{ item.event }}</span>
+                </div>
+              }
             </div>
           </div>
         </div>
         <div class="col-lg-6">
-          <div class="salud__nosotros-content">
-            <h2 class="salud__section-title salud__section-title--left">
-              Un enfoque diferente
-            </h2>
-            <p class="salud__nosotros-text">
-              En MS LIFE creemos que cada paciente merece ser escuchado, no solo
-              diagnosticado. Nuestro modelo combina tecnolog&iacute;a de vanguardia con una
-              mirada profundamente humana. No tratamos enfermedades: cuidamos personas.
-            </p>
-            <ul class="salud__nosotros-checks">
-              @for (item of checkItems; track item.label) {
-                <li class="salud__nosotros-check">
-                  <i class="bi bi-check-circle-fill"></i>
-                  <span>{{ item.label }}</span>
-                </li>
-              }
-            </ul>
+          <div class="bio__nosotros-visual">
+            <div class="bio__nosotros-blob" aria-hidden="true">
+              <div class="bio__nosotros-blob-shape">
+                @for (stat of heroStats; track stat.label) {
+                  <div class="bio__nosotros-blob-stat">
+                    <span class="bio__nosotros-blob-stat-num">{{ stat.number }}</span>
+                    <span class="bio__nosotros-blob-stat-lbl">{{ stat.label }}</span>
+                  </div>
+                }
+              </div>
+            </div>
           </div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ===================================================
-    6. TESTIMONIOS
-    =================================================== -->
-  <section id="testimonios" class="salud__testimonials" #animateSection data-anim="testimonials">
+  <!-- FEATURES — Icon Grid -->
+  <section id="features" class="bio__features" #animateSection data-anim="features">
     <div class="container">
-      <div class="salud__section-header">
-        <h2 class="salud__section-title">Lo que dicen nuestros pacientes</h2>
-      </div>
+      <h2 class="bio__section-title">Por qué elegirnos</h2>
+      <p class="bio__section-subtitle">
+        Seis razones que hacen de MS LIFE un espacio diferente para tu salud.
+      </p>
 
-      <div class="row g-4">
-        @for (testimonial of testimonials; track testimonial.author) {
-          <div class="col-md-6 col-lg-4">
-            <div class="salud__testimonials-card">
-              <div class="salud__testimonials-quote-mark" aria-hidden="true">&ldquo;</div>
-              <p class="salud__testimonials-quote">{{ testimonial.quote }}</p>
-              <div class="salud__testimonials-footer">
-                <p class="salud__testimonials-author">{{ testimonial.author }}</p>
-                <p class="salud__testimonials-role">{{ testimonial.role }}</p>
-              </div>
+      <div class="bio__features-grid">
+        @for (feature of features; track feature.title) {
+          <div class="bio__features-item">
+            <div class="bio__features-icon">
+              <i [class]="'bi ' + feature.icon"></i>
+            </div>
+            <h3 class="bio__features-title">{{ feature.title }}</h3>
+            <p class="bio__features-desc">{{ feature.desc }}</p>
+          </div>
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- TESTIMONIOS -->
+  <section id="testimonios" class="bio__testimonials" #animateSection data-anim="testimonials">
+    <div class="container">
+      <h2 class="bio__section-title">Voces que nos inspiran</h2>
+      <p class="bio__section-subtitle">
+        Las historias de quienes confiaron en nosotros son nuestro mayor orgullo.
+      </p>
+
+      <div class="bio__testimonials-grid">
+        @for (testimonial of testimonials; track testimonial.author; let idx = $index) {
+          <div class="bio__testimonials-card" [class.bio__testimonials-card--tall]="idx % 2 === 1">
+            <span class="bio__testimonials-quote-icon" aria-hidden="true">&ldquo;</span>
+            <p class="bio__testimonials-quote">{{ testimonial.quote }}</p>
+            <div class="bio__testimonials-author">
+              <strong>{{ testimonial.author }}</strong>
+              <span>{{ testimonial.role }}</span>
             </div>
           </div>
         }
@@ -237,111 +215,86 @@
     </div>
   </section>
 
-  <!-- ===================================================
-    7. CONTACTO + MAPA
-    =================================================== -->
-  <section id="contacto" class="salud__contact" #animateSection data-anim="contact">
+  <!-- CONTACTO + BOOKING -->
+  <section id="contacto" class="bio__contact" #animateSection data-anim="contact">
     <div class="container">
-      <div class="salud__section-header">
-        <h2 class="salud__section-title">Cercan&iacute;a y Confianza</h2>
-        <p class="salud__section-subtitle">
-          Estamos aqu&iacute; para acompañarte en tu bienestar. Encuentra nuestra sede central en el coraz&oacute;n de Z&uuml;rich y agenda una visita con nuestros especialistas.
-        </p>
-      </div>
+      <h2 class="bio__section-title">Hablemos de tu salud</h2>
+      <p class="bio__section-subtitle">
+        Estamos aquí para acompañarte. Encontranos en el corazón de Zürich o escribinos.
+      </p>
 
-      <div class="row g-4">
-        <div class="col-lg-7">
-          <div class="salud__contact-map">
-            <div class="salud__contact-map-inner">
-              <div class="salud__contact-map-grid" aria-hidden="true"></div>
-              <div class="salud__contact-map-zoom" aria-hidden="true">
-                <button class="salud__contact-map-zoom-btn" tabindex="-1">+</button>
-                <button class="salud__contact-map-zoom-btn" tabindex="-1">&minus;</button>
-              </div>
-              <div class="salud__contact-map-pin">
-                <i class="bi bi-geo-alt-fill"></i>
-                <div class="salud__contact-map-pulse"></div>
-              </div>
-              <span class="salud__contact-map-label">Sede Central, Z&uuml;rich</span>
-            </div>
-          </div>
-        </div>
+      <div class="row g-5">
         <div class="col-lg-5">
-          <div class="salud__contact-details">
-            <div class="salud__contact-detail">
-              <i class="bi bi-pin-map-fill salud__contact-detail-icon"></i>
-              <div>
-                <div class="salud__contact-detail-label">Ubicaci&oacute;n</div>
-                <div class="salud__contact-detail-value">Sede Central, Z&uuml;rich</div>
-                <div class="salud__contact-detail-sub">Bahnhofstrasse 42, 8001 Z&uuml;rich</div>
+          <div class="bio__contact-info">
+            @for (info of contactInfo; track info.text) {
+              <div class="bio__contact-info-item">
+                <div class="bio__contact-info-icon">
+                  <i [class]="'bi ' + info.icon"></i>
+                </div>
+                @if (info.href) {
+                  <a [href]="info.href" class="bio__contact-info-text bio__contact-info-link">{{ info.text }}</a>
+                } @else {
+                  <span class="bio__contact-info-text">{{ info.text }}</span>
+                }
               </div>
-            </div>
-            <div class="salud__contact-detail">
-              <i class="bi bi-telephone-forward-fill salud__contact-detail-icon"></i>
-              <div>
-                <div class="salud__contact-detail-label">Tel&eacute;fono</div>
-                <div class="salud__contact-detail-value">+41 44 123 45 67</div>
-              </div>
-            </div>
-            <div class="salud__contact-detail">
-              <i class="bi bi-envelope-paper-heart-fill salud__contact-detail-icon"></i>
-              <div>
-                <div class="salud__contact-detail-label">Correo</div>
-                <div class="salud__contact-detail-value">hola&#64;mslife.com</div>
-              </div>
-            </div>
-            <div class="salud__contact-detail">
-              <i class="bi bi-calendar2-heart-fill salud__contact-detail-icon"></i>
-              <div>
-                <div class="salud__contact-detail-label">Horarios</div>
-                <div class="salud__contact-detail-value">Lunes a Viernes: 8:00 AM &ndash; 8:00 PM</div>
-                <div class="salud__contact-detail-sub">S&aacute;bados: 9:00 AM &ndash; 2:00 PM</div>
-              </div>
-            </div>
-
-            <a class="salud__btn salud__btn--outline salud__contact-info-btn"
-              role="button" tabindex="0"
-              (click)="openBookingModal()" (keydown.enter)="openBookingModal()">
-              Solicitar informaci&oacute;n
+            }
+            <a [href]="whatsappUrl" target="_blank" rel="noopener" class="bio__contact-whatsapp">
+              <i class="bi bi-whatsapp"></i>
+              <span>Escribinos por WhatsApp</span>
             </a>
           </div>
         </div>
-      </div>
+        <div class="col-lg-7">
+          <div class="bio__contact-form">
+            <h3 class="bio__contact-form-title">Solicitá tu consulta</h3>
+            <p class="bio__contact-form-subtitle">Completá tus datos y te contactaremos en menos de 24 horas.</p>
 
-      <!-- CTA Bar -->
-      <div class="salud__contact-cta-bar">
-        <div class="salud__contact-cta-bar-inner">
-          <div class="salud__contact-cta-text">
-            <h3 class="salud__contact-cta-title">&iquest;Listo para empezar?</h3>
-            <p class="salud__contact-cta-subtitle">
-              Da el primer paso hacia tu bienestar. Te esperamos en el coraz&oacute;n de Z&uuml;rich.
-            </p>
+            @if (contactFormSuccess) {
+              <div class="bio__contact-form-success">
+                <i class="bi bi-check-circle-fill"></i>
+                <h4>¡Gracias, {{ contactForm.name }}!</h4>
+                <p>Te contactaremos pronto para coordinar tu consulta.</p>
+              </div>
+            } @else {
+              <form (submit)="submitContactForm(); $event.preventDefault()">
+                <div class="bio__contact-form-row">
+                  <input [(ngModel)]="contactForm.name" name="cname" placeholder="Nombre completo" required autocomplete="name" />
+                  <input [(ngModel)]="contactForm.email" name="cemail" type="email" placeholder="Email" required autocomplete="email" />
+                </div>
+                <div class="bio__contact-form-row">
+                  <input [(ngModel)]="contactForm.phone" name="cphone" type="tel" placeholder="Teléfono" autocomplete="tel" />
+                  <select [(ngModel)]="contactForm.motivo" name="cmotivo">
+                    <option value="">Motivo de consulta</option>
+                    <option>Medicina General</option>
+                    <option>Nutrición</option>
+                    <option>Psicología</option>
+                    <option>Fisioterapia</option>
+                    <option>Chequeo Preventivo</option>
+                    <option>Laboratorio</option>
+                    <option>Otro</option>
+                  </select>
+                </div>
+                <button type="submit" class="bio__btn bio__btn--primary bio__btn--full">
+                  Enviar solicitud
+                </button>
+              </form>
+            }
           </div>
-          <a class="salud__btn salud__btn--solid salud__btn--lg"
-            role="button" tabindex="0"
-            (click)="openBookingModal()" (keydown.enter)="openBookingModal()">
-            Agenda tu primera consulta
-          </a>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ===================================================
-    8. FOOTER
-    =================================================== -->
-  <footer class="salud__footer">
+  <!-- FOOTER -->
+  <footer class="bio__footer">
     <div class="container">
       <div class="row g-4">
         <div class="col-lg-4">
-          <div class="salud__footer-brand">
-            <span class="salud__footer-brand-text">MS LIFE</span>
-          </div>
-          <p class="salud__footer-tagline">
-            Transformando el bienestar un paciente a la vez con un enfoque humano y
-            tecnolog&iacute;a de vanguardia.
+          <span class="bio__footer-logo">MS LIFE</span>
+          <p class="bio__footer-tagline">
+            Cultivando bienestar en Zürich desde 2008. Medicina de excelencia con raíces humanas.
           </p>
-          <div class="salud__footer-social">
+          <div class="bio__footer-social">
             @for (social of socialLinks; track social.label) {
               <a [href]="social.href" [attr.aria-label]="social.label">
                 <i [class]="'bi bi-' + social.label.toLowerCase()"></i>
@@ -351,8 +304,8 @@
         </div>
 
         <div class="col-6 col-lg-3 offset-lg-1">
-          <div class="salud__footer-heading">Enlaces R&aacute;pidos</div>
-          <ul class="salud__footer-links">
+          <h4 class="bio__footer-heading">Enlaces</h4>
+          <ul class="bio__footer-links">
             @for (link of footerLinks; track link.fragment) {
               <li>
                 <a role="button" tabindex="0"
@@ -366,56 +319,52 @@
         </div>
 
         <div class="col-6 col-lg-4">
-          <div class="salud__footer-heading">Newsletter</div>
-          <p class="salud__footer-newsletter-text">
-            Recibe consejos de salud y novedades directamente en tu correo.
+          <h4 class="bio__footer-heading">Newsletter</h4>
+          <p class="bio__footer-newsletter-text">
+            Recibí consejos de bienestar y novedades directamente en tu correo.
           </p>
-          <form class="salud__footer-newsletter" (submit)="$event.preventDefault()">
+          <form class="bio__footer-newsletter" (submit)="$event.preventDefault()">
             <input
               type="email"
-              class="salud__footer-newsletter-input"
+              class="bio__footer-newsletter-input"
               placeholder="tu@email.com"
-              aria-label="Correo electr&oacute;nico"
+              aria-label="Correo electrónico"
             />
-            <button type="submit" class="salud__footer-newsletter-btn"
-              aria-label="Suscribirse">
+            <button type="submit" class="bio__footer-newsletter-btn" aria-label="Suscribirse">
               <i class="bi bi-send-fill"></i>
             </button>
           </form>
         </div>
       </div>
 
-      <div class="salud__footer-legal">
+      <div class="bio__footer-legal">
         <a href="#">Privacidad</a>
         <span aria-hidden="true">|</span>
-        <a href="#">T&eacute;rminos</a>
+        <a href="#">Términos</a>
         <span aria-hidden="true">|</span>
         <a href="#">Preguntas Frecuentes</a>
       </div>
 
-      <div class="salud__footer-bottom">
-        <p>
-          &copy; {{ currentYear }} MS LIFE Clinic. Medicina de excelencia con enfoque humano.
-        </p>
+      <div class="bio__footer-bottom">
+        <p>&copy; {{ currentYear }} MS LIFE Clinic. Cultivamos bienestar, una persona a la vez.</p>
       </div>
     </div>
   </footer>
 
-  <!-- ===================================================
-    BOOKING MODAL
-    =================================================== -->
+  <!-- BOOKING MODAL -->
   @if (showBookingModal) {
-    <div class="salud__modal-overlay" (click)="closeBookingModal()">
-      <div class="salud__modal" (click)="$event.stopPropagation()">
-        <button class="salud__modal-close" (click)="closeBookingModal()" aria-label="Cerrar">&times;</button>
+    <div class="bio__modal-overlay" (click)="closeBookingModal()">
+      <div class="bio__modal" (click)="$event.stopPropagation()">
+        <button class="bio__modal-close" (click)="closeBookingModal()" aria-label="Cerrar">&times;</button>
         @if (bookingSuccess) {
-          <div class="salud__modal-success">
-            <h3>&iexcl;Gracias, {{ bookingForm.name }}!</h3>
-            <p>Te contactaremos pronto.</p>
+          <div class="bio__modal-success">
+            <i class="bi bi-check-circle-fill"></i>
+            <h3>¡Gracias, {{ bookingForm.name }}!</h3>
+            <p>Te contactaremos pronto para coordinar tu consulta.</p>
           </div>
         } @else {
           <h3>Agenda tu primera consulta</h3>
-          <p>D&eacute;janos tus datos y te contactaremos en menos de 24 horas.</p>
+          <p>Dejanos tus datos y te contactaremos en menos de 24 horas.</p>
           <form (submit)="submitBooking(); $event.preventDefault()">
             <input [(ngModel)]="bookingForm.name" name="name" placeholder="Nombre completo" required autocomplete="name" />
             <input [(ngModel)]="bookingForm.email" name="email" type="email" placeholder="Email" required autocomplete="email" />
@@ -423,8 +372,9 @@
             <select [(ngModel)]="bookingForm.motivo" name="motivo">
               <option value="">Motivo de consulta</option>
               <option>Medicina General</option>
-              <option>Nutrici&oacute;n</option>
-              <option>Salud Mental</option>
+              <option>Nutrición</option>
+              <option>Psicología</option>
+              <option>Fisioterapia</option>
               <option>Chequeo Preventivo</option>
               <option>Otro</option>
             </select>

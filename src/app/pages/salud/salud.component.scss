@@ -1,99 +1,59 @@
 // ============================================================
-// MS LIFE — Design Tokens
+// MS LIFE — Biophilic Wellness Design Tokens
 // ============================================================
 
-$ms-bg: #faf7f4;
-$ms-primary: #c17b60;
-$ms-primary-dark: #a55d47;
-$ms-text: #2d2926;
-$ms-text-light: #6b6058;
-$ms-surface: #ffffff;
-$ms-border: #e8e0d8;
-$ms-accent: #a8c5a0;
-$ms-accent-light: #f5f7f3;
-$ms-footer-bg: #1a1513;
+$bio-primary: #7a9a8a;
+$bio-primary-dark: #5c7d6e;
+$bio-primary-light: #a8c2b4;
+$bio-primary-pale: #e8f0ec;
+$bio-primary-ghost: #f2f7f4;
+$bio-secondary: #f8faf7;
+$bio-surface: #ffffff;
+$bio-accent: #d4c5b9;
+$bio-accent-light: #ede3da;
+$bio-text: #2d3a2f;
+$bio-text-light: #5a6b5e;
+$bio-text-muted: #8a9a8e;
+$bio-border: #dde5df;
+$bio-footer-bg: #1e2820;
 
-// ============================================================
-// Shared spacing tokens
-// ============================================================
-
-$section-padding-desktop: 6.25rem;
-$section-padding-mobile: 4rem;
-$section-title-margin: 3.5rem;
+$section-py: 6.25rem;
+$section-py-mobile: 4rem;
+$radius-organic: 16px;
+$radius-blob: 60% 40% 70% 30% / 45% 55% 35% 65%;
 
 // ============================================================
 // Animations
 // ============================================================
 
-@keyframes float {
-  0%,
-  100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-12px);
-  }
+@keyframes bio-float {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-14px) rotate(2deg); }
 }
 
-@keyframes blob-morph {
-  0%,
-  100% {
-    transform: translate(0, 0) scale(1);
-  }
-  33% {
-    transform: translate(-40px, 30px) scale(1.06);
-  }
-  66% {
-    transform: translate(25px, -20px) scale(0.95);
-  }
+@keyframes bio-float-slow {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
 }
 
-@keyframes blob-morph-slow {
-  0%,
-  100% {
-    transform: translate(0, 0) scale(1);
-  }
-  25% {
-    transform: translate(-60px, 20px) scale(1.08);
-  }
-  50% {
-    transform: translate(40px, -30px) scale(0.94);
-  }
-  75% {
-    transform: translate(-20px, -10px) scale(1.04);
-  }
+@keyframes bio-breathe {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.03); }
 }
 
-@keyframes pulse-ring {
-  0% {
-    transform: translate(-50%, -50%) scale(0.6);
-    opacity: 0.8;
-  }
-  100% {
-    transform: translate(-50%, -50%) scale(1.8);
-    opacity: 0;
-  }
+@keyframes bio-leaf-sway {
+  0%, 100% { transform: rotate(-8deg) scale(1); }
+  50% { transform: rotate(-2deg) scale(1.04); }
 }
 
-@keyframes pulse-subtle {
-  0%, 100% { opacity: 0.5; transform: scale(1); }
-  50% { opacity: 0.85; transform: scale(1.08); }
-}
-
-@keyframes modal-fade-in {
+@keyframes bio-modal-in {
   from { opacity: 0; }
   to { opacity: 1; }
 }
 
-@keyframes modal-scale-in {
-  from {
-    opacity: 0;
-    transform: scale(0.95);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
+@keyframes bio-modal-scale {
+  from { opacity: 0; transform: scale(0.96); }
+  to { opacity: 1; transform: scale(1); }
 }
 
 // ============================================================
@@ -105,1069 +65,1044 @@ $section-title-margin: 3.5rem;
 }
 
 // ============================================================
-// Block: salud
+// Block: bio
 // ============================================================
 
-.salud {
-  background-color: $ms-bg;
-  color: $ms-text;
+.bio {
+  background-color: $bio-secondary;
+  color: $bio-text;
   font-family: 'Montserrat', sans-serif;
   min-height: 100vh;
   overflow-x: hidden;
 
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6 {
+  h1, h2, h3, h4, h5, h6 {
     font-family: 'Playfair Display', serif;
-    color: $ms-text;
+    color: $bio-text;
   }
 
   p {
-    color: $ms-text-light;
+    color: $bio-text-light;
   }
+}
 
-  &__section-header {
-    text-align: center;
-    margin-bottom: $section-title-margin;
+// ============================================================
+// Shared: Section header / Titles
+// ============================================================
+
+.bio__section-title {
+  font-size: clamp(1.75rem, 4vw, 2.5rem);
+  font-weight: 700;
+  color: $bio-text;
+  text-align: center;
+  margin-bottom: 0.75rem;
+
+  &--left {
+    text-align: left;
   }
+}
 
-  &__section-title {
-    font-size: clamp(1.75rem, 4vw, 2.5rem);
-    font-weight: 700;
-    color: $ms-text;
-    position: relative;
-    display: inline-block;
-
-    &::after {
-      content: '';
-      display: block;
-      width: 56px;
-      height: 3px;
-      background: $ms-primary;
-      margin: 0.75rem auto 0;
-      border-radius: 2px;
-    }
-
-    &--left {
-      display: block;
-
-      &::after {
-        margin: 0.75rem 0 0;
-      }
-    }
-  }
-
-  &__section-subtitle {
-    font-size: 1.05rem;
-    line-height: 1.7;
-    color: $ms-text-light;
-    max-width: 560px;
-    margin: 1rem auto 0;
-  }
+.bio__section-subtitle {
+  font-size: 1.05rem;
+  line-height: 1.7;
+  color: $bio-text-light;
+  max-width: 560px;
+  margin: 0 auto 0;
+  text-align: center;
 }
 
 // ============================================================
 // Shared: Buttons
 // ============================================================
 
-.salud__btn {
+.bio__btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
-  padding: 0.75rem 1.75rem;
+  padding: 0.8rem 2rem;
   font-size: 0.9rem;
   font-weight: 600;
   border-radius: 50px;
   text-decoration: none;
   cursor: pointer;
-  transition:
-    background 0.25s ease,
-    color 0.25s ease,
-    border-color 0.25s ease,
-    transform 0.2s ease,
-    box-shadow 0.25s ease;
+  transition: background 0.25s, color 0.25s, transform 0.2s, box-shadow 0.25s;
   border: 2px solid transparent;
   font-family: 'Montserrat', sans-serif;
 
-  &--solid {
-    background: $ms-primary;
-    color: $ms-surface;
-    border-color: $ms-primary;
-    box-shadow: 0 4px 16px rgba($ms-primary, 0.25);
+  &--primary {
+    background: $bio-primary;
+    color: $bio-surface;
+    border-color: $bio-primary;
+    box-shadow: 0 4px 16px rgba($bio-primary, 0.3);
 
     &:hover {
-      background: $ms-primary-dark;
-      border-color: $ms-primary-dark;
-      color: $ms-surface;
-      transform: translateY(-3px);
-      box-shadow: 0 10px 32px rgba($ms-primary, 0.4);
+      background: $bio-primary-dark;
+      border-color: $bio-primary-dark;
+      color: $bio-surface;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 28px rgba($bio-primary, 0.4);
     }
   }
 
   &--outline {
     background: transparent;
-    color: $ms-primary;
-    border-color: $ms-primary;
+    color: $bio-primary;
+    border-color: $bio-primary;
 
     &:hover {
-      background: $ms-primary;
-      color: $ms-surface;
-      transform: translateY(-3px);
-      box-shadow: 0 8px 24px rgba($ms-primary, 0.25);
+      background: $bio-primary;
+      color: $bio-surface;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba($bio-primary, 0.25);
     }
   }
 
-  &--lg {
-    padding: 1rem 2.5rem;
-    font-size: 1.05rem;
+  &--full {
+    width: 100%;
   }
 }
 
 // ============================================================
-// 1. NAVBAR
+// 1. NAV — Organic sidebar-inspired
 // ============================================================
 
-.salud__navbar {
+.bio__nav {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   z-index: 1030;
   padding: 0.5rem 0;
-  transition: background 0.3s ease, box-shadow 0.3s ease;
+  transition: background 0.4s ease;
   background: transparent;
 
   &--scrolled {
-    background: rgba($ms-bg, 0.94);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    box-shadow: 0 1px 0 $ms-border;
+    background: rgba($bio-secondary, 0.96);
   }
 }
 
-.salud__navbar-inner {
+.bio__nav-inner {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  max-width: 1320px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
 }
 
-.salud__navbar-brand {
+.bio__nav-logo {
   cursor: pointer;
   text-decoration: none;
-  display: flex;
-  align-items: center;
+  position: relative;
 }
 
-.salud__navbar-brand-text {
+.bio__nav-logo-text {
   font-family: 'Playfair Display', serif;
   font-weight: 700;
-  font-size: 1.5rem;
-  color: $ms-primary;
-  letter-spacing: 0.02em;
-}
+  font-size: 1.35rem;
+  color: $bio-primary-dark;
+  letter-spacing: 0.03em;
+  position: relative;
 
-.salud__navbar-links {
-  display: flex;
-  align-items: center;
-  gap: 1.75rem;
-
-  a {
-    font-size: 0.875rem;
-    font-weight: 500;
-    color: $ms-text-light;
-    text-decoration: none;
-    cursor: pointer;
-    transition: color 0.2s ease;
-
-    &:hover {
-      color: $ms-primary;
-    }
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: $bio-primary;
+    border-radius: 1px;
   }
 }
 
-.salud__navbar-cta {
-  background: $ms-primary !important;
-  color: $ms-surface !important;
-  padding: 0.55rem 1.5rem !important;
-  border-radius: 50px !important;
-  font-weight: 600 !important;
-  font-size: 0.85rem !important;
-  transition: background 0.25s ease !important;
+.bio__nav-links {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
+
+.bio__nav-link {
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: $bio-text-light;
+  text-decoration: none;
+  cursor: pointer;
+  transition: color 0.2s;
 
   &:hover {
-    background: $ms-primary-dark !important;
-    color: $ms-surface !important;
+    color: $bio-primary-dark;
   }
 }
 
-.salud__navbar-toggle {
+.bio__nav-cta {
+  background: $bio-primary;
+  color: $bio-surface;
+  padding: 0.55rem 1.5rem;
+  border-radius: 50px;
+  font-weight: 600;
+  font-size: 0.85rem;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background 0.25s;
+
+  &:hover {
+    background: $bio-primary-dark;
+    color: $bio-surface;
+  }
+}
+
+.bio__nav-toggle {
   display: none;
+  flex-direction: column;
+  gap: 5px;
   background: none;
   border: none;
-  font-size: 1.75rem;
-  color: $ms-text;
   cursor: pointer;
-  padding: 0;
-  line-height: 1;
+  padding: 4px;
 }
 
-.salud__navbar-mobile {
+.bio__nav-toggle-bar {
+  display: block;
+  width: 24px;
+  height: 2px;
+  background: $bio-text;
+  border-radius: 2px;
+  transition: transform 0.3s, opacity 0.2s;
+
+  .open:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+  .open:nth-child(2) { opacity: 0; }
+  .open:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+}
+
+// Mobile menu
+.bio__nav-mobile {
   display: none;
+  position: fixed;
+  inset: 0;
+  background: $bio-surface;
+  z-index: 1029;
+}
+
+.bio__nav-mobile-links {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+  height: 100%;
+}
+
+.bio__nav-mobile-link {
+  font-size: 1.5rem;
+  font-weight: 500;
+  color: $bio-text;
+  text-decoration: none;
+  cursor: pointer;
+  font-family: 'Playfair Display', serif;
+  transition: color 0.2s;
+
+  &:hover {
+    color: $bio-primary;
+  }
+}
+
+.bio__nav-mobile-cta {
+  margin-top: 1rem;
+  background: $bio-primary;
+  color: $bio-surface;
+  padding: 1rem 2.5rem;
+  border-radius: 50px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background 0.25s;
+
+  &:hover {
+    background: $bio-primary-dark;
+    color: $bio-surface;
+  }
 }
 
 // ============================================================
-// 2. HERO
+// 2. HERO — Nature meets medicine
 // ============================================================
 
-.salud__hero {
-  min-height: 100vh;
+.bio__hero {
+  min-height: 100dvh;
   display: flex;
   align-items: center;
-  background:
-    linear-gradient(165deg, #faf7f4 0%, #f2ece4 50%, #faf7f4 100%);
+  background: linear-gradient(160deg, $bio-secondary 0%, $bio-primary-ghost 40%, $bio-secondary 100%);
   position: relative;
-  padding: 6rem 0 4rem;
+  padding: 7rem 0 5rem;
   overflow: hidden;
 }
 
-.salud__hero-bg {
+// CSS leaf decoration
+.bio__hero-leaf {
   position: absolute;
-  inset: 0;
+  top: -40px;
+  right: -20px;
+  width: 360px;
+  height: 420px;
   pointer-events: none;
-  overflow: hidden;
+  animation: bio-leaf-sway 8s ease-in-out infinite;
 }
 
-.salud__hero-blob {
+.bio__hero-leaf-shape {
   position: absolute;
-  border-radius: 50%;
-  filter: blur(80px);
-  animation: blob-morph 14s ease-in-out infinite;
+  border-radius: 50% 0 50% 0;
 
   &--a {
-    width: 620px;
-    height: 620px;
-    background: radial-gradient(
-      circle at 60% 40%,
-      rgba($ms-primary, 0.16) 0%,
-      rgba($ms-accent, 0.1) 45%,
-      transparent 70%
-    );
-    top: -120px;
-    right: -100px;
+    width: 180px;
+    height: 240px;
+    background: rgba($bio-primary, 0.12);
+    top: 40px;
+    right: 60px;
+    transform: rotate(-15deg);
   }
 
   &--b {
-    width: 420px;
-    height: 420px;
-    background: radial-gradient(
-      circle at 40% 60%,
-      rgba($ms-accent, 0.13) 0%,
-      rgba($ms-primary, 0.07) 50%,
-      transparent 70%
-    );
-    bottom: -100px;
-    right: 12%;
-    animation-delay: -7s;
-    animation-duration: 16s;
+    width: 130px;
+    height: 180px;
+    background: rgba($bio-primary, 0.09);
+    top: 90px;
+    right: 140px;
+    transform: rotate(-35deg);
+  }
+
+  &--c {
+    width: 100px;
+    height: 140px;
+    background: rgba($bio-accent, 0.14);
+    top: 170px;
+    right: 180px;
+    transform: rotate(10deg);
   }
 }
 
-.salud__hero-badge {
-  display: inline-block;
-  background: $ms-primary;
-  color: $ms-surface;
-  padding: 0.45rem 1.5rem;
-  border-radius: 50px;
-  font-size: 0.78rem;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  margin-bottom: 1.5rem;
-  font-family: 'Montserrat', sans-serif;
+// CSS vine
+.bio__hero-vine {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 300px;
+  height: 200px;
+  pointer-events: none;
+  border-left: 2px solid rgba($bio-primary, 0.15);
+  border-bottom: 2px solid rgba($bio-primary, 0.15);
+  border-radius: 0 0 0 180px;
 }
 
-.salud__hero-title {
+.bio__hero-title {
   font-size: clamp(2.25rem, 5.5vw, 3.75rem);
   font-weight: 700;
-  color: $ms-text;
+  color: $bio-text;
   line-height: 1.12;
   margin-bottom: 1.25rem;
   font-family: 'Playfair Display', serif;
 }
 
-.salud__hero-subtitle {
+.bio__hero-subtitle {
   font-size: 1.05rem;
   line-height: 1.75;
-  color: $ms-text-light;
+  color: $bio-text-light;
   margin-bottom: 2rem;
-  max-width: 540px;
+  max-width: 520px;
 }
 
-.salud__hero-stats {
+.bio__hero-stats {
   display: flex;
-  justify-content: center;
   gap: 2.5rem;
   margin-bottom: 2.25rem;
-  border-top: 1px solid $ms-border;
-  border-bottom: 1px solid $ms-border;
+  border-top: 1px solid $bio-border;
+  border-bottom: 1px solid $bio-border;
   padding: 1.25rem 0;
 }
 
-.salud__hero-stat {
+.bio__hero-stat {
   display: flex;
   flex-direction: column;
-  align-items: center;
 }
 
-.salud__hero-stat-number {
+.bio__hero-stat-number {
   font-family: 'Playfair Display', serif;
   font-size: 1.75rem;
   font-weight: 800;
-  color: $ms-primary;
+  color: $bio-primary-dark;
   line-height: 1.1;
 }
 
-.salud__hero-stat-label {
-  font-size: 0.8rem;
+.bio__hero-stat-label {
+  font-size: 0.78rem;
   font-weight: 500;
-  color: $ms-text-light;
+  color: $bio-text-light;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.06em;
   margin-top: 0.2rem;
 }
 
-.salud__hero-actions {
+.bio__hero-actions {
   display: flex;
   flex-wrap: wrap;
   gap: 1rem;
 }
 
-.salud__hero-image {
+// Organic illustration on the right
+.bio__hero-organic {
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-.salud__hero-illustration {
-  max-width: 100%;
-  height: auto;
-  animation: float 5s ease-in-out infinite;
-}
-
-// ============================================================
-// 3. FEATURES — 100vh Immersive Design
-// ============================================================
-
-.salud__features {
-  min-height: 100vh;
+.bio__hero-organic-inner {
+  position: relative;
+  width: 300px;
+  height: 300px;
   display: flex;
   align-items: center;
-  background: linear-gradient(170deg, #faf7f4 0%, #f4ebe0 35%, #efe2d1 100%);
-  position: relative;
-  overflow: hidden;
-  padding: 6rem 0;
+  justify-content: center;
+  background: radial-gradient(circle at 45% 40%, rgba($bio-primary, 0.08) 0%, transparent 70%);
+  border-radius: $radius-blob;
+  animation: bio-breathe 6s ease-in-out infinite;
 }
 
-.salud__features-bg {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  overflow: hidden;
-}
-
-.salud__features-blob {
+.bio__hero-organic-dot {
   position: absolute;
   border-radius: 50%;
-  filter: blur(110px);
-  animation: blob-morph-slow 22s ease-in-out infinite;
+  background: $bio-primary;
 
   &--a {
-    width: 550px;
-    height: 550px;
-    background: radial-gradient(
-      circle at 50% 50%,
-      rgba($ms-primary, 0.1) 0%,
-      transparent 70%
-    );
-    top: -260px;
-    left: -120px;
+    width: 12px;
+    height: 12px;
+    opacity: 0.2;
+    top: 50px;
+    right: 60px;
+    animation: bio-float 4s ease-in-out infinite;
   }
 
   &--b {
-    width: 420px;
-    height: 420px;
-    background: radial-gradient(
-      circle at 50% 50%,
-      rgba($ms-accent, 0.09) 0%,
-      transparent 70%
-    );
-    bottom: -200px;
-    right: -100px;
-    animation-delay: -8s;
-    animation-duration: 26s;
+    width: 8px;
+    height: 8px;
+    opacity: 0.15;
+    bottom: 70px;
+    left: 55px;
+    animation: bio-float 5s ease-in-out infinite;
+    animation-delay: -1.5s;
   }
 
   &--c {
-    width: 340px;
-    height: 340px;
-    background: radial-gradient(
-      circle at 50% 50%,
-      rgba($ms-primary, 0.06) 0%,
-      transparent 70%
-    );
-    top: 35%;
-    right: 5%;
-    animation-delay: -14s;
-    animation-duration: 20s;
+    width: 14px;
+    height: 14px;
+    opacity: 0.18;
+    top: 130px;
+    left: 80px;
+    animation: bio-float 3.5s ease-in-out infinite;
+    animation-delay: -2.5s;
   }
 }
 
-.salud__features-headline {
-.salud__features-headline-mark {
+.bio__hero-organic-icon {
+  font-size: 3.5rem;
+  color: $bio-primary;
+  opacity: 0.5;
+  position: relative;
+  z-index: 1;
+  animation: bio-float-slow 5s ease-in-out infinite;
+}
+
+// ============================================================
+// 3. SERVICIOS — Horizontal scroll
+// ============================================================
+
+.bio__services {
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: $section-py 0;
+  background: $bio-surface;
+}
+
+.bio__services-header {
+  margin-bottom: 2.5rem;
+}
+
+.bio__services-scroll {
+  overflow-x: auto;
+  overflow-y: visible;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  padding: 0.5rem 0;
+
+  &::-webkit-scrollbar {
+    height: 6px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: $bio-primary-pale;
+    border-radius: 3px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: $bio-primary-light;
+    border-radius: 3px;
+  }
+}
+
+.bio__services-track {
+  display: flex;
+  gap: 1.5rem;
+  padding: 0.5rem calc((100vw - 1320px) / 2 + 1.5rem);
+  min-width: min-content;
+
+  @media (max-width: 1400px) {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+}
+
+.bio__services-card {
+  min-width: 300px;
+  max-width: 320px;
+  scroll-snap-align: start;
+  background: $bio-secondary;
+  border: 1px solid $bio-border;
+  border-radius: $radius-organic;
+  padding: 2.25rem 1.75rem 2rem;
+  transition: background 0.3s, transform 0.3s, box-shadow 0.3s;
+
+  &:hover {
+    background: $bio-primary-ghost;
+    transform: translateY(-6px);
+    box-shadow: 0 16px 40px rgba($bio-text, 0.06);
+  }
+}
+
+.bio__services-card-icon {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: $bio-primary-pale;
   display: flex;
   align-items: center;
-  gap: 0.75rem;
+  justify-content: center;
   margin-bottom: 1.5rem;
 
   i {
-    font-size: 2rem;
-    color: $ms-primary;
-    opacity: 0.7;
-    animation: pulse-subtle 3s ease-in-out infinite;
+    font-size: 1.6rem;
+    color: $bio-primary-dark;
   }
 }
 
-.salud__features-headline-line {
-  display: block;
-  width: 48px;
-  height: 2px;
-  background: linear-gradient(90deg, $ms-primary, transparent);
-  border-radius: 1px;
-}
-
-  &-title {
-    font-size: clamp(1.75rem, 4vw, 2.5rem);
-    font-weight: 700;
-    color: $ms-text;
-    font-family: 'Playfair Display', serif;
-    margin-bottom: 1.25rem;
-    line-height: 1.15;
-  }
-
-  &-subtitle {
-    font-size: 1.05rem;
-    line-height: 1.7;
-    color: $ms-text-light;
-    max-width: 380px;
-    margin: 0;
-  }
-}
-
-.salud__features-list {
-  display: flex;
-  flex-direction: column;
-  gap: 2.25rem;
-}
-
-.salud__features-item {
-  display: flex;
-  align-items: flex-start;
-  gap: 1.5rem;
-}
-
-.salud__features-item-number {
-  flex-shrink: 0;
-  font-family: 'Playfair Display', serif;
-  font-size: 2.5rem;
+.bio__services-card-title {
+  font-size: 1.15rem;
   font-weight: 700;
-  color: $ms-primary;
-  line-height: 0.85;
-  opacity: 0.35;
-  min-width: 3rem;
-  padding-top: 0.2rem;
-}
-
-.salud__features-item-icon {
-  flex-shrink: 0;
-  width: 52px;
-  height: 52px;
-  border-radius: 14px;
-  background: rgba($ms-primary, 0.08);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  i {
-    font-size: 1.35rem;
-    color: $ms-primary;
-  }
-}
-
-.salud__features-item-body {
-  h3 {
-    font-size: 1.18rem;
-    font-weight: 700;
-    color: $ms-text;
-    margin-bottom: 0.35rem;
-    font-family: 'Playfair Display', serif;
-  }
-
-  p {
-    font-size: 0.9rem;
-    line-height: 1.65;
-    color: $ms-text-light;
-    margin: 0;
-  }
-}
-
-// ============================================================
-// 4. SERVICIOS
-// ============================================================
-
-.salud__services {
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  padding: $section-padding-desktop 0;
-  background: $ms-surface;
-}
-
-.salud__services-card {
-  background: $ms-surface;
-  border: 1px solid $ms-border;
-  border-radius: 14px;
-  padding: 2.25rem 1.75rem 2rem;
-  height: 100%;
-  text-align: center;
-  position: relative;
-  overflow: hidden;
-  transition:
-    transform 0.3s ease,
-    box-shadow 0.3s ease;
-
-  &::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 4px;
-    background: linear-gradient(90deg, $ms-primary, rgba($ms-primary, 0.3));
-    border-radius: 14px 14px 0 0;
-    transform: scaleX(0);
-    transform-origin: left;
-    transition: transform 0.4s ease;
-  }
-
-  &:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 18px 44px rgba($ms-text, 0.09);
-
-    &::before {
-      transform: scaleX(1);
-    }
-
-    .salud__services-card-more {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-}
-
-.salud__services-card-icon {
-  font-size: 2.375rem;
-  color: $ms-primary;
-  margin-bottom: 1.25rem;
-  display: block;
-  line-height: 1;
-}
-
-.salud__services-card-title {
-  font-size: 1.2rem;
-  font-weight: 700;
-  color: $ms-text;
+  color: $bio-text;
   margin-bottom: 0.65rem;
   font-family: 'Playfair Display', serif;
 }
 
-.salud__services-card-desc {
-  font-size: 0.9rem;
+.bio__services-card-desc {
+  font-size: 0.88rem;
   line-height: 1.65;
-  color: $ms-text-light;
-  margin: 0 0 1rem;
-}
-
-.salud__services-card-more {
-  font-size: 0.85rem;
-  font-weight: 600;
-  color: $ms-primary;
-  opacity: 0;
-  transform: translateY(8px);
-  transition:
-    opacity 0.3s ease,
-    transform 0.3s ease;
-  display: inline-block;
+  color: $bio-text-light;
+  margin: 0;
 }
 
 // ============================================================
-// 5. NOSOTROS (ABOUT)
+// 4. NOSOTROS — Two-column with organic blob
 // ============================================================
 
-.salud__nosotros {
-  min-height: 100vh;
+.bio__nosotros {
+  min-height: 100dvh;
   display: flex;
-  flex-direction: column;
-  justify-content: center;
-  padding: $section-padding-desktop 0;
-  background:
-    radial-gradient(ellipse at 30% 50%, rgba($ms-accent, 0.08) 0%, transparent 70%),
-    $ms-bg;
+  align-items: center;
+  padding: $section-py 0;
+  background: $bio-secondary;
 }
 
-// --- CSS illustration replacing img ---
+.bio__nosotros-content {
+  // container
+}
 
-.salud__nosotros-image {
+.bio__nosotros-text {
+  font-size: 1.02rem;
+  line-height: 1.75;
+  color: $bio-text-light;
+  margin-bottom: 1.25rem;
+}
+
+.bio__nosotros-timeline {
+  margin-top: 2rem;
+  padding-left: 1.5rem;
+  border-left: 2px solid $bio-primary-pale;
+}
+
+.bio__nosotros-timeline-item {
+  position: relative;
+  padding: 0.6rem 0 0.6rem 1.5rem;
+
+  &::before {
+    content: '';
+    position: absolute;
+    left: -1.65rem;
+    top: 0.85rem;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: $bio-primary;
+  }
+}
+
+.bio__nosotros-timeline-year {
+  font-family: 'Playfair Display', serif;
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: $bio-primary-dark;
+  display: block;
+  margin-bottom: 0.15rem;
+}
+
+.bio__nosotros-timeline-event {
+  font-size: 0.88rem;
+  color: $bio-text-light;
+  line-height: 1.5;
+}
+
+// Organic blob visual
+.bio__nosotros-visual {
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-.salud__nosotros-illustration {
+.bio__nosotros-blob {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.bio__nosotros-blob-shape {
   position: relative;
-  width: 380px;
-  height: 380px;
-  animation: float 5s ease-in-out infinite;
-}
-
-.salud__nosotros-illustration-circle {
-  position: absolute;
-  border-radius: 50%;
-
-  &--lg {
-    width: 220px;
-    height: 220px;
-    background: rgba($ms-primary, 0.14);
-    top: 20px;
-    left: 40px;
-    animation: float 4s ease-in-out infinite;
-    animation-delay: 0s;
-  }
-
-  &--md {
-    width: 160px;
-    height: 160px;
-    background: rgba($ms-accent, 0.2);
-    bottom: 30px;
-    right: 30px;
-    animation: float 5s ease-in-out infinite;
-    animation-delay: -1.5s;
-  }
-
-  &--sm {
-    width: 100px;
-    height: 100px;
-    background: rgba($ms-primary, 0.1);
-    top: 90px;
-    right: 50px;
-    animation: float 3.5s ease-in-out infinite;
-    animation-delay: -2.5s;
-  }
-
-  &--xs {
-    width: 64px;
-    height: 64px;
-    background: rgba(#e8dcc4, 0.35);
-    bottom: 110px;
-    left: 75px;
-    animation: float 4.5s ease-in-out infinite;
-    animation-delay: -3s;
-  }
-
-  &--accent {
-    width: 48px;
-    height: 48px;
-    background: rgba($ms-primary-dark, 0.18);
-    top: 140px;
-    left: 50px;
-    animation: float 6s ease-in-out infinite;
-    animation-delay: -0.8s;
-  }
-}
-
-.salud__nosotros-content {
-  // container for text + checks
-}
-
-.salud__nosotros-text {
-  font-size: 1.05rem;
-  line-height: 1.75;
-  color: $ms-text-light;
-  margin-bottom: 1.75rem;
-}
-
-.salud__nosotros-checks {
-  list-style: none;
-  padding: 0;
-  margin: 0;
+  width: 340px;
+  height: 340px;
+  border-radius: $radius-blob;
+  background: linear-gradient(135deg, rgba($bio-primary, 0.1) 0%, rgba($bio-accent, 0.12) 100%);
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 0.85rem 1.5rem;
+  place-items: center;
+  animation: bio-breathe 7s ease-in-out infinite;
+  padding: 2rem;
 }
 
-.salud__nosotros-check {
-  display: flex;
-  align-items: center;
-  gap: 0.65rem;
-  font-size: 0.95rem;
-  font-weight: 500;
-  color: $ms-text;
-
-  i {
-    font-size: 1.2rem;
-    color: $ms-primary;
-    flex-shrink: 0;
-  }
-}
-
-// ============================================================
-// 6. TESTIMONIALS
-// ============================================================
-
-.salud__testimonials {
-  min-height: 100vh;
+.bio__nosotros-blob-stat {
+  text-align: center;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  padding: $section-padding-desktop 0;
-  background: $ms-accent-light;
 }
 
-.salud__testimonials-card {
-  background: $ms-surface;
-  border: 1px solid $ms-border;
-  border-left: 4px solid $ms-primary;
-  border-radius: 0 14px 14px 0;
-  padding: 2.5rem 2.25rem;
-  height: 100%;
-  position: relative;
-  transition:
-    transform 0.3s ease,
-    box-shadow 0.3s ease;
+.bio__nosotros-blob-stat-num {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.65rem;
+  font-weight: 800;
+  color: $bio-primary-dark;
+  line-height: 1.1;
+}
 
-  &:hover {
-    transform: translateY(-6px);
-    box-shadow: 0 16px 40px rgba($ms-text, 0.08);
+.bio__nosotros-blob-stat-lbl {
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: $bio-text-light;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-top: 0.2rem;
+}
+
+// ============================================================
+// 5. FEATURES — Icon grid with molecule connectors
+// ============================================================
+
+.bio__features {
+  min-height: 100dvh;
+  display: flex;
+  align-items: center;
+  padding: $section-py 0;
+  background: $bio-surface;
+}
+
+.bio__features-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0;
+  margin-top: 3rem;
+  position: relative;
+}
+
+.bio__features-item {
+  text-align: center;
+  padding: 2rem 1.5rem;
+  position: relative;
+
+  // Vertical connector (between rows)
+  &::before {
+    content: '';
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    width: 0;
+    height: 100%;
+    border-left: 1.5px dotted rgba($bio-primary, 0.3);
+    transform: translateX(-50%);
+    z-index: 0;
+  }
+
+  // Horizontal connector (between columns)
+  &::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    right: 0;
+    height: 0;
+    width: 100%;
+    border-top: 1.5px dotted rgba($bio-primary, 0.3);
+    transform: translateY(-50%);
+    z-index: 0;
+  }
+
+  // Remove connectors on edges
+  &:nth-child(3n)::after { display: none; }
+  &:nth-child(n+4)::before { display: none; }
+}
+
+.bio__features-icon {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  background: $bio-primary-pale;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1.25rem;
+  position: relative;
+  z-index: 1;
+  transition: background 0.3s;
+
+  i {
+    font-size: 1.65rem;
+    color: $bio-primary-dark;
+  }
+
+  .bio__features-item:hover & {
+    background: $bio-primary;
+    i { color: $bio-surface; }
   }
 }
 
-.salud__testimonials-quote-mark {
+.bio__features-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: $bio-text;
+  margin-bottom: 0.5rem;
   font-family: 'Playfair Display', serif;
-  font-size: 3.5rem;
+  position: relative;
+  z-index: 1;
+}
+
+.bio__features-desc {
+  font-size: 0.88rem;
+  line-height: 1.6;
+  color: $bio-text-light;
+  margin: 0;
+  max-width: 260px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
+}
+
+// ============================================================
+// 6. TESTIMONIOS — Staggered 2-col organic cards
+// ============================================================
+
+.bio__testimonials {
+  min-height: 100dvh;
+  display: flex;
+  align-items: center;
+  padding: $section-py 0;
+  background: $bio-secondary;
+}
+
+.bio__testimonials-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem 2rem;
+  margin-top: 3rem;
+  align-items: start;
+}
+
+.bio__testimonials-card {
+  background: $bio-surface;
+  border-left: 3px solid $bio-primary;
+  border-radius: 0 $radius-organic $radius-organic 0;
+  padding: 2rem 2rem 1.75rem;
+  position: relative;
+  transition: transform 0.3s, box-shadow 0.3s;
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 32px rgba($bio-text, 0.06);
+  }
+
+  &--tall {
+    margin-top: 2.5rem;
+  }
+}
+
+.bio__testimonials-quote-icon {
+  font-family: 'Playfair Display', serif;
+  font-size: 4rem;
   line-height: 1;
-  color: rgba($ms-primary, 0.2);
+  color: rgba($bio-primary, 0.15);
   position: absolute;
-  top: 0.75rem;
+  top: 0.25rem;
   left: 1.5rem;
   pointer-events: none;
 }
 
-.salud__testimonials-quote {
-  font-style: italic;
+.bio__testimonials-quote {
   font-size: 0.95rem;
-  line-height: 1.8;
-  color: $ms-text-light;
+  line-height: 1.75;
+  color: $bio-text-light;
   margin-bottom: 1.5rem;
   position: relative;
   z-index: 1;
+  font-style: italic;
 }
 
-.salud__testimonials-footer {
+.bio__testimonials-author {
   padding-top: 1rem;
-  border-top: 1px solid rgba($ms-border, 0.5);
-}
+  border-top: 1px solid $bio-border;
 
-.salud__testimonials-author {
-  font-weight: 700;
-  font-size: 0.95rem;
-  color: $ms-text;
-  margin: 0 0 0.15rem;
-}
+  strong {
+    display: block;
+    font-size: 0.95rem;
+    color: $bio-text;
+    margin-bottom: 0.15rem;
+  }
 
-.salud__testimonials-role {
-  font-size: 0.8rem;
-  color: $ms-primary;
-  margin: 0;
-  font-weight: 500;
-}
-
-// ============================================================
-// 7. CONTACTO + MAPA (Redesigned)
-// ============================================================
-
-.salud__contact {
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  padding: $section-padding-desktop 0 0;
-  background:
-    linear-gradient(
-      180deg,
-      rgba($ms-bg, 1) 0%,
-      rgba($ms-primary, 0.04) 40%,
-      rgba($ms-primary, 0.08) 100%
-    );
-}
-
-.salud__contact-map {
-  width: 100%;
-}
-
-.salud__contact-map-inner {
-  position: relative;
-  width: 100%;
-  height: 420px;
-  background: #e8e4df;
-  border-radius: 16px;
-  border: 1px solid $ms-border;
-  overflow: hidden;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.salud__contact-map-grid {
-  position: absolute;
-  inset: 0;
-  background-image:
-    linear-gradient(rgba($ms-text, 0.05) 1px, transparent 1px),
-    linear-gradient(90deg, rgba($ms-text, 0.05) 1px, transparent 1px);
-  background-size: 40px 40px;
-}
-
-.salud__contact-map-zoom {
-  position: absolute;
-  top: 1rem;
-  right: 1rem;
-  z-index: 4;
-  display: flex;
-  flex-direction: column;
-  border-radius: 8px;
-  overflow: hidden;
-  box-shadow: 0 2px 8px rgba($ms-text, 0.12);
-}
-
-.salud__contact-map-zoom-btn {
-  width: 32px;
-  height: 32px;
-  border: 1px solid $ms-border;
-  background: $ms-surface;
-  color: $ms-text;
-  font-size: 1rem;
-  font-weight: 600;
-  cursor: default;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  line-height: 1;
-  font-family: 'Montserrat', sans-serif;
-
-  &:first-child {
-    border-bottom: none;
+  span {
+    font-size: 0.8rem;
+    color: $bio-primary;
+    font-weight: 500;
   }
 }
 
-.salud__contact-map-pin {
-  position: relative;
-  z-index: 2;
-  width: 48px;
-  height: 48px;
+// ============================================================
+// 7. CONTACTO + BOOKING — Split layout
+// ============================================================
+
+.bio__contact {
+  min-height: 100dvh;
+  display: flex;
+  align-items: center;
+  padding: $section-py 0;
+  background: $bio-surface;
+}
+
+.bio__contact-info {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.bio__contact-info-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.bio__contact-info-icon {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: $bio-primary-pale;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
 
   i {
-    font-size: 3rem;
-    color: $ms-primary-dark;
-    position: relative;
-    z-index: 2;
+    font-size: 1.1rem;
+    color: $bio-primary-dark;
   }
 }
 
-.salud__contact-map-pulse {
-  position: absolute;
-  top: 20%;
-  left: 50%;
-  width: 80px;
-  height: 80px;
-  border-radius: 50%;
-  background: rgba($ms-primary, 0.2);
-  animation: pulse-ring 2s ease-out infinite;
-  transform: translate(-50%, -50%);
-  z-index: 1;
+.bio__contact-info-text {
+  font-size: 0.95rem;
+  line-height: 1.55;
+  color: $bio-text-light;
+  padding-top: 0.4rem;
 }
 
-.salud__contact-map-label {
-  position: absolute;
-  bottom: 1rem;
-  left: 50%;
-  transform: translateX(-50%);
-  background: rgba($ms-surface, 0.92);
-  backdrop-filter: blur(6px);
-  padding: 0.45rem 1.25rem;
-  border-radius: 50px;
-  font-size: 0.8rem;
-  font-weight: 600;
-  color: $ms-text;
-  z-index: 3;
-  border: 1px solid $ms-border;
-  box-shadow: 0 2px 12px rgba($ms-text, 0.06);
-  white-space: nowrap;
-}
+.bio__contact-info-link {
+  color: $bio-primary-dark;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.2s;
 
-// --- Contact details (labeled layout) ---
-
-.salud__contact-details {
-  display: flex;
-  flex-direction: column;
-  gap: 0;
-  height: 100%;
-  justify-content: center;
-}
-
-.salud__contact-detail {
-  padding: 1.1rem 0;
-  border-bottom: 1px solid rgba($ms-border, 0.5);
-
-  &:last-child {
-    border-bottom: none;
-    padding-bottom: 0;
-  }
-
-  &:first-child {
-    padding-top: 0;
+  &:hover {
+    color: $bio-primary;
   }
 }
 
-.salud__contact-detail-label {
-  font-size: 0.68rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.12em;
-  color: $ms-primary;
-  margin-bottom: 0.35rem;
-  font-family: 'Montserrat', sans-serif;
-}
-
-.salud__contact-detail-value {
-  font-size: 1rem;
-  font-weight: 600;
-  color: $ms-text;
-  margin-bottom: 0.15rem;
-  line-height: 1.4;
-}
-
-.salud__contact-detail-sub {
-  font-size: 0.88rem;
-  color: $ms-text-light;
-  line-height: 1.5;
-}
-
-.salud__contact-detail {
-  display: flex;
-  gap: 14px;
-  align-items: flex-start;
-}
-
-.salud__contact-detail-icon {
-  font-size: 1.2rem;
-  color: $ms-primary;
-  margin-top: 0.15rem;
-  flex-shrink: 0;
-}
-
-.salud__contact-info-btn {
+.bio__contact-whatsapp {
   display: inline-flex;
-  margin-top: 1.25rem;
-  padding: 8px 20px;
-  font-size: 0.8rem;
-  border-radius: 50px;
-}
-
-// --- CTA Bar (transparent — blended) ---
-
-.salud__contact-cta-bar {
-  border-top: 1px solid $ms-border;
-  padding-top: 3rem;
-  padding-bottom: $section-padding-desktop;
-  margin-top: 2.5rem;
-}
-
-.salud__contact-cta-bar-inner {
-  display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 2rem;
-  text-align: center;
-  flex-wrap: wrap;
+  gap: 0.65rem;
+  margin-top: 0.5rem;
+  padding: 0.8rem 1.5rem;
+  background: #25D366;
+  color: #fff;
+  border-radius: 50px;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.9rem;
+  transition: background 0.25s, transform 0.2s;
+  width: fit-content;
+
+  i {
+    font-size: 1.3rem;
+  }
+
+  &:hover {
+    background: #1ebe5b;
+    color: #fff;
+    transform: translateY(-2px);
+  }
 }
 
-.salud__contact-cta-title {
-  font-size: 1.75rem;
+// Booking form
+.bio__contact-form {
+  background: $bio-secondary;
+  border: 1px solid $bio-border;
+  border-radius: $radius-organic;
+  padding: 2.5rem;
+}
+
+.bio__contact-form-title {
+  font-size: 1.35rem;
   font-weight: 700;
-  color: $ms-text;
-  margin-bottom: 0.35rem;
+  color: $bio-text;
+  margin-bottom: 0.5rem;
   font-family: 'Playfair Display', serif;
 }
 
-.salud__contact-cta-subtitle {
-  font-size: 0.95rem;
-  color: $ms-text-light;
-  margin: 0;
-  max-width: 400px;
+.bio__contact-form-subtitle {
+  font-size: 0.9rem;
+  color: $bio-text-light;
+  margin-bottom: 1.75rem;
+  line-height: 1.5;
 }
 
-.salud__contact-cta-text {
-  text-align: left;
+.bio__contact-form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.85rem;
+  margin-bottom: 0.85rem;
+}
+
+.bio__contact-form form {
+  input,
+  select {
+    width: 100%;
+    padding: 0.8rem 1rem;
+    border: 1px solid $bio-border;
+    border-radius: 10px;
+    font-size: 0.9rem;
+    font-family: 'Montserrat', sans-serif;
+    color: $bio-text;
+    background: $bio-surface;
+    outline: none;
+    transition: border-color 0.2s;
+
+    &::placeholder {
+      color: $bio-text-muted;
+    }
+
+    &:focus {
+      border-color: $bio-primary;
+    }
+  }
+
+  select {
+    cursor: pointer;
+    appearance: auto;
+  }
+
+  .bio__btn--primary {
+    margin-top: 0.5rem;
+    padding: 0.9rem;
+    font-size: 0.95rem;
+  }
+}
+
+.bio__contact-form-success {
+  text-align: center;
+  padding: 2rem 0;
+
+  i {
+    font-size: 3rem;
+    color: $bio-primary;
+    margin-bottom: 1rem;
+    display: block;
+  }
+
+  h4 {
+    font-size: 1.25rem;
+    color: $bio-text;
+    margin-bottom: 0.5rem;
+  }
+
+  p {
+    color: $bio-text-light;
+    margin: 0;
+  }
 }
 
 // ============================================================
 // 8. FOOTER
 // ============================================================
 
-.salud__footer {
-  background-color: $ms-footer-bg;
-  color: rgba(#fff, 0.7);
+.bio__footer {
+  background: $bio-footer-bg;
+  color: rgba(#fff, 0.65);
   padding: 4.5rem 0 1.5rem;
 
   p {
-    color: rgba(#fff, 0.55);
+    color: rgba(#fff, 0.5);
   }
 }
 
-.salud__footer-brand {
-  margin-bottom: 0.75rem;
-}
-
-.salud__footer-brand-text {
+.bio__footer-logo {
   font-family: 'Playfair Display', serif;
   font-weight: 700;
   font-size: 1.3rem;
-  color: rgba(#fff, 0.9);
-  letter-spacing: 0.02em;
+  color: rgba(#fff, 0.85);
+  letter-spacing: 0.03em;
+  display: block;
+  margin-bottom: 0.75rem;
 }
 
-.salud__footer-tagline {
-  font-size: 0.875rem;
+.bio__footer-tagline {
+  font-size: 0.85rem;
   line-height: 1.65;
-  color: rgba(#fff, 0.45) !important;
+  color: rgba(#fff, 0.4) !important;
   max-width: 280px;
   margin-bottom: 1.25rem;
 }
 
-.salud__footer-social {
+.bio__footer-social {
   display: flex;
   gap: 0.85rem;
 
@@ -1182,62 +1117,58 @@ $section-title-margin: 3.5rem;
     color: rgba(#fff, 0.5);
     text-decoration: none;
     font-size: 0.9rem;
-    transition:
-      background 0.2s ease,
-      color 0.2s ease;
+    transition: background 0.2s, color 0.2s;
 
     &:hover {
-      background: $ms-primary;
-      color: $ms-surface;
+      background: $bio-primary;
+      color: $bio-surface;
     }
   }
 }
 
-.salud__footer-heading {
-  font-size: 0.8rem;
+.bio__footer-heading {
+  font-size: 0.78rem;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.1em;
-  color: rgba(#fff, 0.7);
+  color: rgba(#fff, 0.65);
   margin-bottom: 1rem;
+  font-family: 'Montserrat', sans-serif;
 }
 
-.salud__footer-links {
+.bio__footer-links {
   list-style: none;
   padding: 0;
   margin: 0;
 
-  li {
-    margin-bottom: 0.5rem;
-  }
+  li { margin-bottom: 0.5rem; }
 
   a {
-    font-size: 0.875rem;
-    color: rgba(#fff, 0.45);
+    font-size: 0.85rem;
+    color: rgba(#fff, 0.4);
     text-decoration: none;
     cursor: pointer;
-    transition: color 0.2s ease;
+    transition: color 0.2s;
 
     &:hover {
-      color: $ms-primary;
+      color: $bio-primary-light;
     }
   }
 }
 
-.salud__footer-newsletter-text {
+.bio__footer-newsletter-text {
   font-size: 0.8rem;
   line-height: 1.6;
-  color: rgba(#fff, 0.4) !important;
+  color: rgba(#fff, 0.35) !important;
   margin-bottom: 0.85rem;
 }
 
-.salud__footer-newsletter {
+.bio__footer-newsletter {
   display: flex;
-  gap: 0;
   max-width: 100%;
 }
 
-.salud__footer-newsletter-input {
+.bio__footer-newsletter-input {
   flex: 1;
   padding: 0.65rem 1.1rem;
   border: 1px solid rgba(#fff, 0.12);
@@ -1248,36 +1179,29 @@ $section-title-margin: 3.5rem;
   font-size: 0.85rem;
   font-family: 'Montserrat', sans-serif;
   outline: none;
-  transition:
-    border-color 0.2s ease,
-    background 0.2s ease;
 
-  &::placeholder {
-    color: rgba(#fff, 0.3);
-  }
+  &::placeholder { color: rgba(#fff, 0.25); }
 
   &:focus {
-    border-color: $ms-primary;
+    border-color: $bio-primary;
     background: rgba(#fff, 0.09);
   }
 }
 
-.salud__footer-newsletter-btn {
+.bio__footer-newsletter-btn {
   padding: 0 1.15rem;
   border: none;
   border-radius: 0 10px 10px 0;
-  background: $ms-primary;
-  color: $ms-surface;
+  background: $bio-primary;
+  color: $bio-surface;
   cursor: pointer;
   font-size: 0.9rem;
-  transition: background 0.2s ease;
+  transition: background 0.2s;
 
-  &:hover {
-    background: $ms-primary-dark;
-  }
+  &:hover { background: $bio-primary-dark; }
 }
 
-.salud__footer-legal {
+.bio__footer-legal {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1286,26 +1210,24 @@ $section-title-margin: 3.5rem;
 
   a {
     font-size: 0.75rem;
-    color: rgba(#fff, 0.35);
+    color: rgba(#fff, 0.3);
     text-decoration: none;
-    transition: color 0.2s ease;
+    transition: color 0.2s;
 
-    &:hover {
-      color: $ms-primary;
-    }
+    &:hover { color: $bio-primary-light; }
   }
 
   span {
-    color: rgba(#fff, 0.15);
+    color: rgba(#fff, 0.12);
     font-size: 0.75rem;
     user-select: none;
   }
 }
 
-.salud__footer-bottom {
+.bio__footer-bottom {
   margin-top: 1.75rem;
   padding-top: 1.5rem;
-  border-top: 1px solid rgba(#fff, 0.08);
+  border-top: 1px solid rgba(#fff, 0.06);
   text-align: center;
 
   p {
@@ -1318,64 +1240,62 @@ $section-title-margin: 3.5rem;
 // BOOKING MODAL
 // ============================================================
 
-.salud__modal-overlay {
+.bio__modal-overlay {
   position: fixed;
   inset: 0;
-  background: rgba($ms-text, 0.55);
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
+  background: rgba($bio-text, 0.5);
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 1050;
+  z-index: 1060;
   padding: 1rem;
-  animation: modal-fade-in 0.25s ease;
+  animation: bio-modal-in 0.25s ease;
 }
 
-.salud__modal {
-  background: $ms-surface;
-  border-radius: 16px;
+.bio__modal {
+  background: $bio-surface;
+  border-radius: $radius-organic;
   padding: 2.5rem;
   max-width: 480px;
   width: 100%;
   position: relative;
-  box-shadow: 0 24px 64px rgba($ms-text, 0.2);
-  animation: modal-scale-in 0.3s ease;
+  box-shadow: 0 24px 64px rgba($bio-text, 0.15);
+  animation: bio-modal-scale 0.3s ease;
 
   h3 {
     font-size: 1.45rem;
     margin-bottom: 0.75rem;
     font-family: 'Playfair Display', serif;
-    color: $ms-text;
+    color: $bio-text;
   }
 
   > p {
     font-size: 0.9rem;
-    color: $ms-text-light;
+    color: $bio-text-light;
     margin-bottom: 1.5rem;
     line-height: 1.6;
   }
 }
 
-.salud__modal-close {
+.bio__modal-close {
   position: absolute;
   top: 1.25rem;
   right: 1.25rem;
   background: none;
   border: none;
-  font-size: 1.25rem;
-  color: $ms-text-light;
+  font-size: 1.4rem;
+  color: $bio-text-muted;
   cursor: pointer;
   padding: 0.25rem;
   line-height: 1;
-  transition: color 0.2s ease;
+  transition: color 0.2s;
 
-  &:hover {
-    color: $ms-text;
-  }
+  &:hover { color: $bio-text; }
 }
 
-.salud__modal form {
+.bio__modal form {
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
@@ -1384,22 +1304,17 @@ $section-title-margin: 3.5rem;
   select {
     width: 100%;
     padding: 0.75rem 1rem;
-    border: 1px solid $ms-border;
+    border: 1px solid $bio-border;
     border-radius: 10px;
     font-size: 0.9rem;
     font-family: 'Montserrat', sans-serif;
-    color: $ms-text;
-    background: $ms-bg;
+    color: $bio-text;
+    background: $bio-secondary;
     outline: none;
-    transition: border-color 0.2s ease;
+    transition: border-color 0.2s;
 
-    &::placeholder {
-      color: $ms-text-light;
-    }
-
-    &:focus {
-      border-color: $ms-primary;
-    }
+    &::placeholder { color: $bio-text-muted; }
+    &:focus { border-color: $bio-primary; }
   }
 
   select {
@@ -1410,36 +1325,34 @@ $section-title-margin: 3.5rem;
   button[type='submit'] {
     width: 100%;
     padding: 0.875rem;
-    background: $ms-primary;
-    color: $ms-surface;
+    background: $bio-primary;
+    color: $bio-surface;
     border: none;
     border-radius: 10px;
     font-size: 0.95rem;
     font-weight: 600;
     cursor: pointer;
     font-family: 'Montserrat', sans-serif;
-    transition: background 0.25s ease;
+    transition: background 0.25s;
     margin-top: 0.25rem;
 
-    &:hover {
-      background: $ms-primary-dark;
-    }
+    &:hover { background: $bio-primary-dark; }
   }
 }
 
-.salud__modal-success {
+.bio__modal-success {
   text-align: center;
   padding: 2rem 0;
 
-  h3 {
-    color: $ms-primary;
-    margin-bottom: 0.5rem;
+  i {
+    font-size: 3rem;
+    color: $bio-primary;
+    margin-bottom: 1rem;
+    display: block;
   }
 
-  p {
-    color: $ms-text-light;
-    margin-bottom: 0;
-  }
+  h3 { color: $bio-text; margin-bottom: 0.5rem; }
+  p { color: $bio-text-light; margin-bottom: 0; }
 }
 
 // ============================================================
@@ -1447,132 +1360,58 @@ $section-title-margin: 3.5rem;
 // ============================================================
 
 @media (max-width: 991.98px) {
-  .salud__navbar-links {
+  .bio__nav-links {
     display: none !important;
   }
 
-  .salud__navbar-toggle {
-    display: block;
-  }
-
-  .salud__navbar-brand-text {
-    font-size: 1.25rem;
-  }
-
-  .salud__navbar-mobile {
+  .bio__nav-toggle {
     display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
-    position: absolute;
-    top: 100%;
-    left: 0;
-    right: 0;
-    background: $ms-surface;
-    padding: 1.5rem;
-    border-bottom: 1px solid $ms-border;
-    box-shadow: 0 8px 24px rgba($ms-text, 0.08);
-
-    a {
-      font-size: 0.9rem;
-      font-weight: 500;
-      color: $ms-text-light;
-      text-decoration: none;
-      cursor: pointer;
-
-      &:hover {
-        color: $ms-primary;
-      }
-    }
-
-    .salud__navbar-cta {
-      display: inline-block;
-      text-align: center;
-      width: fit-content;
-    }
   }
 
-  .salud__features {
-    min-height: auto;
-    padding: 5rem 0;
+  .bio__nav-mobile {
+    display: flex;
   }
 
-  .salud__features-headline {
-    margin-bottom: 2.5rem;
-    text-align: center;
-
-    &-subtitle {
-      max-width: 100%;
-    }
+  .bio__hero-organic-inner {
+    width: 240px;
+    height: 240px;
   }
 
-  .salud__features-list {
-    gap: 1.5rem;
-  }
-
-  .salud__features-item-number {
-    font-size: 2rem;
-    min-width: 2.5rem;
-  }
-
-  .salud__contact-map-inner {
+  .bio__hero-leaf {
+    width: 240px;
     height: 300px;
+    opacity: 0.6;
   }
 
-  .salud__contact-cta-bar-inner {
-    flex-direction: column;
-    text-align: center;
-    gap: 1.5rem;
+  .bio__features-grid {
+    grid-template-columns: 1fr 1fr;
+
+    .bio__features-item {
+      &:nth-child(2n)::after { display: none; }
+      &:nth-child(3n)::after { display: block; }
+      &:nth-child(n+3)::before { display: block; }
+      &:nth-child(n+5)::before { display: none; }
+    }
   }
 
-  .salud__contact-cta-text {
-    text-align: center;
+  .bio__testimonials-grid {
+    grid-template-columns: 1fr;
+    max-width: 560px;
+    margin-left: auto;
+    margin-right: auto;
+
+    .bio__testimonials-card--tall {
+      margin-top: 0;
+    }
   }
 
-
-  .salud__nosotros-illustration {
+  .bio__nosotros-blob-shape {
     width: 300px;
     height: 300px;
   }
 
-  .salud__nosotros-illustration-circle {
-    &--lg {
-      width: 170px;
-      height: 170px;
-      top: 10px;
-      left: 20px;
-    }
-
-    &--md {
-      width: 120px;
-      height: 120px;
-      bottom: 20px;
-      right: 20px;
-    }
-
-    &--sm {
-      width: 80px;
-      height: 80px;
-      top: 70px;
-      right: 40px;
-    }
-
-    &--xs {
-      width: 50px;
-      height: 50px;
-      bottom: 90px;
-      left: 60px;
-    }
-
-    &--accent {
-      width: 38px;
-      height: 38px;
-      top: 110px;
-      left: 35px;
-    }
-  }
-
-  .salud__nosotros-checks {
-    grid-template-columns: 1fr 1fr;
+  .bio__contact-form {
+    margin-top: 2rem;
   }
 }
 
@@ -1581,197 +1420,112 @@ $section-title-margin: 3.5rem;
 // ============================================================
 
 @media (max-width: 767.98px) {
-  .salud__hero {
+  .bio__hero {
     text-align: center;
-    padding: 5rem 0 3rem;
+    padding: 5.5rem 0 3rem;
   }
 
-  .salud__hero-subtitle {
+  .bio__hero-subtitle {
     margin-left: auto;
     margin-right: auto;
   }
 
-  .salud__hero-stats {
+  .bio__hero-stats {
     justify-content: center;
-    gap: 1.5rem;
+    flex-wrap: wrap;
+    gap: 1.5rem 2rem;
   }
 
-  .salud__hero-actions {
+  .bio__hero-actions {
     justify-content: center;
   }
 
-  .salud__hero-title {
+  .bio__hero-title {
     font-size: clamp(1.75rem, 8vw, 2.5rem);
   }
 
-  .salud__hero-stat-number {
+  .bio__hero-leaf {
+    width: 180px;
+    height: 220px;
+    opacity: 0.35;
+  }
+
+  .bio__hero-vine {
+    display: none;
+  }
+
+  .bio__hero-stat-number {
     font-size: 1.4rem;
   }
 
-  .salud__hero-blob--a {
-    width: 350px;
-    height: 350px;
-    right: -160px;
-    top: -80px;
-    opacity: 0.5;
+  .bio__services {
+    padding: $section-py-mobile 0;
   }
 
-  .salud__hero-blob--b {
-    width: 250px;
-    height: 250px;
-    opacity: 0.4;
+  .bio__services-card {
+    min-width: 260px;
   }
 
-  .salud__features {
-    min-height: auto;
-    padding: $section-padding-mobile 0;
+  .bio__nosotros {
+    padding: $section-py-mobile 0;
   }
 
-  .salud__features-headline {
-    margin-bottom: 2rem;
-    text-align: center;
-
-    &-symbol {
-      font-size: 2rem;
-      margin-bottom: 1rem;
-    }
-
-    &-subtitle {
-      max-width: 100%;
-    }
-  }
-
-  .salud__features-blob--a {
-    width: 300px;
-    height: 300px;
-    top: -150px;
-    left: -150px;
-    opacity: 0.5;
-  }
-
-  .salud__features-blob--b {
-    width: 220px;
-    height: 220px;
-    bottom: -100px;
-    opacity: 0.4;
-  }
-
-  .salud__features-blob--c {
-    width: 180px;
-    height: 180px;
-    opacity: 0.4;
-  }
-
-  .salud__features-list {
-    gap: 1.25rem;
-  }
-
-  .salud__features-item {
-    gap: 1rem;
-  }
-
-  .salud__features-item-number {
-    font-size: 1.75rem;
-    min-width: 2rem;
-  }
-
-  .salud__features-item-icon {
-    width: 42px;
-    height: 42px;
-    border-radius: 12px;
-
-    i {
-      font-size: 1.15rem;
-    }
-  }
-
-  .salud__features-item-body {
-    h3 {
-      font-size: 1.05rem;
-    }
-
-    p {
-      font-size: 0.85rem;
-    }
-  }
-
-  .salud__services {
-    padding: $section-padding-mobile 0;
-  }
-
-  .salud__nosotros {
-    padding: $section-padding-mobile 0;
-  }
-
-  .salud__nosotros-image {
-    margin-bottom: 1.5rem;
-  }
-
-  .salud__nosotros-illustration {
+  .bio__nosotros-blob-shape {
     width: 260px;
     height: 260px;
+    margin-top: 2rem;
   }
 
-  .salud__nosotros-illustration-circle {
-    &--lg {
-      width: 140px;
-      height: 140px;
-    }
+  .bio__nosotros-blob-stat-num {
+    font-size: 1.3rem;
+  }
 
-    &--md {
-      width: 100px;
-      height: 100px;
-    }
+  .bio__features {
+    padding: $section-py-mobile 0;
+  }
 
-    &--sm {
-      width: 65px;
-      height: 65px;
-      top: 60px;
-      right: 30px;
-    }
+  .bio__features-grid {
+    grid-template-columns: 1fr;
+    max-width: 380px;
+    margin-left: auto;
+    margin-right: auto;
 
-    &--xs {
-      width: 42px;
-      height: 42px;
-      bottom: 80px;
-      left: 50px;
-    }
+    .bio__features-item {
+      &::after { display: none !important; }
+      &::before { display: none !important; }
 
-    &--accent {
-      width: 30px;
-      height: 30px;
-      top: 95px;
-      left: 25px;
+      &:not(:last-child) {
+        border-bottom: 1px solid $bio-primary-pale;
+      }
     }
   }
 
-  .salud__nosotros-checks {
+  .bio__testimonials {
+    padding: $section-py-mobile 0;
+  }
+
+  .bio__contact {
+    padding: $section-py-mobile 0;
+  }
+
+  .bio__contact-form-row {
     grid-template-columns: 1fr;
   }
 
-  .salud__testimonials {
-    padding: $section-padding-mobile 0;
+  .bio__contact-form {
+    padding: 1.75rem;
   }
 
-  .salud__contact {
-    padding: $section-padding-mobile 0 0;
+  .bio__section-title--left {
+    text-align: center;
   }
 
-  .salud__contact-map-inner {
-    height: 240px;
-  }
-
-  .salud__contact-cta-bar {
-    padding: 0 0 $section-padding-mobile;
-  }
-
-
-  .salud__modal {
+  .bio__modal {
     padding: 2rem 1.5rem;
     margin: 0.5rem;
   }
 
-  .salud__footer [class*='col-'] {
+  .bio__footer [class*='col-'] {
     margin-bottom: 2rem;
   }
 }
@@ -1781,37 +1535,24 @@ $section-title-margin: 3.5rem;
 // ============================================================
 
 @media (prefers-reduced-motion: reduce) {
-  .salud__hero-illustration,
-  .salud__nosotros-illustration,
-  .salud__hero-blob,
-  .salud__features-blob,
-  .salud__nosotros-illustration-circle {
+  .bio__hero-leaf,
+  .bio__hero-organic-inner,
+  .bio__hero-organic-dot,
+  .bio__hero-organic-icon,
+  .bio__nosotros-blob-shape {
     animation: none;
   }
 
-  .salud__services-card,
-  .salud__testimonials-card,
-  .salud__features-card,
-  .salud__features-item,
-  .salud__btn {
+  .bio__services-card,
+  .bio__testimonials-card,
+  .bio__features-item,
+  .bio__btn,
+  .bio__contact-whatsapp {
     transition: none;
   }
 
-  .salud__services-card-more {
-    transition: none;
-  }
-
-  .salud__services-card::before {
-    transition: none;
-  }
-
-  .salud__contact-map-pulse {
-    animation: none;
-    opacity: 0;
-  }
-
-  .salud__modal-overlay,
-  .salud__modal {
+  .bio__modal-overlay,
+  .bio__modal {
     animation: none;
   }
 }

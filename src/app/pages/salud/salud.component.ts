@@ -37,13 +37,15 @@ interface StatItem {
   label: string;
 }
 
-interface CheckItem {
-  label: string;
+interface TimelineItem {
+  year: string;
+  event: string;
 }
 
 interface ContactInfo {
   icon: string;
   text: string;
+  href?: string;
 }
 
 interface FooterLink {
@@ -65,36 +67,56 @@ export class SaludComponent implements AfterViewInit {
   showBookingModal = false;
   bookingSuccess = false;
   bookingForm = { name: '', email: '', phone: '', motivo: '' };
+  contactForm = { name: '', email: '', phone: '', motivo: '' };
+  contactFormSuccess = false;
+  readonly whatsappUrl = 'https://wa.me/41441234567';
 
   readonly navLinks: NavLink[] = [
     { label: 'Inicio', fragment: 'inicio' },
     { label: 'Servicios', fragment: 'servicios' },
     { label: 'Nosotros', fragment: 'nosotros' },
+    { label: 'Beneficios', fragment: 'features' },
     { label: 'Testimonios', fragment: 'testimonios' },
     { label: 'Contacto', fragment: 'contacto' },
   ];
 
   readonly heroStats: StatItem[] = [
-    { number: '15K+', label: 'Pacientes' },
-    { number: '24/7', label: 'Atención' },
-    { number: '40+', label: 'Especialistas' },
+    { number: '15+', label: 'Años' },
+    { number: 'Zurich', label: 'Suiza' },
+    { number: '+3000', label: 'Pacientes' },
+    { number: 'Suiza', label: 'Tecnología' },
   ];
 
   readonly features: FeatureItem[] = [
     {
       icon: 'bi-heart-pulse',
-      title: 'Cuidado Integral',
-      desc: 'Enfoque holístico que considera todos los aspectos de tu bienestar físico y emocional.',
+      title: 'Atención Personalizada',
+      desc: 'Cada paciente es único. Diseñamos tu plan de salud a tu medida, con dedicación plena.',
     },
     {
       icon: 'bi-cpu',
       title: 'Tecnología Avanzada',
-      desc: 'Equipamiento de última generación para diagnósticos precisos y tratamientos efectivos.',
+      desc: 'Equipamiento suizo de última generación para diagnósticos precisos y tratamientos efectivos.',
     },
     {
-      icon: 'bi-people',
-      title: 'Trato Humano',
-      desc: 'Entendemos que detrás de cada consulta hay una persona. Te escuchamos y acompañamos.',
+      icon: 'bi-award',
+      title: 'Profesionales Expertos',
+      desc: 'Médicos certificados con amplia trayectoria internacional y formación continua.',
+    },
+    {
+      icon: 'bi-flower1',
+      title: 'Ambiente Tranquilo',
+      desc: 'Un espacio diseñado para tu calma. La naturaleza y el confort se unen en cada rincón.',
+    },
+    {
+      icon: 'bi-graph-up-arrow',
+      title: 'Seguimiento Continuo',
+      desc: 'Acompañamos tu evolución con monitoreo constante y ajustes personalizados.',
+    },
+    {
+      icon: 'bi-shield-check',
+      title: 'Resultados Comprobados',
+      desc: 'Miles de pacientes satisfechos avalan nuestro enfoque integral de la salud.',
     },
   ];
 
@@ -105,27 +127,38 @@ export class SaludComponent implements AfterViewInit {
       desc: 'Atención primaria integral con diagnóstico de precisión y seguimiento continuo.',
     },
     {
+      icon: 'bi-clipboard2-pulse',
+      title: 'Chequeos Preventivos',
+      desc: 'Evaluaciones completas para detectar y prevenir antes de que aparezcan los síntomas.',
+    },
+    {
       icon: 'bi-flower1',
       title: 'Nutrición',
       desc: 'Planes nutricionales personalizados que transforman tu relación con la alimentación.',
     },
     {
-      icon: 'bi-chat-heart',
-      title: 'Salud Mental',
-      desc: 'Terapia y acompañamiento psicológico en un espacio seguro y sin juicios.',
+      icon: 'bi-activity',
+      title: 'Fisioterapia',
+      desc: 'Rehabilitación y terapia física con técnicas modernas para tu recuperación integral.',
     },
     {
-      icon: 'bi-shield-check',
-      title: 'Chequeos Preventivos',
-      desc: 'Evaluaciones completas para detectar y prevenir antes de que aparezcan los síntomas.',
+      icon: 'bi-chat-heart',
+      title: 'Psicología',
+      desc: 'Salud mental con enfoque humano. Terapia y acompañamiento en un espacio seguro.',
+    },
+    {
+      icon: 'bi-droplet',
+      title: 'Laboratorio',
+      desc: 'Análisis clínicos de alta precisión con resultados rápidos y confiables.',
     },
   ];
 
-  readonly checkItems: CheckItem[] = [
-    { label: 'Tecnología Humana' },
-    { label: 'Atención sin Prisas' },
-    { label: 'Ambiente Tranquilo' },
-    { label: 'Seguimiento Personalizado' },
+  readonly timeline: TimelineItem[] = [
+    { year: '2008', event: 'Fundación en Zürich con un equipo de 3 especialistas' },
+    { year: '2012', event: 'Expansión a medicina integral con 6 áreas de especialidad' },
+    { year: '2016', event: 'Incorporación de tecnología diagnóstica de vanguardia' },
+    { year: '2020', event: 'Reconocimiento internacional por excelencia clínica' },
+    { year: '2024', event: '+3000 pacientes confían en nuestro cuidado' },
   ];
 
   readonly testimonials: TestimonialItem[] = [
@@ -145,14 +178,20 @@ export class SaludComponent implements AfterViewInit {
       quote:
         'Llegué con ansiedad crónica y ahora tengo herramientas reales para manejarla. El equipo de salud mental es excepcional.',
       author: 'Laura Fernández',
-      role: 'Paciente Preventiva',
+      role: 'Paciente de Psicología',
+    },
+    {
+      quote:
+        'La fisioterapia en MS LIFE me devolvió la movilidad que creía perdida. Profesionales increíbles y un ambiente que sana.',
+      author: 'Marco Weber',
+      role: 'Paciente de Fisioterapia',
     },
   ];
 
   readonly contactInfo: ContactInfo[] = [
     { icon: 'bi-geo-alt', text: 'Bahnhofstrasse 42, 8001 Zürich, Switzerland' },
-    { icon: 'bi-telephone', text: '+41 44 123 45 67' },
-    { icon: 'bi-envelope', text: 'hola@mslife.com' },
+    { icon: 'bi-telephone', text: '+41 44 123 45 67', href: 'tel:+41441234567' },
+    { icon: 'bi-envelope', text: 'hola@mslife.com', href: 'mailto:hola@mslife.com' },
     { icon: 'bi-clock', text: 'Lun–Vie: 8:00–20:00 | Sáb: 9:00–14:00' },
   ];
 
@@ -160,6 +199,7 @@ export class SaludComponent implements AfterViewInit {
     { label: 'Inicio', fragment: 'inicio' },
     { label: 'Servicios', fragment: 'servicios' },
     { label: 'Nosotros', fragment: 'nosotros' },
+    { label: 'Beneficios', fragment: 'features' },
     { label: 'Testimonios', fragment: 'testimonios' },
     { label: 'Contacto', fragment: 'contacto' },
   ];
@@ -196,146 +236,69 @@ export class SaludComponent implements AfterViewInit {
             switch (animation) {
               case 'hero':
                 gsap.fromTo(
-                  el.querySelectorAll('.salud__hero-badge, .salud__hero-title, .salud__hero-subtitle, .salud__hero-actions'),
-                  { y: 30, opacity: 0 },
-                  {
-                    y: 0,
-                    opacity: 1,
-                    duration: 0.7,
-                    stagger: 0.15,
-                    ease: 'power2.out',
-                  },
+                  el.querySelectorAll('.bio__hero-title, .bio__hero-subtitle, .bio__hero-actions'),
+                  { y: 40, opacity: 0 },
+                  { y: 0, opacity: 1, duration: 0.8, stagger: 0.18, ease: 'power3.out' },
                 );
                 gsap.fromTo(
-                  el.querySelectorAll('.salud__hero-stat'),
-                  { y: 20, opacity: 0 },
-                  {
-                    y: 0,
-                    opacity: 1,
-                    duration: 0.5,
-                    stagger: 0.1,
-                    delay: 0.6,
-                    ease: 'power2.out',
-                  },
+                  el.querySelectorAll('.bio__hero-stat'),
+                  { y: 24, opacity: 0 },
+                  { y: 0, opacity: 1, duration: 0.5, stagger: 0.1, delay: 0.7, ease: 'power2.out' },
                 );
                 gsap.fromTo(
-                  el.querySelector('.salud__hero-image'),
-                  { opacity: 0, scale: 0.9 },
-                  {
-                    opacity: 1,
-                    scale: 1,
-                    duration: 0.8,
-                    delay: 0.3,
-                    ease: 'power2.out',
-                  },
-                );
-                break;
-              case 'features':
-                gsap.fromTo(
-                  el.querySelector('.salud__features-headline-mark'),
-                  { rotate: 45, scale: 0.5, opacity: 0 },
-                  { rotate: 0, scale: 1, opacity: 1, duration: 0.7, ease: 'power2.out' },
-                );
-                gsap.fromTo(
-                  el.querySelector('.salud__features-headline-title'),
-                  { x: -30, opacity: 0 },
-                  { x: 0, opacity: 1, duration: 0.6, delay: 0.15, ease: 'power2.out' },
-                );
-                gsap.fromTo(
-                  el.querySelector('.salud__features-headline-subtitle'),
-                  { x: -20, opacity: 0 },
-                  { x: 0, opacity: 1, duration: 0.6, delay: 0.25, ease: 'power2.out' },
-                );
-                gsap.fromTo(
-                  el.querySelectorAll('.salud__features-item'),
-                  { x: 40, opacity: 0 },
-                  {
-                    x: 0,
-                    opacity: 1,
-                    duration: 0.6,
-                    stagger: 0.18,
-                    delay: 0.35,
-                    ease: 'power2.out',
-                  },
+                  el.querySelector('.bio__hero-leaf'),
+                  { scale: 0.8, opacity: 0 },
+                  { scale: 1, opacity: 1, duration: 1.2, delay: 0.3, ease: 'power3.out' },
                 );
                 break;
               case 'services':
                 gsap.fromTo(
-                  el.querySelectorAll('.salud__services-card'),
-                  { y: 60, rotateX: 10, opacity: 0 },
-                  {
-                    y: 0,
-                    rotateX: 0,
-                    opacity: 1,
-                    duration: 0.7,
-                    stagger: 0.12,
-                    ease: 'power2.out',
-                  },
+                  el.querySelectorAll('.bio__services-card'),
+                  { x: 60, opacity: 0 },
+                  { x: 0, opacity: 1, duration: 0.65, stagger: 0.1, ease: 'power3.out' },
                 );
                 break;
               case 'about':
                 gsap.fromTo(
-                  el.querySelectorAll('.salud__nosotros-illustration-circle'),
-                  { scale: 0, opacity: 0 },
-                  {
-                    scale: 1,
-                    opacity: 1,
-                    duration: 0.6,
-                    stagger: 0.1,
-                    ease: 'back.out(1.4)',
-                  },
+                  el.querySelector('.bio__nosotros-blob-shape'),
+                  { scale: 0.7, opacity: 0 },
+                  { scale: 1, opacity: 1, duration: 1, ease: 'power3.out' },
                 );
                 gsap.fromTo(
-                  el.querySelector('.salud__nosotros-content'),
-                  { x: 40, opacity: 0 },
-                  { x: 0, opacity: 1, duration: 0.8, delay: 0.2, ease: 'power2.out' },
+                  el.querySelector('.bio__nosotros-content'),
+                  { x: -30, opacity: 0 },
+                  { x: 0, opacity: 1, duration: 0.7, delay: 0.2, ease: 'power3.out' },
+                );
+                gsap.fromTo(
+                  el.querySelectorAll('.bio__nosotros-timeline-item'),
+                  { x: -20, opacity: 0 },
+                  { x: 0, opacity: 1, duration: 0.5, stagger: 0.1, delay: 0.4, ease: 'power2.out' },
+                );
+                break;
+              case 'features':
+                gsap.fromTo(
+                  el.querySelectorAll('.bio__features-item'),
+                  { y: 30, opacity: 0 },
+                  { y: 0, opacity: 1, duration: 0.55, stagger: 0.08, ease: 'power3.out' },
                 );
                 break;
               case 'testimonials':
                 gsap.fromTo(
-                  el.querySelectorAll('.salud__testimonials-card'),
-                  { x: -30, opacity: 0 },
-                  {
-                    x: 0,
-                    opacity: 1,
-                    duration: 0.6,
-                    stagger: 0.15,
-                    ease: 'power2.out',
-                  },
+                  el.querySelectorAll('.bio__testimonials-card'),
+                  { y: 40, opacity: 0 },
+                  { y: 0, opacity: 1, duration: 0.6, stagger: 0.12, ease: 'power3.out' },
                 );
                 break;
               case 'contact':
                 gsap.fromTo(
-                  el.querySelector('.salud__contact-map'),
-                  { scale: 0.95, opacity: 0 },
-                  { scale: 1, opacity: 1, duration: 0.7, ease: 'power2.out' },
+                  el.querySelector('.bio__contact-info'),
+                  { x: -30, opacity: 0 },
+                  { x: 0, opacity: 1, duration: 0.7, ease: 'power3.out' },
                 );
                 gsap.fromTo(
-                  el.querySelector('.salud__contact-details'),
+                  el.querySelector('.bio__contact-form'),
                   { x: 30, opacity: 0 },
-                  {
-                    x: 0,
-                    opacity: 1,
-                    duration: 0.7,
-                    delay: 0.15,
-                    ease: 'power2.out',
-                  },
-                );
-                gsap.fromTo(
-                  el.querySelector('.salud__contact-info-btn'),
-                  { scale: 0.8, opacity: 0 },
-                  {
-                    scale: 1,
-                    opacity: 1,
-                    duration: 0.6,
-                    delay: 0.3,
-                    ease: 'back.out(1.7)',
-                  },
-                );
-                gsap.fromTo(
-                  el.querySelector('.salud__contact-cta-bar'),
-                  { opacity: 0 },
-                  { opacity: 1, duration: 0.6, delay: 0.4, ease: 'power2.out' },
+                  { x: 0, opacity: 1, duration: 0.7, delay: 0.15, ease: 'power3.out' },
                 );
                 break;
             }
@@ -343,7 +306,7 @@ export class SaludComponent implements AfterViewInit {
           }
         });
       },
-      { threshold: 0.12 },
+      { threshold: 0.1 },
     );
 
     this.animateSections.forEach((ref) => observer.observe(ref.nativeElement));
@@ -384,6 +347,15 @@ export class SaludComponent implements AfterViewInit {
     setTimeout(() => {
       this.closeBookingModal();
     }, 2000);
+  }
+
+  submitContactForm(): void {
+    if (!this.contactForm.name || !this.contactForm.email) return;
+    this.contactFormSuccess = true;
+    setTimeout(() => {
+      this.contactFormSuccess = false;
+      this.contactForm = { name: '', email: '', phone: '', motivo: '' };
+    }, 3000);
   }
 
   scrollTo(sectionId: string): void {
