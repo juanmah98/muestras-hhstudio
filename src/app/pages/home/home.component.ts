@@ -80,7 +80,7 @@ export class HomeComponent implements AfterViewInit {
       description:
         'Landing page para pastelerías, reposterías y tiendas de productos dulces.',
       tags: ['Landing Page', 'Pastelería', 'Repostería'],
-      status: 'coming-soon',
+      status: 'available',
       icon: 'bi bi-cake2-fill',
     },
   ];

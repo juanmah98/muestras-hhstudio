@@ -1,10 +1,505 @@
-<i class="bi bi-cake2-fill placeholder__icon"></i>
-<h1 class="placeholder__title">Pastelería</h1>
-<p class="placeholder__desc">
-  Landing page para pastelerías, reposterías y tiendas de productos dulces.
-  Desarrollo pendiente.
-</p>
-<a class="placeholder__back" routerLink="/">
-  <i class="bi bi-arrow-left"></i>
-  Volver al inicio
-</a>
+<div class="dulcera">
+
+  <!-- ===== NAVIGATION ===== -->
+  <nav class="dulcera__nav" [class.dulcera__nav--scrolled]="scrolled">
+    <div class="dulcera__nav-inner">
+      <a class="dulcera__logo" routerLink="/">DULCERA</a>
+
+      <ul class="dulcera__nav-links">
+        @for (link of navLinks; track link.fragment) {
+          <li>
+            <button class="dulcera__nav-link" (click)="scrollTo(link.fragment)">{{ link.label }}</button>
+          </li>
+        }
+      </ul>
+    </div>
+  </nav>
+
+  <!-- ===== 1. HERO — Warm editorial bakery ===== -->
+  <section class="dulcera__hero" id="inicio">
+    <div class="dulcera__hero-pattern"></div>
+    <div class="dulcera__hero-content" #heroContent>
+      <div class="dulcera__hero-badge">
+        <i class="bi bi-fire"></i>
+        Recién Horneado
+      </div>
+      <h1 class="dulcera__hero-title">El Arte de la<br />Pastelería Artesanal</h1>
+      <div class="dulcera__divider"></div>
+      <p class="dulcera__hero-subtitle">
+        Elaboramos cada pieza a mano con ingredientes naturales, fermentaciones lentas
+        y el respeto por la tradición que merece la buena pastelería.
+      </p>
+      <div class="dulcera__hero-ctas">
+        <button class="dulcera__btn dulcera__btn--terracotta" (click)="scrollTo('carta')">
+          Ver Carta
+        </button>
+        <button class="dulcera__btn dulcera__btn--outline" (click)="scrollTo('encargos')">
+          Hacer Pedido
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRODUCTOS — Horizontal scrollable cards ===== -->
+  <section class="dulcera__products" id="productos" #animateSection>
+    <div class="dulcera__products-container">
+      <div class="dulcera__section-header">
+        <h2 class="dulcera__section-title">Nuestros Productos</h2>
+        <p class="dulcera__section-subtitle" style="margin-left:auto;margin-right:auto;text-align:center;">
+          Cada pieza está hecha a mano esta mañana. Desliza para descubrir.
+        </p>
+      </div>
+
+      <div class="dulcera__products-carousel">
+        @for (product of products; track product.name) {
+          <div class="dulcera__product-card">
+            <div
+              class="dulcera__product-image"
+              [style.background]="product.gradient"
+            ></div>
+            <div class="dulcera__product-info">
+              <h3 class="dulcera__product-name">{{ product.name }}</h3>
+              <p class="dulcera__product-desc">{{ product.description }}</p>
+              <span class="dulcera__product-price">{{ product.price }}</span>
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 3. PROCESO ARTESANAL — Organic staggered timeline ===== -->
+  <section class="dulcera__proceso" id="proceso" #animateSection>
+    <div class="dulcera__proceso-container">
+      <div class="dulcera__section-header">
+        <h2 class="dulcera__section-title">Proceso Artesanal</h2>
+        <p class="dulcera__section-subtitle" style="margin-left:auto;margin-right:auto;text-align:center;">
+          Del obrador a tu mesa en cuatro pasos. Sin prisas, sin atajos.
+        </p>
+      </div>
+
+      <div class="dulcera__proceso-items">
+        <div class="dulcera__proceso-line"></div>
+        @for (step of steps; track step.number) {
+          <div class="dulcera__proceso-step">
+            <div class="dulcera__proceso-gutter"></div>
+            <div class="dulcera__proceso-content">
+              <div class="dulcera__proceso-number">{{ step.number }}</div>
+              <h3 class="dulcera__proceso-title">{{ step.title }}</h3>
+              <p class="dulcera__proceso-desc">{{ step.description }}</p>
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 4. CARTA / MENÚ — Two-column visual menu ===== -->
+  <section class="dulcera__carta" id="carta" #animateSection>
+    <div class="dulcera__carta-container">
+      <div class="dulcera__section-header">
+        <h2 class="dulcera__section-title">Nuestra Carta</h2>
+        <p class="dulcera__section-subtitle" style="margin-left:auto;margin-right:auto;text-align:center;">
+          Ingredientes de temporada, recetas de siempre y algún secreto del chef.
+        </p>
+      </div>
+
+      @for (category of menuCategories; track category.title) {
+        <div class="dulcera__carta-category">
+          <h3 class="dulcera__carta-category-title">{{ category.title }}</h3>
+          <div class="dulcera__carta-items">
+            @for (item of category.items; track item.name) {
+              <div class="dulcera__carta-item">
+                <div class="dulcera__carta-item-info">
+                  <span class="dulcera__carta-item-name">{{ item.name }}</span>
+                  <p class="dulcera__carta-item-desc">{{ item.description }}</p>
+                </div>
+                <span class="dulcera__carta-item-price">{{ item.price }}</span>
+              </div>
+            }
+          </div>
+        </div>
+      }
+    </div>
+  </section>
+
+  <!-- ===== 5. PEDIDOS PERSONALIZADOS — Interactive Cake Builder ===== -->
+  <section class="dulcera__pedidos" id="encargos" #animateSection>
+    <div class="dulcera__pedidos-container">
+      <div class="dulcera__section-header">
+        <h2 class="dulcera__section-title">Crea tu Tarta Personalizada</h2>
+        <p class="dulcera__section-subtitle" style="margin-left:auto;margin-right:auto;text-align:center;">
+          Diseña tu tarta paso a paso. Elige base, sabor, tamaño y decoración.
+          Te preparamos un presupuesto al instante.
+        </p>
+      </div>
+
+      <!-- CAKE BUILDER — 40/60 layout -->
+      <div class="dulcera__cake-builder">
+        <!-- Left: Cake Preview -->
+        <div class="dulcera__cake-preview">
+          <div class="dulcera__cake-preview-cake" [class]="cakePreviewClasses()">
+            @if (cakeConfig.decorations.includes('frutas')) {
+              <span class="dulcera__cake-badge dulcera__cake-badge--frutas">🍓</span>
+            }
+            @if (cakeConfig.decorations.includes('flores')) {
+              <span class="dulcera__cake-badge dulcera__cake-badge--flores">🌸</span>
+            }
+            @if (cakeConfig.decorations.includes('chocolate')) {
+              <span class="dulcera__cake-badge dulcera__cake-badge--chocolate">🍫</span>
+            }
+            @if (cakeConfig.decorations.includes('fondant')) {
+              <span class="dulcera__cake-badge dulcera__cake-badge--fondant">🎨</span>
+            }
+            @if (cakeConfig.decorations.includes('oro')) {
+              <span class="dulcera__cake-badge dulcera__cake-badge--oro">✨</span>
+            }
+          </div>
+          <div class="dulcera__cake-plate"></div>
+          <p class="dulcera__cake-label">{{ cakeLabel() }}</p>
+        </div>
+
+        <!-- Right: Multi-step Wizard -->
+        <div class="dulcera__cake-wizard">
+          <div class="dulcera__cake-steps-header">
+            <span class="dulcera__cake-steps-label">Paso {{ currentStep + 1 }} de 4</span>
+            <div class="dulcera__cake-steps-dots">
+              @for (i of [0, 1, 2, 3]; track i) {
+                <span
+                  class="dulcera__cake-steps-dot"
+                  [class.dulcera__cake-steps-dot--active]="i === currentStep"
+                  [class.dulcera__cake-steps-dot--done]="i < currentStep"
+                ></span>
+              }
+            </div>
+          </div>
+
+          <div class="dulcera__cake-step-content">
+            @switch (currentStep) {
+              @case (0) {
+                <h3 class="dulcera__cake-step-title">Elige la Base</h3>
+                <div class="dulcera__cake-options">
+                  @for (base of baseOptions; track base.value) {
+                    <button
+                      class="dulcera__cake-option"
+                      [class.dulcera__cake-option--selected]="cakeConfig.base === base.value"
+                      (click)="selectBase(base.value)"
+                    >
+                      <span class="dulcera__cake-option-emoji">{{ base.emoji }}</span>
+                      <span class="dulcera__cake-option-name">{{ base.name }}</span>
+                      <span class="dulcera__cake-option-desc">{{ base.description }}</span>
+                    </button>
+                  }
+                </div>
+              }
+              @case (1) {
+                <h3 class="dulcera__cake-step-title">Elige el Sabor</h3>
+                <div class="dulcera__cake-options">
+                  @for (flavor of flavorOptions; track flavor.value) {
+                    <button
+                      class="dulcera__cake-option dulcera__cake-option--chip"
+                      [class.dulcera__cake-option--selected]="cakeConfig.flavor === flavor.value"
+                      [style.--chip-color]="flavor.color"
+                      (click)="selectFlavor(flavor.value)"
+                    >
+                      <span class="dulcera__cake-option-emoji">{{ flavor.emoji }}</span>
+                      <span class="dulcera__cake-option-name">{{ flavor.name }}</span>
+                      @if (flavor.multiplier > 1) {
+                        <span class="dulcera__cake-option-badge">Premium</span>
+                      }
+                    </button>
+                  }
+                </div>
+              }
+              @case (2) {
+                <h3 class="dulcera__cake-step-title">Elige el Tamaño</h3>
+                <div class="dulcera__cake-options">
+                  @for (size of sizeOptions; track size.value) {
+                    <button
+                      class="dulcera__cake-option"
+                      [class.dulcera__cake-option--selected]="cakeConfig.size === size.value"
+                      (click)="selectSize(size.value)"
+                    >
+                      <span class="dulcera__cake-option-emoji">{{ size.emoji }}</span>
+                      <span class="dulcera__cake-option-name">{{ size.name }}</span>
+                      <span class="dulcera__cake-option-desc">{{ size.description }}</span>
+                      <div class="dulcera__cake-option-size-visual" [class]="'dulcera__cake-option-size-visual--' + size.value"></div>
+                    </button>
+                  }
+                </div>
+              }
+              @case (3) {
+                <h3 class="dulcera__cake-step-title">Elige la Decoración</h3>
+                <p class="dulcera__cake-step-hint">Selecciona una o varias opciones</p>
+                <div class="dulcera__cake-options">
+                  @for (deco of decorationOptions; track deco.value) {
+                    <button
+                      class="dulcera__cake-option dulcera__cake-option--toggle"
+                      [class.dulcera__cake-option--selected]="cakeConfig.decorations.includes(deco.value)"
+                      (click)="toggleDecoration(deco.value)"
+                    >
+                      <span class="dulcera__cake-option-emoji">{{ deco.emoji }}</span>
+                      <span class="dulcera__cake-option-name">{{ deco.name }}</span>
+                      <span class="dulcera__cake-option-price">+{{ deco.price }} €</span>
+                    </button>
+                  }
+                </div>
+              }
+            }
+          </div>
+
+          <!-- Navigation -->
+          <div class="dulcera__cake-nav">
+            @if (currentStep > 0) {
+              <button class="dulcera__btn dulcera__btn--outline dulcera__btn--sm" (click)="prevStep()">
+                <i class="bi bi-arrow-left"></i> Anterior
+              </button>
+            } @else {
+              <span></span>
+            }
+            @if (currentStep < 3) {
+              <button class="dulcera__btn dulcera__btn--terracotta dulcera__btn--sm" (click)="nextStep()">
+                Siguiente <i class="bi bi-arrow-right"></i>
+              </button>
+            }
+          </div>
+
+          <!-- Live Price Calculator -->
+          <div class="dulcera__cake-price">
+            <div class="dulcera__cake-price-main">
+              <span class="dulcera__cake-price-label">Precio estimado</span>
+              <span class="dulcera__cake-price-value">{{ calculatedPrice() | number:'1.0-0' }} €</span>
+            </div>
+            @if (cakeConfig.size) {
+              <div class="dulcera__cake-price-breakdown">
+                <span>{{ sizeLabel(cakeConfig.size) }}</span>
+                <span>{{ basePrice() }} €</span>
+              </div>
+            }
+            @if (cakeConfig.flavor && flavorMultiplier() > 1) {
+              <div class="dulcera__cake-price-breakdown">
+                <span>Suplemento premium (x{{ flavorMultiplier() }})</span>
+                <span>+{{ ((basePrice() * flavorMultiplier()) - basePrice()) | number:'1.0-0' }} €</span>
+              </div>
+            }
+            @for (deco of selectedDecorations(); track deco.value) {
+              <div class="dulcera__cake-price-breakdown">
+                <span>{{ deco.name }}</span>
+                <span>+{{ deco.price }} €</span>
+              </div>
+            }
+            @if (!cakeConfig.size) {
+              <p class="dulcera__cake-price-hint">Selecciona una base y un tamaño para ver el precio</p>
+            }
+          </div>
+        </div>
+      </div>
+
+      <!-- Contact Form (below the builder) -->
+      <div class="dulcera__pedidos-contact">
+        <h3 class="dulcera__pedidos-contact-title">Solicitar Presupuesto Final</h3>
+        <p class="dulcera__pedidos-contact-subtitle">
+          Completa tus datos y te enviaremos un presupuesto detallado con tu configuración.
+        </p>
+        <form class="dulcera__pedidos-form" (submit)="submitOrder($event)">
+          <div class="dulcera__pedidos-form-fields">
+            <div class="dulcera__field">
+              <label class="dulcera__label" for="order-name">Nombre *</label>
+              <input
+                class="dulcera__input"
+                type="text"
+                id="order-name"
+                name="name"
+                [(ngModel)]="orderForm.name"
+                placeholder="Tu nombre completo"
+                required
+              />
+            </div>
+            <div class="dulcera__field">
+              <label class="dulcera__label" for="order-email">Email *</label>
+              <input
+                class="dulcera__input"
+                type="email"
+                id="order-email"
+                name="email"
+                [(ngModel)]="orderForm.email"
+                placeholder="tu@email.com"
+                required
+              />
+            </div>
+            <div class="dulcera__field">
+              <label class="dulcera__label" for="order-phone">Teléfono</label>
+              <input
+                class="dulcera__input"
+                type="tel"
+                id="order-phone"
+                name="phone"
+                [(ngModel)]="orderForm.phone"
+                placeholder="+34 6XX XXX XXX"
+              />
+            </div>
+            <div class="dulcera__field">
+              <label class="dulcera__label" for="order-date">Fecha deseada</label>
+              <input
+                class="dulcera__input"
+                type="date"
+                id="order-date"
+                name="dateNeeded"
+                [(ngModel)]="orderForm.dateNeeded"
+              />
+            </div>
+          </div>
+          <div class="dulcera__field dulcera__field--full">
+            <label class="dulcera__label" for="order-message">Mensaje</label>
+            <textarea
+              class="dulcera__textarea"
+              id="order-message"
+              name="message"
+              [(ngModel)]="orderForm.message"
+              placeholder="Cuéntanos cualquier detalle adicional..."
+            ></textarea>
+          </div>
+          <button class="dulcera__btn dulcera__btn--submit" type="submit">
+            <i class="bi bi-send"></i>
+            Solicitar Presupuesto Final
+          </button>
+          @if (orderSubmitted) {
+            <div class="dulcera__success">
+              <i class="bi bi-check-circle-fill"></i>
+              <span>¡Gracias! Hemos recibido tu encargo. Te contactaremos en menos de 24 horas.</span>
+            </div>
+          }
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. CONTACTO — Horizontal inline bar + form ===== -->
+  <section class="dulcera__contacto" id="contacto" #animateSection>
+    <div class="dulcera__contacto-container">
+      <div class="dulcera__section-header">
+        <h2 class="dulcera__section-title">Contacto</h2>
+        <p class="dulcera__section-subtitle" style="margin-left:auto;margin-right:auto;text-align:center;">
+          Estamos en el corazón de Madrid. Ven a visitarnos o escríbenos.
+        </p>
+      </div>
+
+      <div class="dulcera__contacto-bar">
+        @for (info of contactInfo; track info.label) {
+          <div class="dulcera__contacto-item">
+            <i class="bi {{ info.icon }} dulcera__contacto-icon"></i>
+            <span class="dulcera__contacto-label">{{ info.label }}</span>
+            @if (info.link) {
+              <a class="dulcera__contacto-value" [href]="info.link">{{ info.value }}</a>
+            } @else {
+              <span class="dulcera__contacto-value">{{ info.value }}</span>
+            }
+          </div>
+        }
+      </div>
+
+      <div class="dulcera__contacto-form-card">
+        <form class="dulcera__contacto-form-group" (submit)="submitContact($event)">
+          <h3 class="dulcera__contacto-form-title">Escríbenos</h3>
+
+          <div class="dulcera__field">
+            <label class="dulcera__label" for="contact-name">Nombre *</label>
+            <input
+              class="dulcera__input"
+              type="text"
+              id="contact-name"
+              name="contactName"
+              [(ngModel)]="contactForm.name"
+              placeholder="Tu nombre"
+              required
+            />
+          </div>
+
+          <div class="dulcera__field">
+            <label class="dulcera__label" for="contact-email">Email *</label>
+            <input
+              class="dulcera__input"
+              type="email"
+              id="contact-email"
+              name="contactEmail"
+              [(ngModel)]="contactForm.email"
+              placeholder="tu@email.com"
+              required
+            />
+          </div>
+
+          <div class="dulcera__field">
+            <label class="dulcera__label" for="contact-message">Mensaje</label>
+            <textarea
+              class="dulcera__textarea"
+              id="contact-message"
+              name="contactMessage"
+              [(ngModel)]="contactForm.message"
+              placeholder="¿En qué podemos ayudarte?"
+            ></textarea>
+          </div>
+
+          <button class="dulcera__btn dulcera__btn--submit" type="submit">
+            <i class="bi bi-send"></i>
+            Enviar Mensaje
+          </button>
+
+          @if (contactSubmitted) {
+            <div class="dulcera__success">
+              <i class="bi bi-check-circle-fill"></i>
+              <span>¡Gracias! Te responderemos en menos de 24 horas.</span>
+            </div>
+          }
+        </form>
+
+        <div class="dulcera__contacto-whatsapp-block">
+          <i class="bi bi-whatsapp dulcera__contacto-whatsapp-icon"></i>
+          <p class="dulcera__contacto-whatsapp-text">
+            ¿Prefieres algo más rápido?<br />
+            Te respondemos al instante.
+          </p>
+          <a
+            class="dulcera__btn dulcera__btn--whatsapp"
+            href="https://wa.me/34600000000"
+            target="_blank"
+            rel="noopener"
+          >
+            <i class="bi bi-whatsapp"></i>
+            Hablar por WhatsApp
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="dulcera__footer">
+    <div class="dulcera__footer-inner">
+      <div class="dulcera__footer-brand">DULCERA</div>
+      <p class="dulcera__footer-tagline">
+        Pastelería artesanal en Madrid. Hecho a mano, cada día.
+      </p>
+      <div class="dulcera__footer-bottom">
+        <span class="dulcera__footer-copy">
+          &copy; {{ currentYear }} Dulcera. Todos los derechos reservados.
+        </span>
+        <nav class="dulcera__footer-links">
+          <a href="#" class="dulcera__footer-link">Aviso Legal</a>
+          <a href="#" class="dulcera__footer-link">Privacidad</a>
+          <a href="#" class="dulcera__footer-link">Cookies</a>
+        </nav>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Floating WhatsApp -->
+  <a
+    class="dulcera__whatsapp"
+    href="https://wa.me/34600000000"
+    target="_blank"
+    rel="noopener"
+    aria-label="Contactar por WhatsApp"
+  >
+    <i class="bi bi-whatsapp"></i>
+  </a>
+</div>
