@@ -25,6 +25,7 @@ interface ProjectItem {
   category: string;
   gradient: string;
   gridSpan: string;
+  image?: string;
 }
 
 interface CertificationItem {
@@ -133,28 +134,31 @@ export class ElectricistaComponent implements AfterViewInit, OnInit {
 
   readonly projects: ProjectItem[] = [
     {
-      title: 'Nave Industrial Getafe',
+      title: 'Cuadro Eléctrico Industrial',
       location: 'Getafe, Madrid',
       category: 'Industrial',
       gradient:
         'linear-gradient(135deg, #f0a50030 0%, #050505 40%, #1a1d23 100%)',
       gridSpan: 'span 2',
+      image: '/assets/images/electricista/panel-installation.jpg',
     },
     {
-      title: 'Edificio Oficinas Chamartín',
+      title: 'Iluminación LED Oficinas',
       location: 'Chamartín, Madrid',
       category: 'Comercial',
       gradient:
-        'linear-gradient(135deg, #06b6d430 0%, #050505 50%, #1a1d23 100%)',
+        'linear-gradient(135deg, #f0a50030 0%, #050505 50%, #1a1d23 100%)',
       gridSpan: 'span 1',
+      image: '/assets/images/electricista/led-office.jpg',
     },
     {
-      title: 'Reforma Eléctrica en Retiro',
-      location: 'Retiro, Madrid',
-      category: 'Residencial',
+      title: 'Mantenimiento Nave Industrial',
+      location: 'Alcalá, Madrid',
+      category: 'Industrial',
       gradient:
         'linear-gradient(135deg, #050505 0%, #f0a50020 40%, #1a1d23 100%)',
       gridSpan: 'span 1',
+      image: '/assets/images/electricista/factory-maintenance.jpg',
     },
     {
       title: 'Restaurante La Latina',
@@ -177,7 +181,7 @@ export class ElectricistaComponent implements AfterViewInit, OnInit {
       location: 'Moralzarzal, Madrid',
       category: 'Residencial',
       gradient:
-        'linear-gradient(135deg, #06b6d420 0%, #050505 50%, #1a1d23 100%)',
+        'linear-gradient(135deg, #f0a50020 0%, #050505 50%, #1a1d23 100%)',
       gridSpan: 'span 1',
     },
   ];
