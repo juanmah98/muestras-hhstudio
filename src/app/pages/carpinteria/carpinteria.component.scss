@@ -1,11 +1,12 @@
 // ============================================================
-// ÁLAMO Carpintería Artesanal Moderna — Design Tokens
-// Dark cinematic theme — Cormorant Garamond + Inter
+// ÁLAMO Carpintería — Wabi-Sabi Craftsmanship
+// Japanese-inspired minimalism + artisanal woodworking
+// Design: ma 間 (negative space), zen calm, raw expression
 // ============================================================
 
 @use 'sass:color';
 
-// --- Local design tokens ---
+// --- Design Tokens ---
 $color-primary: #3d2b1f;
 $color-primary-dark: #26170c;
 $color-secondary: #d9c5b2;
@@ -13,21 +14,18 @@ $color-tertiary: #f5f2ee;
 $color-neutral: #1a1a1a;
 $color-bg-dark: #1a1513;
 $color-bg-cream: #fcf9f8;
-$color-surface-cream: #fcf9f8;
-$color-surface-container: #f0eded;
-$color-outline: #81756e;
-$color-error: #ba1a1a;
 $color-gold: #c8a87c;
 $color-warm-white: #f5f2ee;
 $color-warm-grey: rgba(245, 242, 238, 0.7);
 $color-warm-muted: rgba(245, 242, 238, 0.45);
+$color-border-warm: rgba(217, 197, 178, 0.12);
 
 $font-headlines: 'Cormorant Garamond', serif;
 $font-body: 'Inter', 'Manrope', sans-serif;
 
-$radius-md: 0.3125rem;
-$section-pad-desktop: 96px;
-$section-pad-mobile: 56px;
+$section-pad: 8rem;
+$section-pad-mobile: 4rem;
+$text-max-width: 680px;
 
 // ============================================================
 // BLOCK: .alamo
@@ -40,110 +38,25 @@ $section-pad-mobile: 56px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 
-  // --- SECTION RULE ---
-  &__section-rule {
-    width: 96px;
-    height: 1px;
-    background-color: rgba($color-secondary, 0.4);
-    margin: 0.5rem 0 0 0;
-
-    &--gold {
-      background-color: rgba($color-gold, 0.5);
-    }
-  }
-
-  // --- SECTION TITLE ---
-  &__section-title {
-    font-family: $font-headlines;
-    font-size: 2.25rem;
-    line-height: 1.2;
-    font-weight: 500;
-    letter-spacing: -0.01em;
-    color: $color-primary;
-    margin-bottom: 3rem;
-
-    @media (max-width: 768px) {
-      font-size: 1.75rem;
-      margin-bottom: 2rem;
-    }
-
-    &--center {
-      text-align: center;
-
-      .alamo__section-rule {
-        margin-left: auto;
-        margin-right: auto;
-      }
-    }
-
-    &--light {
-      color: $color-warm-white;
-    }
-  }
-
-  // --- BUTTONS ---
+  // --- SHARED: Buttons ---
   &__btn {
     display: inline-flex;
     align-items: center;
     justify-content: center;
     font-family: $font-body;
-    font-size: 0.95rem;
+    font-size: 0.875rem;
     font-weight: 500;
-    padding: 0.875rem 2rem;
+    padding: 0.7rem 1.75rem;
     border: 1px solid transparent;
-    border-radius: $radius-md;
+    border-radius: 0;
     cursor: pointer;
     text-decoration: none;
-    transition: background-color 0.25s ease, border-color 0.25s ease, color 0.25s ease;
+    transition: background-color 0.6s ease, border-color 0.6s ease, color 0.6s ease;
     outline: none;
 
     &:focus-visible {
-      outline: 2px solid $color-gold;
-      outline-offset: 2px;
-    }
-
-    &--primary {
-      background-color: $color-primary;
-      color: $color-tertiary;
-      border-color: $color-primary;
-
-      &:hover {
-        background-color: color.adjust($color-primary, $lightness: 8%);
-        border-color: color.adjust($color-primary, $lightness: 8%);
-      }
-    }
-
-    &--filled {
-      background-color: $color-primary;
-      color: $color-warm-white;
-      border-color: $color-primary;
-
-      &:hover {
-        background-color: color.adjust($color-primary, $lightness: 10%);
-        border-color: color.adjust($color-primary, $lightness: 10%);
-      }
-    }
-
-    &--outline {
-      background-color: transparent;
-      color: $color-primary;
-      border-color: $color-primary;
-
-      &:hover {
-        background-color: $color-primary;
-        color: $color-tertiary;
-      }
-    }
-
-    &--outline-gold {
-      background-color: transparent;
-      color: $color-gold;
-      border-color: $color-gold;
-
-      &:hover {
-        background-color: $color-gold;
-        color: $color-bg-dark;
-      }
+      outline: 1px solid $color-gold;
+      outline-offset: 3px;
     }
 
     &--gold {
@@ -152,47 +65,25 @@ $section-pad-mobile: 56px;
       border-color: $color-gold;
 
       &:hover {
-        background-color: color.adjust($color-gold, $lightness: -8%);
-        border-color: color.adjust($color-gold, $lightness: -8%);
+        background-color: color.adjust($color-gold, $lightness: -10%);
+        border-color: color.adjust($color-gold, $lightness: -10%);
       }
     }
-
-    &--full {
-      width: 100%;
-    }
   }
 
-  // --- MATERIAL ICONS ---
-  &__material-icon {
-    font-family: 'Material Symbols Outlined';
-    font-weight: normal;
-    font-style: normal;
-    font-size: 1.5rem;
-    line-height: 1;
-    letter-spacing: normal;
-    text-transform: none;
-    display: inline-block;
-    white-space: nowrap;
-    word-wrap: normal;
-    direction: ltr;
-    -webkit-font-feature-settings: 'liga';
-    -webkit-font-smoothing: antialiased;
-    font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
-  }
-
-  // --- CHIPS ---
+  // --- SHARED: Chips ---
   &__chip {
     display: inline-block;
     font-family: $font-body;
-    font-size: 11px;
+    font-size: 10px;
     font-weight: 500;
-    letter-spacing: 0.12em;
+    letter-spacing: 0.14em;
     text-transform: uppercase;
-    padding: 0.25rem 0.75rem;
+    padding: 0.25rem 0.65rem;
     background-color: transparent;
-    color: $color-primary;
-    border: 1px solid rgba($color-primary, 0.25);
-    border-radius: $radius-md;
+    color: $color-gold;
+    border: 1px solid rgba($color-gold, 0.3);
+    border-radius: 0;
   }
 
   &__chips {
@@ -201,19 +92,8 @@ $section-pad-mobile: 56px;
     gap: 0.5rem;
   }
 
-  // --- LABEL ---
-  &__label {
-    font-family: $font-body;
-    font-size: 0.8rem;
-    font-weight: 500;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    color: $color-warm-muted;
-    margin-bottom: 0.5rem;
-  }
-
   // ============================================================
-  // 1. NAVIGATION
+  // 1. NAVIGATION — Ultra-minimal
   // ============================================================
 
   &__nav {
@@ -222,16 +102,13 @@ $section-pad-mobile: 56px;
     left: 0;
     right: 0;
     z-index: 100;
-    background-color: rgba($color-bg-dark, 0.5);
-    backdrop-filter: blur(6px);
-    border-bottom: 1px solid rgba($color-gold, 0.1);
-    padding: 0.875rem 0;
-    transition: background-color 0.35s ease, backdrop-filter 0.35s ease, border-color 0.35s ease;
+    padding: 1.25rem 0;
+    transition: border-color 0.6s ease, padding 0.6s ease;
+    background-color: transparent;
 
     &--scrolled {
-      background-color: rgba($color-bg-dark, 0.92);
-      backdrop-filter: blur(16px);
-      border-bottom-color: rgba($color-gold, 0.2);
+      border-bottom: 1px solid rgba($color-secondary, 0.08);
+      padding: 0.875rem 0;
     }
   }
 
@@ -239,40 +116,48 @@ $section-pad-mobile: 56px;
     display: flex;
     align-items: center;
     justify-content: space-between;
+    padding: 0 2.5rem;
+    max-width: 100%;
+
+    @media (max-width: 768px) {
+      padding: 0 1.5rem;
+    }
   }
 
   &__logo {
     font-family: $font-headlines;
-    font-size: 1.5rem;
+    font-size: 1.35rem;
     font-weight: 500;
     color: $color-gold;
     text-decoration: none;
-    letter-spacing: 0.08em;
-    transition: color 0.2s ease;
+    letter-spacing: 0.1em;
+    transition: color 0.6s ease;
 
     &:hover {
-      color: color.adjust($color-gold, $lightness: 10%);
+      color: color.adjust($color-gold, $lightness: 12%);
     }
   }
 
-  &__nav-links {
+  &__nav-desktop {
     display: flex;
     align-items: center;
-    gap: 2rem;
-    list-style: none;
-    margin: 0;
-    padding: 0;
+    gap: 2.5rem;
+
+    @media (max-width: 991px) {
+      display: none;
+    }
   }
 
   &__nav-link {
     font-family: $font-body;
-    font-size: 0.925rem;
-    color: $color-warm-grey;
+    font-size: 0.85rem;
+    font-weight: 400;
+    color: rgba($color-warm-white, 0.28);
     text-decoration: none;
     cursor: pointer;
-    transition: color 0.2s ease;
-    border-bottom: 2px solid transparent;
-    padding-bottom: 0.25rem;
+    border-bottom: 1px solid transparent;
+    padding-bottom: 0.15rem;
+    transition: color 0.6s ease, border-color 0.6s ease;
 
     &:hover {
       color: $color-warm-white;
@@ -280,51 +165,91 @@ $section-pad-mobile: 56px;
     }
   }
 
-  &__nav-cta {
-    font-size: 0.875rem;
-    padding: 0.6rem 1.25rem;
+  // --- Mobile Menu ---
+  &__mobile-menu {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: $color-bg-dark;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.5s ease;
+    z-index: 99;
+
+    &--open {
+      opacity: 1;
+      pointer-events: auto;
+    }
   }
 
-  &__nav-cta-mobile {
-    display: none;
+  &__mobile-menu-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
   }
 
+  &__mobile-link {
+    font-family: $font-headlines;
+    font-size: 1.75rem;
+    font-weight: 500;
+    color: $color-warm-grey;
+    text-decoration: none;
+    cursor: pointer;
+    transition: color 0.4s ease;
+
+    &:hover {
+      color: $color-gold;
+    }
+  }
+
+  // --- Hamburger ---
   &__hamburger {
     display: none;
     flex-direction: column;
     justify-content: center;
     gap: 5px;
-    width: 28px;
-    height: 22px;
+    width: 26px;
+    height: 20px;
     background: none;
     border: none;
     cursor: pointer;
     padding: 0;
+    z-index: 101;
+
+    @media (max-width: 991px) {
+      display: flex;
+    }
 
     span {
       display: block;
       width: 100%;
-      height: 2px;
+      height: 1.5px;
       background-color: $color-gold;
-      transition: transform 0.3s ease, opacity 0.3s ease;
+      transition: transform 0.4s ease, opacity 0.4s ease;
       transform-origin: center;
     }
 
     &--open {
       span:nth-child(1) {
-        transform: translateY(7px) rotate(45deg);
+        transform: translateY(6.5px) rotate(45deg);
       }
       span:nth-child(2) {
         opacity: 0;
       }
       span:nth-child(3) {
-        transform: translateY(-7px) rotate(-45deg);
+        transform: translateY(-6.5px) rotate(-45deg);
       }
     }
   }
 
   // ============================================================
-  // 2. HERO — Full-bleed dark cinematic
+  // 2. HERO — Zen negative space
   // ============================================================
 
   &__hero {
@@ -334,136 +259,71 @@ $section-pad-mobile: 56px;
     align-items: center;
     padding: 0;
     overflow: hidden;
-    background-color: $color-bg-dark;
-    background-image:
-      repeating-linear-gradient(
-        0deg,
-        transparent,
-        transparent 2px,
-        rgba(217, 197, 178, 0.018) 2px,
-        rgba(217, 197, 178, 0.018) 4px
-      ),
-      repeating-linear-gradient(
-        90deg,
-        transparent,
-        transparent 60px,
-        rgba(200, 168, 124, 0.012) 60px,
-        rgba(200, 168, 124, 0.012) 61px
-      ),
-      linear-gradient(180deg, rgba(26, 21, 19, 0.82) 0%, rgba(26, 21, 19, 0.65) 50%, rgba(26, 21, 19, 0.88) 100%),
-      url('/assets/images/carpinteria/hero-dining.jpg');
-    background-position: center;
-    background-size: cover;
-    background-repeat: no-repeat;
-
-    // Decorative "Á" watermark
-    &::after {
-      content: 'Á';
-      position: absolute;
-      right: 0;
-      top: 50%;
-      transform: translateY(-50%);
-      font-family: $font-headlines;
-      font-size: clamp(8rem, 15vw, 16rem);
-      font-weight: 700;
-      color: rgba($color-secondary, 0.05);
-      pointer-events: none;
-      line-height: 1;
-      user-select: none;
-
-      @media (max-width: 991px) {
-        display: none;
-      }
-    }
-
-    @media (max-width: 768px) {
-      min-height: 100vh;
-      padding: 0;
-      background-image:
-        repeating-linear-gradient(
-          0deg,
-          transparent,
-          transparent 2px,
-          rgba(217, 197, 178, 0.018) 2px,
-          rgba(217, 197, 178, 0.018) 4px
-        ),
-        linear-gradient(0deg, rgba(26, 21, 19, 0.92) 0%, rgba(26, 21, 19, 0.7) 100%),
-        url('/assets/images/carpinteria/hero-dining.jpg');
-      background-position: center;
-      background-size: cover;
-      background-repeat: no-repeat;
-    }
+    background:
+      linear-gradient(180deg, rgba(26, 21, 19, 0.94) 0%, rgba(40, 30, 22, 0.7) 40%, rgba(26, 21, 19, 0.92) 100%),
+      linear-gradient(135deg, rgba($color-gold, 0.03) 0%, transparent 50%, rgba($color-primary, 0.06) 100%);
   }
 
   &__hero-content {
-    position: relative;
-    padding-left: 2.5rem;
-
-    // Gold vertical line
-    &::before {
-      content: '';
-      position: absolute;
-      left: 0;
-      top: 0;
-      width: 2px;
-      height: 120px;
-      background-color: $color-gold;
-
-      @media (max-width: 768px) {
-        height: 80px;
-      }
-    }
-  }
-
-  &__hero-pill {
-    display: inline-block;
-    font-family: $font-body;
-    font-size: 11px;
-    font-weight: 500;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    padding: 0.35rem 1rem;
-    border: 1px solid rgba($color-gold, 0.4);
-    border-radius: $radius-md;
-    background-color: transparent;
-    color: $color-gold;
-    margin-bottom: 1.5rem;
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 0 2rem;
+    text-align: center;
   }
 
   &__hero-title {
     font-family: $font-headlines;
-    font-size: 4rem;
-    line-height: 1.1;
+    font-size: clamp(2.75rem, 7vw, 5.5rem);
+    line-height: 1.05;
     font-weight: 500;
-    letter-spacing: -0.01em;
+    letter-spacing: 0.02em;
     color: $color-warm-white;
-    margin-bottom: 1.5rem;
+    margin-bottom: 2.5rem;
 
     @media (max-width: 768px) {
-      font-size: 2.5rem;
+      margin-bottom: 2rem;
     }
   }
 
   &__hero-subtitle {
-    font-size: 1.1rem;
-    line-height: 1.7;
+    font-size: 1.05rem;
+    line-height: 1.8;
     color: $color-warm-grey;
-    max-width: 540px;
-    margin-bottom: 2rem;
+    max-width: 480px;
+    margin: 0 auto 3.5rem auto;
+
+    @media (max-width: 768px) {
+      margin-bottom: 2.5rem;
+    }
   }
 
-  &__hero-ctas {
-    display: flex;
-    gap: 1rem;
-    flex-wrap: wrap;
+  &__hero-cta {
+    font-family: $font-body;
+    font-size: 0.9rem;
+    font-weight: 400;
+    color: $color-gold;
+    background: none;
+    border: none;
+    border-bottom: 1px solid rgba($color-gold, 0.3);
+    padding: 0 0 0.25rem 0;
+    cursor: pointer;
+    letter-spacing: 0.03em;
+    transition: border-color 0.6s ease, color 0.6s ease;
+    text-decoration: none;
+    display: inline-block;
+
+    &:hover {
+      border-bottom-color: $color-gold;
+      color: color.adjust($color-gold, $lightness: 12%);
+    }
   }
 
   // ============================================================
-  // 3. EL PROCESO
+  // 3. PROCESS — Horizontal scroll with Japanese numerals
   // ============================================================
 
   &__process {
-    padding: $section-pad-desktop 0;
+    padding: $section-pad 0;
     background-color: $color-bg-dark;
 
     @media (max-width: 768px) {
@@ -471,423 +331,396 @@ $section-pad-mobile: 56px;
     }
   }
 
-  &__process-steps {
-    position: relative;
+  &__process-scroll {
+    display: flex;
+    gap: 0;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    padding: 0 calc((100vw - 1200px) / 2 + 2rem);
+    scrollbar-width: none;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+
+    @media (max-width: 1200px) {
+      padding: 0 2rem;
+    }
+
+    @media (max-width: 768px) {
+      padding: 0 1.5rem;
+    }
   }
 
   &__process-step {
+    flex: 0 0 auto;
+    width: 280px;
+    scroll-snap-align: start;
+    padding-right: 3rem;
     position: relative;
-    text-align: center;
 
-    // Timeline connector
     &:not(:last-child)::after {
       content: '';
       position: absolute;
-      right: -1rem;
-      top: 3rem;
-      width: calc(100% + 2rem);
-      height: 1px;
-      background: linear-gradient(to right, rgba($color-gold, 0.3), rgba($color-gold, 0.1));
-
-      @media (max-width: 991px) {
-        display: none;
-      }
+      right: 1.5rem;
+      top: 2.5rem;
+      width: 1px;
+      height: 60px;
+      background: linear-gradient(to bottom, rgba($color-gold, 0.25), transparent);
     }
 
-    @media (max-width: 991px) {
-      margin-bottom: 3rem;
+    @media (max-width: 768px) {
+      width: 240px;
+      padding-right: 2rem;
 
-      &:last-child {
-        margin-bottom: 0;
+      &:not(:last-child)::after {
+        right: 1rem;
+        height: 40px;
       }
     }
   }
 
-  &__process-number {
+  &__process-numeral {
     display: block;
     font-family: $font-headlines;
-    font-size: clamp(3rem, 6vw, 5rem);
-    font-weight: 700;
-    color: rgba($color-gold, 0.12);
+    font-size: 5rem;
     line-height: 1;
-    margin-bottom: -0.75rem;
-    pointer-events: none;
+    color: rgba($color-gold, 0.18);
+    margin-bottom: 0.5rem;
     user-select: none;
+    pointer-events: none;
+
+    @media (max-width: 768px) {
+      font-size: 3.5rem;
+    }
   }
 
   &__process-title {
-    font-family: $font-headlines;
-    font-size: 1.5rem;
+    font-family: $font-body;
+    font-size: 0.8rem;
     font-weight: 500;
-    color: $color-warm-white;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: $color-gold;
     margin-bottom: 0.75rem;
   }
 
   &__process-desc {
     font-size: 0.95rem;
-    line-height: 1.6;
+    line-height: 1.7;
     color: $color-warm-grey;
-    max-width: 320px;
-    margin: 0 auto;
+    max-width: 240px;
+    margin: 0;
+  }
+
+  &__process-rule {
+    width: 100%;
+    height: 1px;
+    margin-top: 4rem;
+    background: linear-gradient(
+      to right,
+      transparent 0%,
+      rgba($color-secondary, 0.06) 20%,
+      rgba($color-secondary, 0.06) 80%,
+      transparent 100%
+    );
+
+    @media (max-width: 768px) {
+      margin-top: 2.5rem;
+    }
   }
 
   // ============================================================
-  // 4. SERVICIOS
+  // 4. SERVICES — Asymmetric staggered grid
   // ============================================================
 
   &__services {
-    padding: $section-pad-desktop 0;
+    padding: $section-pad 0;
     background-color: $color-bg-cream;
+    display: flex;
+    flex-direction: column;
+    gap: 8rem;
 
     @media (max-width: 768px) {
       padding: $section-pad-mobile 0;
+      gap: 4rem;
     }
   }
 
   &__service-row {
+    display: flex;
     align-items: center;
-    margin-bottom: 5rem;
-
-    &:last-child {
-      margin-bottom: 0;
-    }
+    gap: 0;
+    min-height: 60vh;
 
     &--reverse {
       flex-direction: row-reverse;
     }
+
+    @media (max-width: 991px) {
+      flex-direction: column;
+      min-height: auto;
+      gap: 2rem;
+
+      &--reverse {
+        flex-direction: column;
+      }
+    }
   }
 
   &__service-image {
-    position: relative;
-    width: 100%;
-    aspect-ratio: 4 / 3;
+    flex: 0 0 55%;
+    height: 70vh;
     overflow: hidden;
-    border-radius: $radius-md;
+    border-radius: 0;
+    position: relative;
 
     img {
       width: 100%;
       height: 100%;
       object-fit: cover;
       display: block;
-      transition: transform 0.5s ease;
+      transition: transform 1.2s ease;
     }
 
-    &::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(135deg, rgba($color-primary, 0.2) 0%, transparent 60%);
-      opacity: 0;
-      transition: opacity 0.4s ease;
-      pointer-events: none;
-    }
-
-    &:hover {
-      img {
-        transform: scale(1.03);
-      }
-
-      &::after {
-        opacity: 1;
-      }
-    }
-  }
-
-  &__service-image-number {
-    position: absolute;
-    bottom: 1rem;
-    left: -0.5rem;
-    font-family: $font-headlines;
-    font-size: 5rem;
-    font-weight: 700;
-    line-height: 0.7;
-    color: rgba($color-gold, 0.35);
-    pointer-events: none;
-    z-index: 1;
-
-    @media (max-width: 768px) {
-      font-size: 3.5rem;
-      left: 0;
-      bottom: 0.5rem;
-    }
-  }
-
-  &__service-content {
-    position: relative;
-    padding: 1rem 0 1rem 1.5rem;
-    border-left: 2px solid $color-gold;
-
-    @media (min-width: 992px) {
-      padding: 1rem 2rem 1rem 2rem;
+    &:hover img {
+      transform: scale(1.012);
     }
 
     @media (max-width: 991px) {
-      margin-top: 1.5rem;
+      flex: 0 0 auto;
+      width: 100%;
+      height: 40vh;
+    }
+  }
+
+  &__service-text {
+    flex: 1;
+    padding: 0 4rem;
+
+    @media (max-width: 1200px) {
+      padding: 0 2.5rem;
+    }
+
+    @media (max-width: 991px) {
+      padding: 0 1.5rem;
     }
   }
 
   &__service-title {
     font-family: $font-headlines;
-    font-size: 1.75rem;
-    line-height: 1.3;
+    font-size: clamp(1.75rem, 3vw, 2.25rem);
+    line-height: 1.25;
     font-weight: 500;
     color: $color-primary;
-    margin-bottom: 0.75rem;
+    margin-bottom: 1rem;
   }
 
   &__service-desc {
     font-size: 1rem;
-    line-height: 1.6;
-    color: rgba($color-neutral, 0.8);
-    margin-bottom: 1.25rem;
+    line-height: 1.8;
+    color: rgba($color-neutral, 0.75);
+    margin-bottom: 1.5rem;
+    max-width: 480px;
   }
 
   // ============================================================
-  // 5. OBRAS SELECCIONADAS (Bento Grid)
+  // 5. PROJECTS — Masonry with hover reveals
   // ============================================================
 
   &__works {
-    padding: $section-pad-desktop 0;
-    background-color: $color-bg-cream;
+    padding: $section-pad 0;
+    background-color: $color-bg-dark;
 
     @media (max-width: 768px) {
       padding: $section-pad-mobile 0;
     }
   }
 
-  &__bento {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    grid-auto-rows: 300px;
-    gap: 1rem;
+  &__masonry {
+    columns: 3;
+    column-gap: 1rem;
+    padding: 0 1rem;
 
     @media (max-width: 991px) {
-      grid-template-columns: repeat(2, 1fr);
-      grid-auto-rows: 240px;
+      columns: 2;
     }
 
     @media (max-width: 576px) {
-      grid-template-columns: 1fr;
-      grid-auto-rows: 260px;
+      columns: 1;
+      padding: 0;
     }
   }
 
   &__work-card {
-    border-radius: $radius-md;
+    break-inside: avoid;
+    margin-bottom: 1rem;
+    position: relative;
     overflow: hidden;
-    border: 1px solid rgba($color-secondary, 0.35);
+    cursor: pointer;
 
     &--large {
-      grid-column: span 2;
-      grid-row: span 2;
-
-      @media (max-width: 576px) {
-        grid-column: span 1;
-        grid-row: span 1;
-      }
+      // large card naturally handled by masonry column flow
+      // it will just be a taller image in its column
     }
 
     &--wide {
-      grid-column: span 2;
-
-      @media (max-width: 576px) {
-        grid-column: span 1;
+      @media (min-width: 992px) {
+        column-span: all;
       }
     }
   }
 
-  &__work-image {
-    position: relative;
+  &__work-img {
     width: 100%;
-    height: 100%;
-    overflow: hidden;
-
-    img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
-      transition: transform 0.5s ease;
-    }
+    height: auto;
+    display: block;
+    transition: transform 1.2s ease, filter 0.8s ease;
   }
 
   &__work-overlay {
     position: absolute;
     inset: 0;
-    background: linear-gradient(to top, rgba(26, 21, 19, 0.85) 0%, rgba(26, 21, 19, 0.2) 50%, transparent 100%);
+    background: linear-gradient(to top, rgba(26, 21, 19, 0.88) 0%, rgba(26, 21, 19, 0.3) 40%, transparent 65%);
     opacity: 0;
-    transition: opacity 0.35s ease;
+    transition: opacity 0.6s ease;
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
-    padding: 1.5rem;
-    border-radius: $radius-md;
+    padding: 2rem;
+    pointer-events: none;
   }
 
-  &__work-overlay-content {
-    display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
-    transform: translateY(12px);
-    transition: transform 0.35s ease;
-  }
-
-  &__work-overlay-arrow {
-    font-size: 1.5rem;
+  &__work-chip {
+    font-family: $font-body;
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
     color: $color-gold;
-    line-height: 1;
+    margin-bottom: 0.5rem;
   }
 
-  &__work-overlay-title {
+  &__work-title {
     font-family: $font-headlines;
-    font-size: 1.25rem;
+    font-size: 1.35rem;
     font-weight: 500;
     color: $color-warm-white;
     margin: 0;
+    line-height: 1.3;
   }
 
   &__work-card:hover {
-    .alamo__work-image img {
-      transform: scale(1.05);
+    .alamo__work-img {
+      transform: scale(1.03);
+      filter: brightness(0.85);
     }
 
     .alamo__work-overlay {
       opacity: 1;
     }
-
-    .alamo__work-overlay-content {
-      transform: translateY(0);
-    }
-  }
-
-  &__work-chip {
-    position: absolute;
-    top: 0.875rem;
-    left: 0.875rem;
-    font-family: $font-body;
-    font-size: 10px;
-    font-weight: 500;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    padding: 0.25rem 0.65rem;
-    background-color: rgba($color-bg-dark, 0.8);
-    color: $color-gold;
-    border-radius: $radius-md;
-    z-index: 2;
-    border: 1px solid rgba($color-gold, 0.25);
   }
 
   // ============================================================
-  // 6. NUESTRA FILOSOFÍA
+  // 6. PHILOSOPHY — Split with massive typography
   // ============================================================
 
-  &__filosofia {
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    gap: 2rem;
-    padding: 5rem 0;
+  &__about {
+    padding: $section-pad 0;
     background-color: $color-bg-cream;
-    position: relative;
 
     @media (max-width: 768px) {
-      padding: 3rem 0;
-      gap: 1.5rem;
+      padding: $section-pad-mobile 0;
     }
   }
 
-  &__filosofia-rule {
-    width: 100%;
-    height: 2px;
-    background: linear-gradient(
-      to right,
-      transparent 0%,
-      rgba($color-gold, 0.3) 20%,
-      rgba($color-gold, 0.5) 50%,
-      rgba($color-gold, 0.3) 80%,
-      transparent 100%
-    );
+  &__about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.2fr;
+    gap: 6rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 2rem;
+    align-items: start;
+
+    @media (max-width: 991px) {
+      grid-template-columns: 1fr;
+      gap: 3rem;
+    }
+
+    @media (max-width: 768px) {
+      padding: 0 1.5rem;
+      gap: 2rem;
+    }
   }
 
-  &__filosofia-headline {
+  &__about-word {
     font-family: $font-headlines;
-    font-size: 1.5rem;
-    line-height: 1.35;
+    font-size: clamp(5rem, 12vw, 10rem);
+    line-height: 0.9;
     font-weight: 500;
     color: $color-primary;
-    max-width: 680px;
-    margin: 0 auto 3.5rem auto;
-    text-align: center;
+    letter-spacing: 0.03em;
+    user-select: none;
 
-    @media (max-width: 768px) {
-      font-size: 1.25rem;
+    @media (max-width: 991px) {
+      font-size: clamp(3.5rem, 10vw, 7rem);
     }
   }
 
-  &__value-card {
-    text-align: center;
-    padding: 2rem 1.5rem;
-    background-color: $color-bg-dark;
-    border-radius: $radius-md;
-    border: 1px solid rgba($color-gold, 0.15);
-    transition: border-color 0.3s ease, transform 0.3s ease;
-
-    &:hover {
-      border-color: rgba($color-gold, 0.4);
-      transform: translateY(-4px);
-    }
-  }
-
-  &__value-icon {
-    width: 64px;
-    height: 64px;
-    border-radius: 50%;
-    border: 1px solid rgba($color-gold, 0.25);
+  &__about-body {
     display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 0 auto 1.25rem auto;
-    transition: background-color 0.25s ease, border-color 0.25s ease;
-
-    .alamo__material-icon {
-      font-size: 1.75rem;
-      color: $color-gold;
-      transition: color 0.25s ease;
-    }
+    flex-direction: column;
+    gap: 3rem;
+    padding-top: 1.5rem;
   }
 
-  &__value-card:hover &__value-icon {
-    background-color: $color-gold;
-    border-color: $color-gold;
-
-    .alamo__material-icon {
-      color: $color-bg-dark;
-    }
-  }
-
-  &__value-title {
+  &__about-headline {
     font-family: $font-headlines;
-    font-size: 1.25rem;
-    line-height: 1.4;
+    font-size: 1.35rem;
+    line-height: 1.6;
     font-weight: 500;
-    color: $color-warm-white;
+    color: $color-primary;
+    margin: 0;
+    max-width: 520px;
+  }
+
+  &__about-value {
+    &::before {
+      content: '';
+      display: block;
+      width: 100%;
+      height: 1px;
+      background-color: rgba($color-secondary, 0.3);
+      margin-bottom: 1.5rem;
+    }
+  }
+
+  &__about-value-title {
+    font-family: $font-body;
+    font-size: 0.8rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: $color-gold;
     margin-bottom: 0.5rem;
   }
 
-  &__value-desc {
-    font-size: 0.95rem;
-    line-height: 1.55;
-    color: $color-warm-grey;
+  &__about-value-desc {
+    font-size: 1rem;
+    line-height: 1.8;
+    color: rgba($color-neutral, 0.7);
     margin: 0;
+    max-width: 480px;
   }
 
   // ============================================================
-  // 7. CONTACTO
+  // 7. CONTACT — Ultra-minimal
   // ============================================================
 
   &__contact {
-    padding: $section-pad-desktop 0;
+    padding: $section-pad 0;
     background-color: $color-bg-dark;
 
     @media (max-width: 768px) {
@@ -895,28 +728,62 @@ $section-pad-mobile: 56px;
     }
   }
 
-  &__contact-card {
-    border: 1px solid rgba($color-gold, 0.2);
-    border-radius: $radius-md;
-    padding: 2.5rem 2rem;
-    height: 100%;
+  &__contact-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.2fr;
+    gap: 6rem;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 2rem;
 
-    @media (max-width: 991px) {
-      margin-bottom: 2rem;
+    @media (max-width: 768px) {
+      grid-template-columns: 1fr;
+      gap: 3rem;
+      padding: 0 1.5rem;
     }
+  }
+
+  &__contact-info {
+    padding-top: 0.5rem;
+  }
+
+  &__contact-heading {
+    font-family: $font-headlines;
+    font-size: 2rem;
+    line-height: 1.2;
+    font-weight: 500;
+    color: $color-warm-white;
+    margin-bottom: 1rem;
+    letter-spacing: 0.01em;
   }
 
   &__contact-desc {
     font-size: 1rem;
-    line-height: 1.6;
+    line-height: 1.8;
     color: $color-warm-grey;
-    margin-bottom: 2rem;
+    margin-bottom: 2.5rem;
+    max-width: 360px;
+  }
+
+  &__contact-whatsapp {
+    font-family: $font-body;
+    font-size: 0.85rem;
+    color: $color-warm-muted;
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    padding-bottom: 0.15rem;
+    transition: color 0.6s ease, border-color 0.6s ease;
+
+    &:hover {
+      color: $color-warm-white;
+      border-bottom-color: rgba($color-warm-white, 0.2);
+    }
   }
 
   &__form {
     display: flex;
     flex-direction: column;
-    gap: 1.25rem;
+    gap: 2rem;
   }
 
   &__field {
@@ -926,210 +793,84 @@ $section-pad-mobile: 56px;
 
   &__input {
     font-family: $font-body;
-    font-size: 0.95rem;
-    padding: 0.85rem 0.75rem;
-    border: 1px solid rgba($color-warm-white, 0.12);
-    border-radius: $radius-md;
-    background-color: rgba($color-warm-white, 0.04);
+    font-size: 1rem;
+    padding: 0.85rem 0;
+    border: none;
+    border-bottom: 1px solid rgba($color-warm-white, 0.12);
+    background-color: transparent;
     color: $color-warm-white;
     outline: none;
-    transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+    border-radius: 0;
+    transition: border-color 0.6s ease, padding-left 0.6s ease;
 
     &::placeholder {
-      color: rgba($color-warm-white, 0.3);
+      color: rgba($color-warm-white, 0.2);
+      transition: color 0.6s ease;
     }
 
     &:focus {
-      border-color: $color-gold;
-      box-shadow: 0 0 0 3px rgba($color-gold, 0.15);
-      background-color: rgba($color-warm-white, 0.06);
+      border-bottom-color: rgba($color-gold, 0.5);
+      padding-left: 0.5rem;
+
+      &::placeholder {
+        color: transparent;
+      }
+    }
+
+    &--area {
+      resize: vertical;
+      min-height: 100px;
     }
   }
 
-  textarea.alamo__input {
-    resize: vertical;
-    min-height: 120px;
-  }
-
-  &__map {
-    position: relative;
-    height: 100%;
-    min-height: 400px;
-    border-radius: $radius-md;
-    overflow: hidden;
-    border: 1px solid rgba($color-gold, 0.2);
-
-    img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
-    }
-  }
-
-  &__map-overlay {
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(135deg, rgba($color-primary, 0.35) 0%, transparent 70%);
-    pointer-events: none;
-  }
-
-  &__map-card {
-    position: absolute;
-    bottom: 1.5rem;
-    left: 1.5rem;
-    right: 1.5rem;
-    background-color: rgba($color-bg-dark, 0.9);
-    backdrop-filter: blur(8px);
-    border-radius: $radius-md;
-    padding: 1rem 1.25rem;
-    border: 1px solid rgba($color-gold, 0.25);
-  }
-
-  &__map-title {
-    font-family: $font-headlines;
-    font-size: 1.1rem;
-    font-weight: 500;
-    color: $color-warm-white;
-    margin: 0 0 0.25rem 0;
-  }
-
-  &__map-text {
+  &__submit {
+    align-self: flex-start;
+    font-family: $font-body;
     font-size: 0.9rem;
-    color: $color-warm-muted;
-    margin: 0;
+    font-weight: 400;
+    color: $color-gold;
+    background: none;
+    border: none;
+    border-bottom: 1px solid rgba($color-gold, 0.3);
+    padding: 0 0 0.25rem 0;
+    cursor: pointer;
+    letter-spacing: 0.03em;
+    transition: border-color 0.6s ease, color 0.6s ease;
+
+    &:hover {
+      border-bottom-color: $color-gold;
+      color: color.adjust($color-gold, $lightness: 12%);
+    }
   }
 
   // ============================================================
-  // 8. FOOTER
+  // 8. FOOTER — Haiku-like
   // ============================================================
 
   &__footer {
-    padding: 3rem 0 1.5rem;
-    background-color: $color-bg-dark;
-    border-top: 1px solid rgba($color-gold, 0.15);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 3rem 2rem;
+    border-top: 1px solid rgba($color-secondary, 0.06);
+
+    @media (max-width: 768px) {
+      padding: 2.5rem 1.5rem;
+    }
   }
 
   &__footer-brand {
     font-family: $font-headlines;
-    font-size: 2.5rem;
+    font-size: 1.25rem;
     font-weight: 500;
-    letter-spacing: 0.08em;
-    color: $color-gold;
-    margin-bottom: 1.5rem;
-
-    @media (max-width: 768px) {
-      font-size: 2rem;
-    }
-  }
-
-  &__footer-bottom {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    gap: 1rem;
+    letter-spacing: 0.1em;
+    color: rgba($color-gold, 0.5);
   }
 
   &__footer-copy {
-    font-size: 0.85rem;
+    font-size: 0.78rem;
     color: $color-warm-muted;
-  }
-
-  &__footer-links {
-    display: flex;
-    align-items: center;
-    gap: 1.5rem;
-    flex-wrap: wrap;
-  }
-
-  &__footer-link {
-    font-size: 0.875rem;
-    color: $color-warm-grey;
-    text-decoration: none;
-    transition: color 0.2s ease;
-
-    &:hover {
-      color: $color-gold;
-    }
-  }
-
-  // ============================================================
-  // MOBILE RESPONSIVE
-  // ============================================================
-
-  @media (max-width: 991px) {
-    &__nav-links {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      background-color: $color-bg-dark;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.3s ease;
-      z-index: 99;
-
-      &--open {
-        opacity: 1;
-        pointer-events: auto;
-      }
-    }
-
-    &__nav-cta {
-      display: none;
-    }
-
-    &__nav-cta-mobile {
-      display: block;
-      margin-top: 1.5rem;
-    }
-
-    &__hamburger {
-      display: flex;
-      z-index: 101;
-    }
-  }
-
-  // ============================================================
-  // FLOATING WHATSAPP — Gold
-  // ============================================================
-
-  &__whatsapp {
-    position: fixed;
-    bottom: 2rem;
-    right: 2rem;
-    z-index: 200;
-    width: 56px;
-    height: 56px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: $color-gold;
-    color: $color-bg-dark;
-    font-size: 1.75rem;
-    text-decoration: none;
-    box-shadow: 0px 4px 16px rgba(200, 168, 124, 0.3);
-    transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
-
-    &:hover {
-      transform: scale(1.1);
-      box-shadow: 0px 6px 24px rgba(200, 168, 124, 0.5);
-      background-color: color.adjust($color-gold, $lightness: -6%);
-      color: $color-bg-dark;
-    }
-
-    @media (max-width: 768px) {
-      bottom: 1.5rem;
-      right: 1.5rem;
-      width: 48px;
-      height: 48px;
-      font-size: 1.5rem;
-    }
+    letter-spacing: 0.04em;
   }
 }

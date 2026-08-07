@@ -7,7 +7,6 @@ import {
   ViewChildren,
   QueryList,
 } from '@angular/core';
-import { DecimalPipe } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import gsap from 'gsap';
 
@@ -33,10 +32,16 @@ interface Value {
   description: string;
 }
 
+interface ProcessStep {
+  numeral: string;
+  title: string;
+  description: string;
+}
+
 @Component({
   selector: 'app-carpinteria',
   standalone: true,
-  imports: [RouterLink, DecimalPipe],
+  imports: [RouterLink],
   templateUrl: './carpinteria.component.html',
   styleUrl: './carpinteria.component.scss',
 })
@@ -44,6 +49,33 @@ export class CarpinteriaComponent implements AfterViewInit {
   readonly currentYear = new Date().getFullYear();
   mobileMenuOpen = false;
   scrolled = false;
+
+  readonly processSteps: ProcessStep[] = [
+    {
+      numeral: '一',
+      title: 'Design',
+      description:
+        'We listen to your vision and translate it into precise technical drawings that honour proportion and purpose.',
+    },
+    {
+      numeral: '二',
+      title: 'Select',
+      description:
+        'We hand-pick the perfect timber — walnut, oak, ash — from trusted, sustainable sources, each board chosen for its unique grain.',
+    },
+    {
+      numeral: '三',
+      title: 'Craft',
+      description:
+        'Our master carpenters shape your piece using time-honoured joinery, letting the wood guide each cut, each plane, each finish.',
+    },
+    {
+      numeral: '四',
+      title: 'Deliver',
+      description:
+        'Your finished heirloom arrives at your space, installed with the same care and reverence with which it was built.',
+    },
+  ];
 
   readonly services: Service[] = [
     {
@@ -156,13 +188,13 @@ export class CarpinteriaComponent implements AfterViewInit {
       const heroChildren = this.heroContent.nativeElement.children;
       gsap.fromTo(
         heroChildren,
-        { y: 48, opacity: 0 },
+        { y: 32, opacity: 0 },
         {
           y: 0,
           opacity: 1,
-          duration: 0.9,
-          stagger: 0.18,
-          ease: 'power3.out',
+          duration: 1,
+          stagger: 0.22,
+          ease: 'power2.out',
         },
       );
     }
@@ -173,14 +205,14 @@ export class CarpinteriaComponent implements AfterViewInit {
           if (entry.isIntersecting) {
             gsap.fromTo(
               entry.target,
-              { y: 40, opacity: 0 },
-              { y: 0, opacity: 1, duration: 0.8, ease: 'power2.out' },
+              { y: 32, opacity: 0 },
+              { y: 0, opacity: 1, duration: 1, ease: 'power2.out' },
             );
             observer.unobserve(entry.target);
           }
         });
       },
-      { threshold: 0.1 },
+      { threshold: 0.12 },
     );
 
     this.animateSections.forEach((ref) => observer.observe(ref.nativeElement));
