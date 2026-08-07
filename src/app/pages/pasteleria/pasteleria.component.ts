@@ -48,20 +48,25 @@ interface ContactInfo {
   link?: string;
 }
 
-type CakeBase = 'bizcocho' | 'brownie' | 'galleta';
-type CakeFlavor = 'chocolate' | 'vainilla' | 'fresa' | 'limon' | 'caramelo';
-type CakeSize = 'mini' | 'mediano' | 'grande';
-type CakeDecoration = 'frutas' | 'flores' | 'chocolate' | 'fondant' | 'oro';
+type CakeType = 'tarta-queso' | 'brownie';
+
+interface CakeTypeOption {
+  value: CakeType;
+  name: string;
+  description: string;
+  emoji: string;
+  gradient: string;
+}
 
 interface CakeBaseOption {
-  value: CakeBase;
+  value: string;
   name: string;
   description: string;
   emoji: string;
 }
 
 interface CakeFlavorOption {
-  value: CakeFlavor;
+  value: string;
   name: string;
   emoji: string;
   color: string;
@@ -69,7 +74,7 @@ interface CakeFlavorOption {
 }
 
 interface CakeSizeOption {
-  value: CakeSize;
+  value: string;
   name: string;
   description: string;
   emoji: string;
@@ -77,17 +82,18 @@ interface CakeSizeOption {
 }
 
 interface CakeDecorationOption {
-  value: CakeDecoration;
+  value: string;
   name: string;
   emoji: string;
   price: number;
 }
 
 interface CakeConfig {
-  base: CakeBase | null;
-  flavor: CakeFlavor | null;
-  size: CakeSize | null;
-  decorations: CakeDecoration[];
+  type: CakeType | null;
+  base: string | null;
+  flavor: string | null;
+  size: string | null;
+  decorations: string[];
 }
 
 @Component({
@@ -282,55 +288,87 @@ export class PasteleriaComponent implements AfterViewInit {
   contactSubmitted = false;
 
   currentStep = 0;
+  readonly totalSteps = 5;
 
   cakeConfig: CakeConfig = {
+    type: null,
     base: null,
     flavor: null,
     size: null,
     decorations: [],
   };
 
-  readonly baseOptions: CakeBaseOption[] = [
+  readonly typeOptions: CakeTypeOption[] = [
     {
-      value: 'bizcocho',
-      name: 'Bizcocho Clásico',
-      description: 'Esponjoso y ligero, receta tradicional francesa con mantequilla pura',
-      emoji: '🍰',
+      value: 'tarta-queso',
+      name: 'Tarta de Queso',
+      description: 'Cremosa y suave, estilo La Viña. Elige tu base, sabor frutal o clásico, y coronála con decoraciones frescas.',
+      emoji: '🧀',
+      gradient: 'linear-gradient(135deg, #faf7f2 0%, #f0e6d8 40%, rgba(193, 123, 96, 0.12) 100%)',
     },
     {
       value: 'brownie',
-      name: 'Brownie de Chocolate',
-      description: 'Denso e intenso, con chocolate Valrhona 70% y nueces caramelizadas',
+      name: 'Brownie',
+      description: 'Intenso y denso, con chocolate de origen. Nueces, dulce de leche y coberturas que lo hacen irresistible.',
       emoji: '🍫',
-    },
-    {
-      value: 'galleta',
-      name: 'Galleta Crujiente',
-      description: 'Base de speculoos belga con un toque de canela y mantequilla tostada',
-      emoji: '🍪',
+      gradient: 'linear-gradient(135deg, #3d2b1f 0%, #5a4030 40%, rgba(193, 123, 96, 0.2) 100%)',
     },
   ];
 
-  readonly flavorOptions: CakeFlavorOption[] = [
-    { value: 'chocolate', name: 'Chocolate Belga', emoji: '🍫', color: '#3d2b1f', multiplier: 1.2 },
-    { value: 'vainilla', name: 'Vainilla Bourbon', emoji: '🌸', color: '#f5ecd7', multiplier: 1.0 },
-    { value: 'fresa', name: 'Fresa Natural', emoji: '🍓', color: '#e8a0b4', multiplier: 1.0 },
-    { value: 'limon', name: 'Limón Siciliano', emoji: '🍋', color: '#f0e68c', multiplier: 1.0 },
-    { value: 'caramelo', name: 'Caramelo Salado', emoji: '🍯', color: '#c4943a', multiplier: 1.2 },
+  private readonly tartaQuesoBases: CakeBaseOption[] = [
+    { value: 'clasica', name: 'Clásica', description: 'Bizcocho esponjoso tradicional, horneado a baja temperatura', emoji: '🍰' },
+    { value: 'galleta-digestive', name: 'Galleta Digestive', description: 'Base crujiente de galleta triturada con mantequilla', emoji: '🍪' },
+    { value: 'sin-base', name: 'Sin Base', description: 'Solo crema de queso, ligera y aireada', emoji: '🥄' },
   ];
 
-  readonly sizeOptions: CakeSizeOption[] = [
-    { value: 'mini', name: 'Mini', description: '15 cm — 4 a 6 personas', emoji: '🧁', basePrice: 25 },
-    { value: 'mediano', name: 'Mediano', description: '22 cm — 8 a 10 personas', emoji: '🎂', basePrice: 45 },
-    { value: 'grande', name: 'Grande', description: '28 cm — 14 a 16 personas', emoji: '🍰', basePrice: 75 },
+  private readonly brownieBases: CakeBaseOption[] = [
+    { value: 'clasico', name: 'Clásico', description: 'Brownie denso de chocolate intenso, textura perfecta', emoji: '🍫' },
+    { value: 'con-nueces', name: 'Con Nueces', description: 'Brownie con nueces caramelizadas para un toque crujiente', emoji: '🥜' },
+    { value: 'dulce-de-leche', name: 'Relleno de Dulce de Leche', description: 'Brownie relleno de dulce de leche argentino', emoji: '🥛' },
   ];
 
-  readonly decorationOptions: CakeDecorationOption[] = [
-    { value: 'frutas', name: 'Frutas Frescas', emoji: '🍓', price: 5 },
-    { value: 'flores', name: 'Flores Comestibles', emoji: '🌸', price: 8 },
-    { value: 'chocolate', name: 'Chocolate Fundido', emoji: '🍫', price: 5 },
-    { value: 'fondant', name: 'Fondant Personalizado', emoji: '🎨', price: 12 },
-    { value: 'oro', name: 'Pan de Oro', emoji: '✨', price: 15 },
+  private readonly tartaQuesoFlavors: CakeFlavorOption[] = [
+    { value: 'natural', name: 'Natural', emoji: '🧀', color: '#f5e6d3', multiplier: 1.0 },
+    { value: 'frutos-rojos', name: 'Frutos Rojos', emoji: '🫐', color: '#c94057', multiplier: 1.0 },
+    { value: 'mango-maracuya', name: 'Mango & Maracuyá', emoji: '🥭', color: '#f4a460', multiplier: 1.15 },
+    { value: 'chocolate-blanco', name: 'Chocolate Blanco', emoji: '🤍', color: '#faf0e6', multiplier: 1.0 },
+    { value: 'lotus', name: 'Lotus', emoji: '🍪', color: '#c4943a', multiplier: 1.2 },
+  ];
+
+  private readonly brownieFlavors: CakeFlavorOption[] = [
+    { value: 'chocolate-intenso', name: 'Chocolate Intenso', emoji: '🍫', color: '#3d2b1f', multiplier: 1.0 },
+    { value: 'chocolate-blanco-frambuesa', name: 'Chocolate Blanco & Frambuesa', emoji: '🍓', color: '#e8a0b4', multiplier: 1.15 },
+    { value: 'menta-chocolate', name: 'Menta & Chocolate', emoji: '🌿', color: '#98d8a0', multiplier: 1.0 },
+    { value: 'naranja-confitada', name: 'Naranja Confitada', emoji: '🍊', color: '#f4a460', multiplier: 1.15 },
+    { value: 'cafe-chocolate', name: 'Café & Chocolate', emoji: '☕', color: '#6b4c3b', multiplier: 1.0 },
+  ];
+
+  private readonly tartaQuesoSizes: CakeSizeOption[] = [
+    { value: 'mini', name: 'Mini', description: '15 cm — 4 a 6 personas', emoji: '🧁', basePrice: 22 },
+    { value: 'mediano', name: 'Mediano', description: '22 cm — 8 a 10 personas', emoji: '🎂', basePrice: 38 },
+    { value: 'grande', name: 'Grande', description: '28 cm — 14 a 16 personas', emoji: '🍰', basePrice: 58 },
+  ];
+
+  private readonly brownieSizes: CakeSizeOption[] = [
+    { value: 'mini', name: 'Mini', description: '15 cm — 4 a 6 personas', emoji: '🧁', basePrice: 18 },
+    { value: 'mediano', name: 'Mediano', description: '22 cm — 8 a 10 personas', emoji: '🎂', basePrice: 32 },
+    { value: 'grande', name: 'Grande', description: '28 cm — 14 a 16 personas', emoji: '🍰', basePrice: 48 },
+  ];
+
+  private readonly tartaQuesoDecorations: CakeDecorationOption[] = [
+    { value: 'frutas-frescas', name: 'Frutas Frescas', emoji: '🍓', price: 5 },
+    { value: 'salsa-frutos-rojos', name: 'Salsa de Frutos Rojos', emoji: '🫐', price: 4 },
+    { value: 'chocolate-fundido', name: 'Chocolate Fundido', emoji: '🍫', price: 5 },
+    { value: 'flores-comestibles', name: 'Flores Comestibles', emoji: '🌸', price: 8 },
+    { value: 'pan-de-oro', name: 'Pan de Oro', emoji: '✨', price: 15 },
+  ];
+
+  private readonly brownieDecorations: CakeDecorationOption[] = [
+    { value: 'helado-vainilla', name: 'Helado de Vainilla', emoji: '🍦', price: 4 },
+    { value: 'frutos-secos', name: 'Frutos Secos', emoji: '🥜', price: 5 },
+    { value: 'chocolate-fundido', name: 'Chocolate Fundido', emoji: '🍫', price: 4 },
+    { value: 'salsa-caramelo', name: 'Salsa Caramelo', emoji: '🍯', price: 5 },
+    { value: 'pan-de-oro', name: 'Pan de Oro', emoji: '✨', price: 15 },
   ];
 
   ngAfterViewInit(): void {
@@ -416,34 +454,66 @@ export class PasteleriaComponent implements AfterViewInit {
     setTimeout(() => (this.contactSubmitted = false), 8000);
   }
 
-  // --- Cake Builder Methods ---
+  getBaseOptions(): CakeBaseOption[] {
+    return this.cakeConfig.type === 'brownie' ? this.brownieBases : this.tartaQuesoBases;
+  }
 
-  selectBase(value: CakeBase): void {
-    this.cakeConfig.base = value;
+  getFlavorOptions(): CakeFlavorOption[] {
+    return this.cakeConfig.type === 'brownie' ? this.brownieFlavors : this.tartaQuesoFlavors;
+  }
+
+  getSizeOptions(): CakeSizeOption[] {
+    return this.cakeConfig.type === 'brownie' ? this.brownieSizes : this.tartaQuesoSizes;
+  }
+
+  getDecorationOptions(): CakeDecorationOption[] {
+    return this.cakeConfig.type === 'brownie' ? this.brownieDecorations : this.tartaQuesoDecorations;
+  }
+
+  selectType(value: CakeType): void {
+    this.cakeConfig = { type: value, base: null, flavor: null, size: null, decorations: [] };
+    setTimeout(() => this.nextStep(), 350);
+  }
+
+  selectBase(value: string): void {
+    this.cakeConfig = { ...this.cakeConfig, base: value, flavor: null, size: null, decorations: [] };
     setTimeout(() => this.nextStep(), 300);
   }
 
-  selectFlavor(value: CakeFlavor): void {
-    this.cakeConfig.flavor = value;
+  selectFlavor(value: string): void {
+    this.cakeConfig = { ...this.cakeConfig, flavor: value, size: null, decorations: [] };
     setTimeout(() => this.nextStep(), 300);
   }
 
-  selectSize(value: CakeSize): void {
-    this.cakeConfig.size = value;
+  selectSize(value: string): void {
+    this.cakeConfig = { ...this.cakeConfig, size: value };
     setTimeout(() => this.nextStep(), 300);
   }
 
-  toggleDecoration(value: CakeDecoration): void {
+  toggleDecoration(value: string): void {
     const idx = this.cakeConfig.decorations.indexOf(value);
     if (idx >= 0) {
-      this.cakeConfig.decorations.splice(idx, 1);
+      this.cakeConfig = {
+        ...this.cakeConfig,
+        decorations: this.cakeConfig.decorations.filter((_, i) => i !== idx),
+      };
     } else {
-      this.cakeConfig.decorations = [...this.cakeConfig.decorations, value];
+      this.cakeConfig = {
+        ...this.cakeConfig,
+        decorations: [...this.cakeConfig.decorations, value],
+      };
     }
   }
 
+  removeDecoration(value: string): void {
+    this.cakeConfig = {
+      ...this.cakeConfig,
+      decorations: this.cakeConfig.decorations.filter((d) => d !== value),
+    };
+  }
+
   nextStep(): void {
-    if (this.currentStep < 3) {
+    if (this.currentStep < this.totalSteps - 1) {
       this.currentStep++;
     }
   }
@@ -454,82 +524,137 @@ export class PasteleriaComponent implements AfterViewInit {
     }
   }
 
+  resetBuilder(): void {
+    this.currentStep = 0;
+    this.cakeConfig = { type: null, base: null, flavor: null, size: null, decorations: [] };
+  }
+
   basePrice(): number {
-    const size = this.sizeOptions.find((s) => s.value === this.cakeConfig.size);
+    const sizes = this.getSizeOptions();
+    const size = sizes.find((s) => s.value === this.cakeConfig.size);
     return size ? size.basePrice : 0;
   }
 
   flavorMultiplier(): number {
-    const flavor = this.flavorOptions.find((f) => f.value === this.cakeConfig.flavor);
+    const flavors = this.getFlavorOptions();
+    const flavor = flavors.find((f) => f.value === this.cakeConfig.flavor);
     return flavor ? flavor.multiplier : 1;
   }
 
+  isFlavorPremium(): boolean {
+    return this.flavorMultiplier() > 1;
+  }
+
+  flavorPremiumPercent(): number {
+    return Math.round((this.flavorMultiplier() - 1) * 100);
+  }
+
+  flavorUpcharge(): number {
+    const bp = this.basePrice();
+    return Math.round((bp * this.flavorMultiplier()) - bp);
+  }
+
   calculatedPrice(): number {
-    const size = this.sizeOptions.find((s) => s.value === this.cakeConfig.size);
-    if (!size) return 0;
-    let price = size.basePrice;
-    const flavor = this.flavorOptions.find((f) => f.value === this.cakeConfig.flavor);
-    if (flavor) {
-      price *= flavor.multiplier;
-    }
+    const bp = this.basePrice();
+    if (!bp) return 0;
+    let price = bp * this.flavorMultiplier();
     for (const d of this.cakeConfig.decorations) {
-      const deco = this.decorationOptions.find((x) => x.value === d);
+      const decos = this.getDecorationOptions();
+      const deco = decos.find((x) => x.value === d);
       if (deco) price += deco.price;
     }
-    return Math.round(price);
+    return Math.round(price * 100) / 100;
   }
 
   selectedDecorations(): CakeDecorationOption[] {
-    return this.decorationOptions.filter((d) =>
-      this.cakeConfig.decorations.includes(d.value),
-    );
+    const decos = this.getDecorationOptions();
+    return decos.filter((d) => this.cakeConfig.decorations.includes(d.value));
   }
 
-  sizeLabel(size: CakeSize): string {
-    const found = this.sizeOptions.find((s) => s.value === size);
+  sizeLabel(): string {
+    const sizes = this.getSizeOptions();
+    const found = sizes.find((s) => s.value === this.cakeConfig.size);
     return found ? found.description : '';
   }
 
-  cakeLabel(): string {
-    const parts: string[] = [];
-    const base = this.baseOptions.find((b) => b.value === this.cakeConfig.base);
-    const flavor = this.flavorOptions.find((f) => f.value === this.cakeConfig.flavor);
-    const size = this.sizeOptions.find((s) => s.value === this.cakeConfig.size);
-    if (base && flavor && size) {
-      parts.push(`Tarta ${size.name} de ${flavor.name} sobre ${base.name}`);
-    } else {
-      if (base) parts.push(base.name);
-      if (flavor) parts.push(flavor.name);
-      if (size) parts.push(size.name);
-    }
-    return parts.length ? parts.join(' · ') : 'Tu tarta personalizada';
+  typeLabel(): string {
+    const found = this.typeOptions.find((t) => t.value === this.cakeConfig.type);
+    return found ? found.name : '';
   }
 
-  cakePreviewClasses(): string {
-    const classes = ['dulcera__cake-preview-cake'];
-    if (this.cakeConfig.flavor) {
-      classes.push(`dulcera__cake-preview-cake--${this.cakeConfig.flavor}`);
+  flavorLabel(): string {
+    const flavors = this.getFlavorOptions();
+    const found = flavors.find((f) => f.value === this.cakeConfig.flavor);
+    return found ? found.name : '';
+  }
+
+  baseLabel(): string {
+    const bases = this.getBaseOptions();
+    const found = bases.find((b) => b.value === this.cakeConfig.base);
+    return found ? found.name : '';
+  }
+
+  configPreviewText(): string {
+    if (!this.cakeConfig.type || !this.cakeConfig.size) return '';
+    const parts: string[] = [];
+    const type = this.typeLabel();
+    const flavor = this.flavorLabel();
+    const size = this.sizeLabel().split(' — ')[0];
+    const decoNames = this.selectedDecorations().map((d) => d.name);
+
+    let name = type;
+    if (flavor) name += ` ${flavor}`;
+    name += `, ${size}`;
+    if (decoNames.length) name += `, con ${decoNames.join(' y ')}`;
+    name += ` — ${this.calculatedPrice().toFixed(0)}€ estimado`;
+    return name;
+  }
+
+  cakeLabel(): string {
+    if (!this.cakeConfig.type) return 'Elige un tipo de tarta para empezar';
+    const parts: string[] = [];
+    const type = this.typeLabel();
+    const base = this.baseLabel();
+    const flavor = this.flavorLabel();
+    const sizeLabel = this.sizeLabel().split(' — ')[0];
+    if (type) parts.push(type);
+    if (base) parts.push(base);
+    if (flavor) parts.push(flavor);
+    if (sizeLabel) parts.push(sizeLabel);
+    return parts.length ? parts.join(' · ') : 'Configura tu tarta';
+  }
+
+  stepLabel(step: number): string {
+    const labels = ['Tipo', 'Base', 'Sabor', 'Tamaño', 'Decoración'];
+    return labels[step] || '';
+  }
+
+  isCurrentStepValid(): boolean {
+    switch (this.currentStep) {
+      case 0: return this.cakeConfig.type !== null;
+      case 1: return this.cakeConfig.base !== null;
+      case 2: return this.cakeConfig.flavor !== null;
+      case 3: return this.cakeConfig.size !== null;
+      default: return true;
     }
-    if (this.cakeConfig.size) {
-      classes.push(`dulcera__cake-preview-cake--${this.cakeConfig.size}`);
-    }
-    return classes.join(' ');
   }
 
   private configSummary(): string {
+    if (!this.cakeConfig.type) return '';
     const parts: string[] = [];
-    const base = this.baseOptions.find((b) => b.value === this.cakeConfig.base);
-    const flavor = this.flavorOptions.find((f) => f.value === this.cakeConfig.flavor);
-    const size = this.sizeOptions.find((s) => s.value === this.cakeConfig.size);
-    if (base) parts.push(`Base: ${base.name}`);
-    if (flavor) parts.push(`Sabor: ${flavor.name}`);
-    if (size) parts.push(`Tamaño: ${size.description}`);
+    parts.push(`Producto: ${this.typeLabel()}`);
+    const base = this.baseLabel();
+    const flavor = this.flavorLabel();
+    if (base) parts.push(`Base: ${base}`);
+    if (flavor) parts.push(`Sabor: ${flavor}`);
+    const sl = this.sizeLabel();
+    if (sl) parts.push(`Tamaño: ${sl}`);
     if (this.cakeConfig.decorations.length) {
       const decoNames = this.selectedDecorations().map((d) => d.name).join(', ');
       parts.push(`Decoraciones: ${decoNames}`);
     }
     const price = this.calculatedPrice();
     if (price > 0) parts.push(`Precio estimado: ${price} €`);
-    return parts.length ? parts.join('\n') : '';
+    return parts.join('\n');
   }
 }

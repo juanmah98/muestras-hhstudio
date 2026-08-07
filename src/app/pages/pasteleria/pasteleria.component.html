@@ -40,31 +40,31 @@
     </div>
   </section>
 
-  <!-- ===== 2. PRODUCTOS — Horizontal scrollable cards ===== -->
+  <!-- ===== 2. PRODUCTOS — Full-width horizontal scroll ===== -->
   <section class="dulcera__products" id="productos" #animateSection>
-    <div class="dulcera__products-container">
+    <div class="dulcera__products-header">
       <div class="dulcera__section-header">
         <h2 class="dulcera__section-title">Nuestros Productos</h2>
-        <p class="dulcera__section-subtitle" style="margin-left:auto;margin-right:auto;text-align:center;">
+        <p class="dulcera__section-subtitle">
           Cada pieza está hecha a mano esta mañana. Desliza para descubrir.
         </p>
       </div>
+    </div>
 
-      <div class="dulcera__products-carousel">
-        @for (product of products; track product.name) {
-          <div class="dulcera__product-card">
-            <div
-              class="dulcera__product-image"
-              [style.background]="product.gradient"
-            ></div>
-            <div class="dulcera__product-info">
-              <h3 class="dulcera__product-name">{{ product.name }}</h3>
-              <p class="dulcera__product-desc">{{ product.description }}</p>
-              <span class="dulcera__product-price">{{ product.price }}</span>
-            </div>
+    <div class="dulcera__products-carousel">
+      @for (product of products; track product.name) {
+        <div class="dulcera__product-card">
+          <div
+            class="dulcera__product-image"
+            [style.background]="product.gradient"
+          ></div>
+          <div class="dulcera__product-info">
+            <h3 class="dulcera__product-name">{{ product.name }}</h3>
+            <p class="dulcera__product-desc">{{ product.description }}</p>
+            <span class="dulcera__product-price">{{ product.price }}</span>
           </div>
-        }
-      </div>
+        </div>
+      }
     </div>
   </section>
 
@@ -73,7 +73,7 @@
     <div class="dulcera__proceso-container">
       <div class="dulcera__section-header">
         <h2 class="dulcera__section-title">Proceso Artesanal</h2>
-        <p class="dulcera__section-subtitle" style="margin-left:auto;margin-right:auto;text-align:center;">
+        <p class="dulcera__section-subtitle">
           Del obrador a tu mesa en cuatro pasos. Sin prisas, sin atajos.
         </p>
       </div>
@@ -99,7 +99,7 @@
     <div class="dulcera__carta-container">
       <div class="dulcera__section-header">
         <h2 class="dulcera__section-title">Nuestra Carta</h2>
-        <p class="dulcera__section-subtitle" style="margin-left:auto;margin-right:auto;text-align:center;">
+        <p class="dulcera__section-subtitle">
           Ingredientes de temporada, recetas de siempre y algún secreto del chef.
         </p>
       </div>
@@ -128,58 +128,87 @@
     <div class="dulcera__pedidos-container">
       <div class="dulcera__section-header">
         <h2 class="dulcera__section-title">Crea tu Tarta Personalizada</h2>
-        <p class="dulcera__section-subtitle" style="margin-left:auto;margin-right:auto;text-align:center;">
-          Diseña tu tarta paso a paso. Elige base, sabor, tamaño y decoración.
+        <p class="dulcera__section-subtitle">
+          Diseña tu tarta paso a paso. Elige tipo, base, sabor, tamaño y decoración.
           Te preparamos un presupuesto al instante.
         </p>
       </div>
 
-      <!-- CAKE BUILDER — 40/60 layout -->
+      <!-- CAKE BUILDER -->
       <div class="dulcera__cake-builder">
         <!-- Left: Cake Preview -->
         <div class="dulcera__cake-preview">
-          <div class="dulcera__cake-preview-cake" [class]="cakePreviewClasses()">
-            @if (cakeConfig.decorations.includes('frutas')) {
-              <span class="dulcera__cake-badge dulcera__cake-badge--frutas">🍓</span>
-            }
-            @if (cakeConfig.decorations.includes('flores')) {
-              <span class="dulcera__cake-badge dulcera__cake-badge--flores">🌸</span>
-            }
-            @if (cakeConfig.decorations.includes('chocolate')) {
-              <span class="dulcera__cake-badge dulcera__cake-badge--chocolate">🍫</span>
-            }
-            @if (cakeConfig.decorations.includes('fondant')) {
-              <span class="dulcera__cake-badge dulcera__cake-badge--fondant">🎨</span>
-            }
-            @if (cakeConfig.decorations.includes('oro')) {
-              <span class="dulcera__cake-badge dulcera__cake-badge--oro">✨</span>
-            }
+          <div class="dulcera__cake-preview-inner">
+            <div class="dulcera__cake-preview-cake" [class.dulcera__cake-preview-cake--has-type]="!!cakeConfig.type">
+              @if (cakeConfig.type === 'tarta-queso') {
+                <span class="dulcera__cake-preview-icon">🧀</span>
+              }
+              @if (cakeConfig.type === 'brownie') {
+                <span class="dulcera__cake-preview-icon">🍫</span>
+              }
+              @if (!cakeConfig.type) {
+                <span class="dulcera__cake-preview-icon dulcera__cake-preview-icon--empty">🎂</span>
+              }
+            </div>
+            <div class="dulcera__cake-plate"></div>
           </div>
-          <div class="dulcera__cake-plate"></div>
+          @for (deco of selectedDecorations(); track deco.value) {
+            <span class="dulcera__cake-badge" [style]="'animation-delay:' + (0.2 * $index) + 's'">{{ deco.emoji }}</span>
+          }
           <p class="dulcera__cake-label">{{ cakeLabel() }}</p>
         </div>
 
         <!-- Right: Multi-step Wizard -->
         <div class="dulcera__cake-wizard">
+          <!-- Step Progress Breadcrumbs -->
           <div class="dulcera__cake-steps-header">
-            <span class="dulcera__cake-steps-label">Paso {{ currentStep + 1 }} de 4</span>
+            <span class="dulcera__cake-steps-label">Paso {{ currentStep + 1 }} de {{ totalSteps }}</span>
             <div class="dulcera__cake-steps-dots">
-              @for (i of [0, 1, 2, 3]; track i) {
-                <span
-                  class="dulcera__cake-steps-dot"
-                  [class.dulcera__cake-steps-dot--active]="i === currentStep"
-                  [class.dulcera__cake-steps-dot--done]="i < currentStep"
-                ></span>
+              @for (i of [0, 1, 2, 3, 4]; track i) {
+                <span class="dulcera__cake-steps-dot-wrapper">
+                  <span
+                    class="dulcera__cake-steps-dot"
+                    [class.dulcera__cake-steps-dot--active]="i === currentStep"
+                    [class.dulcera__cake-steps-dot--done]="i < currentStep"
+                  ></span>
+                  @if (i < 4) {
+                    <span
+                      class="dulcera__cake-steps-line"
+                      [class.dulcera__cake-steps-line--done]="i < currentStep"
+                    ></span>
+                  }
+                </span>
               }
             </div>
+            <button class="dulcera__cake-reset-btn" (click)="resetBuilder()" title="Empezar de nuevo">
+              <i class="bi bi-arrow-counterclockwise"></i>
+            </button>
           </div>
 
-          <div class="dulcera__cake-step-content">
+          <div class="dulcera__cake-step-content" [class.dulcera__cake-step-content--enter]="true">
             @switch (currentStep) {
               @case (0) {
+                <h3 class="dulcera__cake-step-title">Elige el Tipo de Tarta</h3>
+                <p class="dulcera__cake-step-hint">Selecciona el producto que quieres personalizar</p>
+                <div class="dulcera__cake-type-options">
+                  @for (type of typeOptions; track type.value) {
+                    <button
+                      class="dulcera__cake-type-card"
+                      [class.dulcera__cake-type-card--selected]="cakeConfig.type === type.value"
+                      [style.background]="type.gradient"
+                      (click)="selectType(type.value)"
+                    >
+                      <span class="dulcera__cake-type-card-emoji">{{ type.emoji }}</span>
+                      <span class="dulcera__cake-type-card-name">{{ type.name }}</span>
+                      <span class="dulcera__cake-type-card-desc">{{ type.description }}</span>
+                    </button>
+                  }
+                </div>
+              }
+              @case (1) {
                 <h3 class="dulcera__cake-step-title">Elige la Base</h3>
                 <div class="dulcera__cake-options">
-                  @for (base of baseOptions; track base.value) {
+                  @for (base of getBaseOptions(); track base.value) {
                     <button
                       class="dulcera__cake-option"
                       [class.dulcera__cake-option--selected]="cakeConfig.base === base.value"
@@ -192,10 +221,10 @@
                   }
                 </div>
               }
-              @case (1) {
+              @case (2) {
                 <h3 class="dulcera__cake-step-title">Elige el Sabor</h3>
                 <div class="dulcera__cake-options">
-                  @for (flavor of flavorOptions; track flavor.value) {
+                  @for (flavor of getFlavorOptions(); track flavor.value) {
                     <button
                       class="dulcera__cake-option dulcera__cake-option--chip"
                       [class.dulcera__cake-option--selected]="cakeConfig.flavor === flavor.value"
@@ -205,16 +234,16 @@
                       <span class="dulcera__cake-option-emoji">{{ flavor.emoji }}</span>
                       <span class="dulcera__cake-option-name">{{ flavor.name }}</span>
                       @if (flavor.multiplier > 1) {
-                        <span class="dulcera__cake-option-badge">Premium</span>
+                        <span class="dulcera__cake-option-badge">+{{ (flavor.multiplier - 1) * 100 }}%</span>
                       }
                     </button>
                   }
                 </div>
               }
-              @case (2) {
+              @case (3) {
                 <h3 class="dulcera__cake-step-title">Elige el Tamaño</h3>
                 <div class="dulcera__cake-options">
-                  @for (size of sizeOptions; track size.value) {
+                  @for (size of getSizeOptions(); track size.value) {
                     <button
                       class="dulcera__cake-option"
                       [class.dulcera__cake-option--selected]="cakeConfig.size === size.value"
@@ -223,18 +252,19 @@
                       <span class="dulcera__cake-option-emoji">{{ size.emoji }}</span>
                       <span class="dulcera__cake-option-name">{{ size.name }}</span>
                       <span class="dulcera__cake-option-desc">{{ size.description }}</span>
+                      <span class="dulcera__cake-option-base-price">{{ size.basePrice }} €</span>
                       <div class="dulcera__cake-option-size-visual" [class]="'dulcera__cake-option-size-visual--' + size.value"></div>
                     </button>
                   }
                 </div>
               }
-              @case (3) {
+              @case (4) {
                 <h3 class="dulcera__cake-step-title">Elige la Decoración</h3>
                 <p class="dulcera__cake-step-hint">Selecciona una o varias opciones</p>
-                <div class="dulcera__cake-options">
-                  @for (deco of decorationOptions; track deco.value) {
+                <div class="dulcera__cake-options dulcera__cake-options--deco">
+                  @for (deco of getDecorationOptions(); track deco.value) {
                     <button
-                      class="dulcera__cake-option dulcera__cake-option--toggle"
+                      class="dulcera__cake-option dulcera__cake-option--deco"
                       [class.dulcera__cake-option--selected]="cakeConfig.decorations.includes(deco.value)"
                       (click)="toggleDecoration(deco.value)"
                     >
@@ -244,6 +274,20 @@
                     </button>
                   }
                 </div>
+                @if (selectedDecorations().length) {
+                  <div class="dulcera__cake-deco-chips">
+                    @for (deco of selectedDecorations(); track deco.value) {
+                      <span
+                        class="dulcera__cake-deco-chip"
+                        (click)="removeDecoration(deco.value)"
+                        title="Quitar {{ deco.name }}"
+                      >
+                        {{ deco.emoji }} {{ deco.name }}
+                        <span class="dulcera__cake-deco-chip-remove">&times;</span>
+                      </span>
+                    }
+                  </div>
+                }
               }
             }
           </div>
@@ -257,41 +301,51 @@
             } @else {
               <span></span>
             }
-            @if (currentStep < 3) {
-              <button class="dulcera__btn dulcera__btn--terracotta dulcera__btn--sm" (click)="nextStep()">
+            @if (currentStep < totalSteps - 1) {
+              <button
+                class="dulcera__btn dulcera__btn--terracotta dulcera__btn--sm"
+                (click)="nextStep()"
+                [disabled]="!isCurrentStepValid()"
+              >
                 Siguiente <i class="bi bi-arrow-right"></i>
               </button>
             }
           </div>
 
           <!-- Live Price Calculator -->
-          <div class="dulcera__cake-price">
-            <div class="dulcera__cake-price-main">
-              <span class="dulcera__cake-price-label">Precio estimado</span>
-              <span class="dulcera__cake-price-value">{{ calculatedPrice() | number:'1.0-0' }} €</span>
+          @if (cakeConfig.type) {
+            <div class="dulcera__cake-price">
+              <div class="dulcera__cake-price-main">
+                <span class="dulcera__cake-price-label">Precio estimado</span>
+                <span class="dulcera__cake-price-value">{{ calculatedPrice() | number:'1.2-2' }} €</span>
+              </div>
+              @if (cakeConfig.size) {
+                <div class="dulcera__cake-price-breakdown">
+                  <span>{{ typeLabel() }} · {{ sizeLabel().split(' — ')[0] }}</span>
+                  <span>{{ basePrice() }} €</span>
+                </div>
+              }
+              @if (cakeConfig.flavor && isFlavorPremium()) {
+                <div class="dulcera__cake-price-breakdown">
+                  <span>Sabor {{ flavorLabel() }}: +{{ flavorPremiumPercent() }}%</span>
+                  <span>+{{ flavorUpcharge() | number:'1.2-2' }} €</span>
+                </div>
+              }
+              @for (deco of selectedDecorations(); track deco.value) {
+                <div class="dulcera__cake-price-breakdown">
+                  <span>{{ deco.name }}</span>
+                  <span>+{{ deco.price }} €</span>
+                </div>
+              }
+              <div class="dulcera__cake-price-total">
+                <span>Total</span>
+                <span>{{ calculatedPrice() | number:'1.2-2' }} €</span>
+              </div>
             </div>
-            @if (cakeConfig.size) {
-              <div class="dulcera__cake-price-breakdown">
-                <span>{{ sizeLabel(cakeConfig.size) }}</span>
-                <span>{{ basePrice() }} €</span>
-              </div>
-            }
-            @if (cakeConfig.flavor && flavorMultiplier() > 1) {
-              <div class="dulcera__cake-price-breakdown">
-                <span>Suplemento premium (x{{ flavorMultiplier() }})</span>
-                <span>+{{ ((basePrice() * flavorMultiplier()) - basePrice()) | number:'1.0-0' }} €</span>
-              </div>
-            }
-            @for (deco of selectedDecorations(); track deco.value) {
-              <div class="dulcera__cake-price-breakdown">
-                <span>{{ deco.name }}</span>
-                <span>+{{ deco.price }} €</span>
-              </div>
-            }
-            @if (!cakeConfig.size) {
-              <p class="dulcera__cake-price-hint">Selecciona una base y un tamaño para ver el precio</p>
-            }
-          </div>
+          }
+          @if (!cakeConfig.size && !cakeConfig.type) {
+            <p class="dulcera__cake-price-hint">Elige un tipo de tarta para ver el precio</p>
+          }
         </div>
       </div>
 
@@ -301,6 +355,14 @@
         <p class="dulcera__pedidos-contact-subtitle">
           Completa tus datos y te enviaremos un presupuesto detallado con tu configuración.
         </p>
+
+        @if (configPreviewText()) {
+          <div class="dulcera__pedidos-config-preview">
+            <i class="bi bi-box-seam"></i>
+            <span>{{ configPreviewText() }}</span>
+          </div>
+        }
+
         <form class="dulcera__pedidos-form" (submit)="submitOrder($event)">
           <div class="dulcera__pedidos-form-fields">
             <div class="dulcera__field">
@@ -379,7 +441,7 @@
     <div class="dulcera__contacto-container">
       <div class="dulcera__section-header">
         <h2 class="dulcera__section-title">Contacto</h2>
-        <p class="dulcera__section-subtitle" style="margin-left:auto;margin-right:auto;text-align:center;">
+        <p class="dulcera__section-subtitle">
           Estamos en el corazón de Madrid. Ven a visitarnos o escríbenos.
         </p>
       </div>
