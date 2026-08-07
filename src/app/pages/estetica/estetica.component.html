@@ -1,10 +1,546 @@
-<i class="bi bi-stars placeholder__icon"></i>
-<h1 class="placeholder__title">Estética</h1>
-<p class="placeholder__desc">
-  Landing page para centros de estética, salones de belleza y cosmética.
-  Desarrollo pendiente.
-</p>
-<a class="placeholder__back" routerLink="/">
-  <i class="bi bi-arrow-left"></i>
-  Volver al inicio
-</a>
+<div class="estetica">
+
+  <!-- ===== NAVIGATION ===== -->
+  <nav class="estetica__nav" [class.estetica__nav--scrolled]="scrolled">
+    <div class="estetica__nav-inner">
+      <a class="estetica__logo" routerLink="/">LUMINA</a>
+
+      <ul class="estetica__nav-links" [class.estetica__nav-links--open]="mobileMenuOpen">
+        @for (link of navLinks; track link.fragment) {
+          <li>
+            <a class="estetica__nav-link" (click)="scrollTo(link.fragment)">{{ link.label }}</a>
+          </li>
+        }
+        <li class="estetica__nav-cta-mobile">
+          <button class="estetica__btn estetica__btn--primary" (click)="scrollTo('reserva'); closeMobileMenu()">
+            Reservar Cita
+          </button>
+        </li>
+      </ul>
+
+      <button class="estetica__btn estetica__btn--primary estetica__nav-cta" (click)="scrollTo('reserva')">
+        Reservar Cita
+      </button>
+
+      <button
+        class="estetica__hamburger"
+        [class.estetica__hamburger--open]="mobileMenuOpen"
+        (click)="toggleMobileMenu()"
+        aria-label="Toggle navigation"
+      >
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- ===== 1. HERO ===== -->
+  <section class="estetica__hero" id="inicio">
+    <div class="estetica__hero-overlay"></div>
+    <div class="container">
+      <div class="row">
+        <div class="col-12 col-lg-8">
+          <div class="estetica__hero-content">
+            <h1 class="estetica__hero-title">Tu Belleza, Nuestra Inspiración</h1>
+            <p class="estetica__hero-subtitle">
+              Centro de estética premium con tratamientos personalizados para realzar tu luminosidad natural.
+              Tecnología avanzada, productos de alta gama y un equipo que cuida cada detalle.
+            </p>
+
+            <div class="estetica__hero-badges">
+              @for (badge of trustBadges; track badge.text) {
+                <div class="estetica__hero-badge">
+                  <i class="bi {{ badge.icon }}"></i>
+                  <span>{{ badge.text }}</span>
+                </div>
+              }
+            </div>
+
+            <div class="estetica__hero-ctas">
+              <button class="estetica__btn estetica__btn--primary" (click)="scrollTo('reserva')">
+                Reservar Cita
+              </button>
+              <button class="estetica__btn estetica__btn--outline" (click)="scrollTo('tratamientos')">
+                Ver Tratamientos
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 2. TRATAMIENTOS ===== -->
+  <section class="estetica__services" id="tratamientos" #animateSection>
+    <div class="container">
+      <h2 class="estetica__section-title">Nuestros Tratamientos</h2>
+
+      <div class="row g-4">
+        @for (svc of services; track svc.title; let i = $index) {
+          <div class="col-12 col-sm-6 col-lg-4">
+            <div class="estetica__service-card" [class.estetica__service-card--featured]="i < 2">
+              <div class="estetica__service-card-inner">
+                <div class="estetica__service-icon">
+                  <i class="bi {{ svc.icon }}"></i>
+                </div>
+                <h3 class="estetica__service-title">{{ svc.title }}</h3>
+                <p class="estetica__service-desc">{{ svc.description }}</p>
+              </div>
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 3. ANTES Y DESPUÉS ===== -->
+  <section class="estetica__compare-section" id="antes-despues" #animateSection>
+    <div class="container">
+      <h2 class="estetica__section-title estetica__section-title--light">
+        Antes y Después
+      </h2>
+      <p class="estetica__compare-intro">
+        Resultados reales que hablan por sí solos. Cada transformación es fruto de constancia, tecnología y cuidado experto.
+      </p>
+
+      <div class="row g-4">
+        @for (slider of compareSliders; track slider.beforeLabel; let i = $index) {
+          <div class="col-12 col-md-6 col-lg-4">
+            <div class="estetica__compare" [class.estetica__compare--real-image]="!!slider.imageUrl">
+              <div
+                class="estetica__compare-before"
+                [style.background-image]="slider.imageUrl ? 'url(' + slider.imageUrl + ')' : slider.beforeGradient"
+                [style.width.%]="slider.position"
+              >
+                <span class="estetica__compare-label">ANTES</span>
+              </div>
+              <div
+                class="estetica__compare-after"
+                [style.width.%]="(100 - slider.position)"
+              >
+                <div
+                  class="estetica__compare-after-bg"
+                  [style.background-image]="slider.imageUrl ? 'url(' + slider.imageUrl + ')' : slider.afterGradient"
+                ></div>
+                <span class="estetica__compare-label estetica__compare-label--after">DESPUÉS</span>
+              </div>
+              <div class="estetica__compare-divider" [style.left.%]="slider.position"></div>
+              <div class="estetica__compare-handle" [style.left.%]="slider.position">
+                <i class="bi bi-chevron-left"></i>
+                <i class="bi bi-chevron-right"></i>
+              </div>
+              <input
+                type="range"
+                class="estetica__compare-slider"
+                min="5"
+                max="95"
+                [ngModel]="slider.position"
+                (ngModelChange)="slider.position = $event"
+                aria-label="Desliza para comparar"
+              />
+              <div class="estetica__compare-names">
+                <span>{{ slider.beforeLabel }}</span>
+                <span>{{ slider.afterLabel }}</span>
+              </div>
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 4. PRECIOS ===== -->
+  <section class="estetica__pricing" id="precios" #animateSection>
+    <div class="container">
+      <h2 class="estetica__section-title">Planes y Precios</h2>
+      <p class="estetica__pricing-intro">
+        Elige el plan que mejor se adapte a ti. Todos incluyen diagnóstico inicial gratuito y productos de primeras marcas.
+      </p>
+
+      <div class="row g-4 justify-content-center">
+        @for (plan of pricePlans; track plan.name) {
+          <div class="col-12 col-md-6 col-lg-4">
+            <div
+              class="estetica__pricing-card"
+              [class.estetica__pricing-card--featured]="plan.popular"
+            >
+              <div class="estetica__pricing-card-inner">
+                @if (plan.popular) {
+                  <span class="estetica__pricing-badge">Más Popular</span>
+                }
+                <h3 class="estetica__pricing-name">{{ plan.name }}</h3>
+                <div class="estetica__pricing-price">
+                  <span class="estetica__pricing-currency">€</span>
+                  <span class="estetica__pricing-amount">{{ plan.price }}</span>
+                  <span class="estetica__pricing-period">/mes</span>
+                </div>
+                <ul class="estetica__pricing-features">
+                  @for (feature of plan.features; track feature) {
+                    <li>
+                      <i class="bi bi-check-circle-fill"></i>
+                      <span>{{ feature }}</span>
+                    </li>
+                  }
+                </ul>
+                <button class="estetica__btn estetica__btn--primary estetica__btn--full" (click)="scrollTo('reserva')">
+                  Elegir {{ plan.name }}
+                </button>
+              </div>
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 5. TESTIMONIOS ===== -->
+  <section class="estetica__testimonials" id="testimonios" #animateSection>
+    <div class="container">
+      <h2 class="estetica__section-title">Lo Que Dicen Nuestras Clientes</h2>
+
+      <div
+        class="estetica__testimonials-track"
+        (scroll)="onTestimonialScroll($event)"
+      >
+        @for (testimonial of testimonials; track testimonial.author) {
+          <div class="estetica__testimonials-card">
+            <div class="estetica__testimonials-quote-mark">&ldquo;</div>
+            <p class="estetica__testimonials-quote">{{ testimonial.quote }}</p>
+            <div class="estetica__testimonials-footer">
+              <div class="estetica__testimonials-stars">
+                @for (star of []; let s = $index; track s) {
+                  @if (s < testimonial.stars) {
+                    <i class="bi bi-star-fill"></i>
+                  }
+                }
+              </div>
+              <p class="estetica__testimonials-author">{{ testimonial.author }}</p>
+              <p class="estetica__testimonials-role">{{ testimonial.role }}</p>
+            </div>
+          </div>
+        }
+      </div>
+
+      <div class="estetica__testimonials-dots">
+        @for (t of testimonials; track t.author; let i = $index) {
+          <button
+            class="estetica__testimonials-dot"
+            [class.estetica__testimonials-dot--active]="i === activeTestimonial"
+            (click)="scrollToTestimonial(i)"
+            [attr.aria-label]="'Ir al testimonio ' + (i + 1)"
+          ></button>
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RESERVA ONLINE ===== -->
+  <section class="estetica__booking" id="reserva" #animateSection>
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-8">
+          <h2 class="estetica__section-title">Reserva tu Cita</h2>
+
+          <div class="estetica__booking-card">
+            <div class="estetica__booking-card-inner">
+              <p class="estetica__booking-intro">
+                Completa el formulario y te confirmaremos tu cita en menos de 2 horas. La primera consulta de diagnóstico es gratuita.
+              </p>
+
+              <form class="estetica__form" (submit)="submitBooking($event)">
+                <div class="row g-3">
+                  <div class="col-12 col-sm-6">
+                    <div class="estetica__field">
+                      <label class="estetica__label" for="booking-name">Nombre completo *</label>
+                      <input
+                        class="estetica__input"
+                        type="text"
+                        id="booking-name"
+                        name="name"
+                        [(ngModel)]="bookingForm.name"
+                        placeholder="Tu nombre"
+                        required
+                      />
+                    </div>
+                  </div>
+                  <div class="col-12 col-sm-6">
+                    <div class="estetica__field">
+                      <label class="estetica__label" for="booking-email">Email *</label>
+                      <input
+                        class="estetica__input"
+                        type="email"
+                        id="booking-email"
+                        name="email"
+                        [(ngModel)]="bookingForm.email"
+                        placeholder="tu@email.com"
+                        required
+                      />
+                    </div>
+                  </div>
+                  <div class="col-12 col-sm-6">
+                    <div class="estetica__field">
+                      <label class="estetica__label" for="booking-phone">Teléfono</label>
+                      <input
+                        class="estetica__input"
+                        type="tel"
+                        id="booking-phone"
+                        name="phone"
+                        [(ngModel)]="bookingForm.phone"
+                        placeholder="+34 6XX XXX XXX"
+                      />
+                    </div>
+                  </div>
+                  <div class="col-12 col-sm-6">
+                    <div class="estetica__field">
+                      <label class="estetica__label" for="booking-treatment">Tipo de tratamiento</label>
+                      <select
+                        class="estetica__select"
+                        id="booking-treatment"
+                        name="treatment"
+                        [(ngModel)]="bookingForm.treatment"
+                      >
+                        <option value="" disabled selected>Selecciona un tratamiento</option>
+                        <option value="facial">Tratamiento Facial</option>
+                        <option value="corporal">Tratamiento Corporal</option>
+                        <option value="capilar">Cuidado Capilar</option>
+                        <option value="masaje">Bienestar & Masajes</option>
+                        <option value="manicura">Manicura & Pedicura</option>
+                        <option value="laser">Depilación Láser</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="col-12 col-sm-6">
+                    <div class="estetica__field">
+                      <label class="estetica__label" for="booking-date">Fecha preferida</label>
+                      <input
+                        class="estetica__input"
+                        type="date"
+                        id="booking-date"
+                        name="date"
+                        [(ngModel)]="bookingForm.date"
+                      />
+                    </div>
+                  </div>
+                  <div class="col-12 col-sm-6">
+                    <div class="estetica__field">
+                      <label class="estetica__label" for="booking-time">Hora preferida</label>
+                      <select
+                        class="estetica__select"
+                        id="booking-time"
+                        name="time"
+                        [(ngModel)]="bookingForm.time"
+                      >
+                        <option value="" disabled selected>Selecciona una hora</option>
+                        <option value="09:00">09:00</option>
+                        <option value="10:00">10:00</option>
+                        <option value="11:00">11:00</option>
+                        <option value="12:00">12:00</option>
+                        <option value="16:00">16:00</option>
+                        <option value="17:00">17:00</option>
+                        <option value="18:00">18:00</option>
+                        <option value="19:00">19:00</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="col-12">
+                    <button class="estetica__btn estetica__btn--primary estetica__btn--full" type="submit">
+                      <span class="estetica__btn__icon-wrap">
+                        <i class="bi bi-calendar-check"></i>
+                      </span>
+                      Confirmar Reserva
+                    </button>
+                  </div>
+                </div>
+              </form>
+
+              @if (bookingSubmitted) {
+                <div class="estetica__booking-success">
+                  <i class="bi bi-check-circle-fill"></i>
+                  <span>¡Reserva confirmada! Te enviaremos un email con los detalles de tu cita.</span>
+                </div>
+              }
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 7. CONTACTO ===== -->
+  <section class="estetica__contact" id="contacto" #animateSection>
+    <div class="container">
+      <div class="row g-4 align-items-start">
+        <!-- LEFT: Contact Form -->
+        <div class="col-12 col-lg-7">
+          <div class="estetica__contact-card">
+            <div class="estetica__contact-card-inner">
+              <h2 class="estetica__section-title estetica__section-title--contact">
+                Contacta con Nosotras
+              </h2>
+              <p class="estetica__contact-desc">
+                Déjanos tu mensaje y te responderemos en menos de 24 horas. Estaremos encantadas de ayudarte.
+              </p>
+
+              <form class="estetica__form" (submit)="submitContact($event)">
+                <div class="row g-3">
+                  <div class="col-12 col-sm-6">
+                    <div class="estetica__field">
+                      <label class="estetica__label" for="contact-name">Nombre completo *</label>
+                      <input
+                        class="estetica__input"
+                        type="text"
+                        id="contact-name"
+                        name="name"
+                        [(ngModel)]="contactForm.name"
+                        placeholder="Tu nombre"
+                        required
+                      />
+                    </div>
+                  </div>
+                  <div class="col-12 col-sm-6">
+                    <div class="estetica__field">
+                      <label class="estetica__label" for="contact-email">Email *</label>
+                      <input
+                        class="estetica__input"
+                        type="email"
+                        id="contact-email"
+                        name="email"
+                        [(ngModel)]="contactForm.email"
+                        placeholder="tu@email.com"
+                        required
+                      />
+                    </div>
+                  </div>
+                  <div class="col-12">
+                    <div class="estetica__field">
+                      <label class="estetica__label" for="contact-message">Tu mensaje</label>
+                      <textarea
+                        class="estetica__input"
+                        id="contact-message"
+                        name="message"
+                        [(ngModel)]="contactForm.message"
+                        rows="4"
+                        placeholder="Cuéntanos qué necesitas, tus dudas o cualquier consulta..."
+                      ></textarea>
+                    </div>
+                  </div>
+                  <div class="col-12">
+                    <button class="estetica__btn estetica__btn--primary estetica__btn--full" type="submit">
+                      <span class="estetica__btn__icon-wrap">
+                        <i class="bi bi-send"></i>
+                      </span>
+                      Enviar Mensaje
+                    </button>
+                  </div>
+                </div>
+              </form>
+
+              @if (contactSubmitted) {
+                <div class="estetica__contact-success">
+                  <i class="bi bi-check-circle-fill"></i>
+                  <span>¡Gracias! Nos pondremos en contacto contigo en menos de 24 horas.</span>
+                </div>
+              }
+            </div>
+          </div>
+        </div>
+
+        <!-- RIGHT: Info Cards 2x2 Grid -->
+        <div class="col-12 col-lg-5">
+          <div class="estetica__contact-info-grid">
+            <div class="estetica__contact-info-card">
+              <div class="estetica__contact-info-card-inner">
+                <div class="estetica__contact-info-header">
+                  <i class="bi bi-geo-alt"></i>
+                  <span>Dónde estamos</span>
+                </div>
+                <p class="estetica__contact-info-text">
+                  Calle Velázquez 89<br />
+                  28006 Madrid
+                </p>
+              </div>
+            </div>
+
+            <div class="estetica__contact-info-card">
+              <div class="estetica__contact-info-card-inner">
+                <div class="estetica__contact-info-header">
+                  <i class="bi bi-telephone"></i>
+                  <span>Teléfono</span>
+                </div>
+                <a class="estetica__contact-info-link" href="tel:+34911234567">+34 911 234 567</a>
+              </div>
+            </div>
+
+            <div class="estetica__contact-info-card">
+              <div class="estetica__contact-info-card-inner">
+                <div class="estetica__contact-info-header">
+                  <i class="bi bi-envelope"></i>
+                  <span>Email</span>
+                </div>
+                <a class="estetica__contact-info-link" href="mailto:hola@luminaestetica.es">hola&#64;luminaestetica.es</a>
+              </div>
+            </div>
+
+            <div class="estetica__contact-info-card estetica__contact-info-card--whatsapp">
+              <div class="estetica__contact-info-card-inner">
+                <div class="estetica__contact-info-header">
+                  <i class="bi bi-whatsapp"></i>
+                  <span>WhatsApp</span>
+                </div>
+                <a
+                  class="estetica__btn estetica__btn--whatsapp"
+                  href="https://wa.me/34600000000"
+                  target="_blank"
+                  rel="noopener"
+                >
+                  <i class="bi bi-whatsapp"></i>
+                  Enviar WhatsApp
+                </a>
+                <p class="estetica__contact-info-note">Respuesta en menos de 15 minutos en horario laboral</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="estetica__contact-map">
+            <div class="estetica__contact-map-inner">
+              <i class="bi bi-geo-alt-fill"></i>
+              <span>Madrid</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="estetica__footer">
+    <div class="container">
+      <div class="estetica__footer-brand">LUMINA</div>
+      <p class="estetica__footer-tagline">
+        Centro de Estética Premium en Madrid. Donde la ciencia y la belleza se encuentran.
+      </p>
+      <div class="estetica__footer-bottom">
+        <span class="estetica__footer-copy">
+          &copy; {{ currentYear }} Lumina Estética. Todos los derechos reservados.
+        </span>
+        <nav class="estetica__footer-links">
+          <a href="#" class="estetica__footer-link">Aviso Legal</a>
+          <a href="#" class="estetica__footer-link">Política de Privacidad</a>
+          <a href="#" class="estetica__footer-link">Política de Cookies</a>
+        </nav>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Floating WhatsApp -->
+  <a
+    class="estetica__whatsapp"
+    href="https://wa.me/34600000000"
+    target="_blank"
+    rel="noopener"
+    aria-label="Contactar por WhatsApp"
+  >
+    <i class="bi bi-whatsapp"></i>
+  </a>
+</div>

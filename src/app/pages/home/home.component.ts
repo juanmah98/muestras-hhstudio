@@ -67,11 +67,11 @@ export class HomeComponent implements AfterViewInit {
     },
     {
       slug: 'estetica',
-      title: 'Estética',
+      title: 'LUMINA Estética',
       description:
-        'Landing page para centros de estética, salones de belleza y cosmética.',
+        'Centro de estética premium con diseño Soft Luxe. Reserva online, antes/después, precios transparentes.',
       tags: ['Landing Page', 'Estética', 'Belleza'],
-      status: 'coming-soon',
+      status: 'available',
       icon: 'bi bi-stars',
     },
     {
