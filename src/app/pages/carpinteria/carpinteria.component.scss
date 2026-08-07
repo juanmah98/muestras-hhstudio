@@ -103,10 +103,13 @@ $text-max-width: 680px;
     right: 0;
     z-index: 100;
     padding: 1.25rem 0;
-    transition: border-color 0.6s ease, padding 0.6s ease;
-    background-color: transparent;
+    transition: background-color 0.6s ease, border-color 0.6s ease, padding 0.6s ease;
+    background-color: rgba($color-bg-dark, 0.85);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
 
     &--scrolled {
+      background-color: rgba($color-bg-dark, 0.95);
       border-bottom: 1px solid rgba($color-secondary, 0.08);
       padding: 0.875rem 0;
     }
@@ -152,7 +155,7 @@ $text-max-width: 680px;
     font-family: $font-body;
     font-size: 0.85rem;
     font-weight: 400;
-    color: rgba($color-warm-white, 0.28);
+    color: rgba($color-warm-white, 0.62);
     text-decoration: none;
     cursor: pointer;
     border-bottom: 1px solid transparent;
@@ -803,6 +806,68 @@ $text-max-width: 680px;
     font-style: normal;
   }
 
+  &__contact-map {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin: 1.75rem 0 1.5rem;
+  }
+
+  &__contact-map-visual {
+    position: relative;
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  &__contact-map-ring {
+    position: absolute;
+    border-radius: 50%;
+    border: 1px solid rgba($color-gold, 0.18);
+
+    &--outer {
+      width: 48px;
+      height: 48px;
+      animation: alamo-map-pulse 4s ease-in-out infinite;
+    }
+
+    &--middle {
+      width: 34px;
+      height: 34px;
+      border-color: rgba($color-gold, 0.22);
+      animation: alamo-map-pulse 4s ease-in-out 0.5s infinite;
+    }
+
+    &--inner {
+      width: 20px;
+      height: 20px;
+      border-color: rgba($color-gold, 0.28);
+      animation: alamo-map-pulse 4s ease-in-out 1s infinite;
+    }
+  }
+
+  &__contact-map-pin {
+    position: relative;
+    width: 6px;
+    height: 6px;
+    background-color: $color-gold;
+    border-radius: 50%;
+    z-index: 2;
+    animation: alamo-map-dot-pulse 2.5s ease-in-out infinite;
+  }
+
+  &__contact-map-label {
+    font-family: $font-body;
+    font-size: 0.75rem;
+    font-weight: 400;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: rgba($color-warm-white, 0.35);
+  }
+
   &__form {
     display: flex;
     flex-direction: column;
@@ -895,5 +960,29 @@ $text-max-width: 680px;
     font-size: 0.78rem;
     color: $color-warm-muted;
     letter-spacing: 0.04em;
+  }
+}
+
+// ============================================================
+// KEYFRAMES
+// ============================================================
+
+@keyframes alamo-map-pulse {
+  0%, 100% {
+    opacity: 0.5;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.15);
+  }
+}
+
+@keyframes alamo-map-dot-pulse {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba($color-gold, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 0 6px rgba($color-gold, 0);
   }
 }
