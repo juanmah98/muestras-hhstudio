@@ -5,13 +5,28 @@
     <div class="dulcera__nav-inner">
       <a class="dulcera__logo" routerLink="/">DULCERA</a>
 
-      <ul class="dulcera__nav-links">
+      <div class="dulcera__nav-links">
         @for (link of navLinks; track link.fragment) {
-          <li>
-            <button class="dulcera__nav-link" (click)="scrollTo(link.fragment)">{{ link.label }}</button>
-          </li>
+          <button class="dulcera__nav-link" (click)="scrollTo(link.fragment)">{{ link.label }}</button>
         }
-      </ul>
+      </div>
+
+      <button
+        class="dulcera__hamburger"
+        [class.dulcera__hamburger--open]="mobileMenuOpen"
+        (click)="toggleMobileMenu()"
+        aria-label="Abrir menú"
+      >
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+
+    <div class="dulcera__mobile-menu" [class.dulcera__mobile-menu--open]="mobileMenuOpen">
+      @for (link of navLinks; track link.fragment) {
+        <button class="dulcera__mobile-link" (click)="scrollTo(link.fragment)">{{ link.label }}</button>
+      }
     </div>
   </nav>
 

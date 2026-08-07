@@ -320,7 +320,9 @@ $shadow-ambient-hover: 0 8px 40px rgba(0, 0, 0, 0.06);
     background: none;
     border: none;
     cursor: pointer;
-    padding: 0;
+    padding: 12px 10px;
+    min-width: 44px;
+    min-height: 44px;
 
     span {
       display: block;

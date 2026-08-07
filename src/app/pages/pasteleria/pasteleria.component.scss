@@ -281,13 +281,94 @@ $shadow-nav: 0 2px 12px rgba(61, 43, 31, 0.06);
     }
   }
 
+  &__hamburger {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+    width: 44px;
+    height: 44px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 10px;
+    align-items: center;
+
+    @media (max-width: 992px) {
+      display: flex;
+    }
+
+    span {
+      display: block;
+      width: 22px;
+      height: 2px;
+      background-color: $color-espresso;
+      border-radius: 2px;
+      transition: transform 0.3s ease, opacity 0.3s ease;
+      transform-origin: center;
+    }
+
+    &--open {
+      span:nth-child(1) {
+        transform: translateY(7px) rotate(45deg);
+      }
+      span:nth-child(2) {
+        opacity: 0;
+      }
+      span:nth-child(3) {
+        transform: translateY(-7px) rotate(-45deg);
+      }
+    }
+  }
+
+  &__mobile-menu {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba($color-cream, 0.98);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2rem;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.4s ease;
+    z-index: 999;
+
+    &--open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+  }
+
+  &__mobile-link {
+    font-family: $font-headlines;
+    font-size: 1.75rem;
+    font-weight: 600;
+    color: $color-espresso;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.5rem;
+    transition: color 0.2s ease;
+
+    &:hover {
+      color: $color-terracotta;
+    }
+  }
+
   // ============================================================
   // HERO
   // ============================================================
 
   &__hero {
     position: relative;
-    min-height: 100vh;
+    min-height: 100dvh;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -959,6 +1040,13 @@ $shadow-nav: 0 2px 12px rgba(61, 43, 31, 0.06);
     gap: 0;
     flex: 1;
     justify-content: center;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
   }
 
   &__cake-steps-step {
@@ -967,6 +1055,10 @@ $shadow-nav: 0 2px 12px rgba(61, 43, 31, 0.06);
     align-items: center;
     gap: 0.35rem;
     flex-shrink: 0;
+
+    @media (max-width: 480px) {
+      gap: 0.15rem;
+    }
   }
 
   &__cake-steps-dot {
@@ -1025,6 +1117,10 @@ $shadow-nav: 0 2px 12px rgba(61, 43, 31, 0.06);
     flex-shrink: 0;
     margin-top: 15px;
     align-self: flex-start;
+
+    @media (max-width: 480px) {
+      width: 24px;
+    }
 
     &--done {
       background-color: $color-sage;

@@ -222,7 +222,9 @@ $text-max-width: 680px;
     background: none;
     border: none;
     cursor: pointer;
-    padding: 0;
+    padding: 12px 9px;
+    min-width: 44px;
+    min-height: 44px;
     z-index: 101;
 
     @media (max-width: 991px) {
@@ -257,7 +259,7 @@ $text-max-width: 680px;
 
   &__hero {
     position: relative;
-    min-height: 100vh;
+    min-height: 100dvh;
     display: flex;
     align-items: center;
     padding: 0;
@@ -455,7 +457,7 @@ $text-max-width: 680px;
     display: flex;
     align-items: center;
     gap: 0;
-    min-height: 60vh;
+    min-height: 60dvh;
 
     &--reverse {
       flex-direction: row-reverse;
@@ -474,7 +476,7 @@ $text-max-width: 680px;
 
   &__service-image {
     flex: 0 0 55%;
-    height: 70vh;
+    height: 70dvh;
     overflow: hidden;
     border-radius: 0;
     position: relative;

@@ -107,6 +107,7 @@ interface CakeConfig {
 export class PasteleriaComponent implements AfterViewInit {
   readonly currentYear = new Date().getFullYear();
   scrolled = false;
+  mobileMenuOpen = false;
 
   @ViewChild('heroContent') heroContent!: ElementRef<HTMLElement>;
 
@@ -424,7 +425,16 @@ export class PasteleriaComponent implements AfterViewInit {
     this.animateSections.forEach((ref) => observer.observe(ref.nativeElement));
   }
 
+  toggleMobileMenu(): void {
+    this.mobileMenuOpen = !this.mobileMenuOpen;
+  }
+
+  closeMobileMenu(): void {
+    this.mobileMenuOpen = false;
+  }
+
   scrollTo(sectionId: string): void {
+    this.mobileMenuOpen = false;
     const el = document.getElementById(sectionId);
     if (el) {
       el.scrollIntoView({ behavior: 'smooth', block: 'start' });

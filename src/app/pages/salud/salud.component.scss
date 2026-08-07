@@ -83,7 +83,7 @@ $radius-blob: 60% 40% 70% 30% / 45% 55% 35% 65%;
   background-color: $bio-secondary;
   color: $bio-text;
   font-family: 'Montserrat', sans-serif;
-  min-height: 100vh;
+  min-height: 100dvh;
   overflow-x: hidden;
 
   h1, h2, h3, h4, h5, h6 {
@@ -298,7 +298,9 @@ $radius-blob: 60% 40% 70% 30% / 45% 55% 35% 65%;
   background: none;
   border: none;
   cursor: pointer;
-  padding: 4px;
+  padding: 10px;
+  min-width: 44px;
+  min-height: 44px;
   z-index: 1031;
 }
 

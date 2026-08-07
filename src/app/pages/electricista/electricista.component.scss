@@ -350,7 +350,9 @@ $ease-out: cubic-bezier(0.22, 0.61, 0.36, 1);
     background: none;
     border: none;
     cursor: pointer;
-    padding: 0;
+    padding: 12px 10px;
+    min-width: 44px;
+    min-height: 44px;
     z-index: 101;
 
     span {
