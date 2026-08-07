@@ -198,40 +198,40 @@
   <section class="estetica__testimonials" id="testimonios" #animateSection>
     <div class="container">
       <h2 class="estetica__section-title">Lo Que Dicen Nuestras Clientes</h2>
+    </div>
 
-      <div
-        class="estetica__testimonials-track"
-        (scroll)="onTestimonialScroll($event)"
-      >
-        @for (testimonial of testimonials; track testimonial.author) {
-          <div class="estetica__testimonials-card">
-            <div class="estetica__testimonials-quote-mark">&ldquo;</div>
-            <p class="estetica__testimonials-quote">{{ testimonial.quote }}</p>
-            <div class="estetica__testimonials-footer">
-              <div class="estetica__testimonials-stars">
-                @for (star of [1,2,3,4,5]; track star) {
-                  @if (star <= testimonial.stars) {
-                    <i class="bi bi-star-fill"></i>
-                  }
+    <div
+      class="estetica__testimonials-track"
+      (scroll)="onTestimonialScroll($event)"
+    >
+      @for (testimonial of testimonials; track testimonial.author) {
+        <div class="estetica__testimonials-card">
+          <div class="estetica__testimonials-quote-mark">&ldquo;</div>
+          <p class="estetica__testimonials-quote">{{ testimonial.quote }}</p>
+          <div class="estetica__testimonials-footer">
+            <div class="estetica__testimonials-stars">
+              @for (star of [1,2,3,4,5]; track star) {
+                @if (star <= testimonial.stars) {
+                  <i class="bi bi-star-fill"></i>
                 }
-              </div>
-              <p class="estetica__testimonials-author">{{ testimonial.author }}</p>
-              <p class="estetica__testimonials-role">{{ testimonial.role }}</p>
+              }
             </div>
+            <p class="estetica__testimonials-author">{{ testimonial.author }}</p>
+            <p class="estetica__testimonials-role">{{ testimonial.role }}</p>
           </div>
-        }
-      </div>
+        </div>
+      }
+    </div>
 
-      <div class="estetica__testimonials-dots">
-        @for (t of testimonials; track t.author; let i = $index) {
-          <button
-            class="estetica__testimonials-dot"
-            [class.estetica__testimonials-dot--active]="i === activeTestimonial"
-            (click)="scrollToTestimonial(i)"
-            [attr.aria-label]="'Ir al testimonio ' + (i + 1)"
-          ></button>
-        }
-      </div>
+    <div class="estetica__testimonials-dots">
+      @for (t of testimonials; track t.author; let i = $index) {
+        <button
+          class="estetica__testimonials-dot"
+          [class.estetica__testimonials-dot--active]="i === activeTestimonial"
+          (click)="scrollToTestimonial(i)"
+          [attr.aria-label]="'Ir al testimonio ' + (i + 1)"
+        ></button>
+      }
     </div>
   </section>
 

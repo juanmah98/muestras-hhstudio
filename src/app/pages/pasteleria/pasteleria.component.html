@@ -56,7 +56,7 @@
         <div class="dulcera__product-card">
           <div
             class="dulcera__product-image"
-            [style.background]="product.gradient"
+            [style.background]="product.imageUrl ? 'url(' + product.imageUrl + ') center/cover no-repeat, ' + product.gradient : product.gradient"
           ></div>
           <div class="dulcera__product-info">
             <h3 class="dulcera__product-name">{{ product.name }}</h3>

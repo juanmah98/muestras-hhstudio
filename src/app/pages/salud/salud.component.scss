@@ -625,6 +625,16 @@ $radius-blob: 60% 40% 70% 30% / 45% 55% 35% 65%;
   justify-content: center;
   background: $bio-secondary;
   overflow: hidden;
+  position: relative;
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: url('/assets/images/salud/spa-treatment.jpg') center/cover no-repeat;
+    opacity: 0.07;
+    pointer-events: none;
+  }
 }
 
 .bio__services-header {
@@ -739,8 +749,8 @@ $radius-blob: 60% 40% 70% 30% / 45% 55% 35% 65%;
     position: absolute;
     inset: 0;
     background:
-      url('/assets/images/salud/doctor-consultation.jpg') right center/contain no-repeat;
-    opacity: 0.05;
+      url('/assets/images/salud/spa-treatment.jpg') right center/cover no-repeat;
+    opacity: 0.06;
     pointer-events: none;
   }
 }
@@ -854,6 +864,16 @@ $radius-blob: 60% 40% 70% 30% / 45% 55% 35% 65%;
   align-items: center;
   padding: $section-py 0;
   background: $bio-secondary;
+  position: relative;
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: url('/assets/images/salud/spa-treatment.jpg') center/cover no-repeat;
+    opacity: 0.04;
+    pointer-events: none;
+  }
 }
 
 .bio__features-grid {

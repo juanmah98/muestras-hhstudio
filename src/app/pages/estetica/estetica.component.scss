@@ -474,6 +474,16 @@ $shadow-ambient-hover: 0 8px 40px rgba(61, 43, 31, 0.06);
     min-height: 100dvh;
     padding: $section-pad;
     background-color: $color-bg;
+    position: relative;
+
+    &::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: url('/assets/images/estetica/treatment-room.jpg') center/cover no-repeat;
+      opacity: 0.05;
+      pointer-events: none;
+    }
 
     @media (min-width: 768px) {
       padding: 6rem 2rem;
@@ -949,6 +959,7 @@ $shadow-ambient-hover: 0 8px 40px rgba(61, 43, 31, 0.06);
     flex-direction: column;
     justify-content: center;
     background-color: $color-bg;
+    overflow: hidden;
 
     @media (min-width: 768px) {
       padding: 6rem 2rem;
@@ -970,10 +981,30 @@ $shadow-ambient-hover: 0 8px 40px rgba(61, 43, 31, 0.06);
     padding-right: 1rem;
     padding-bottom: 1rem;
     margin-bottom: 2rem;
+    width: 100vw;
+    position: relative;
+    left: 50%;
+    right: 50%;
+    margin-left: -50vw;
+    margin-right: -50vw;
+    scroll-padding: 0 1rem;
 
     @media (min-width: 768px) {
-      padding-left: 0;
-      padding-right: 0;
+      padding-left: calc((100vw - 720px) / 2);
+      padding-right: calc((100vw - 720px) / 2);
+      scroll-padding: 0 calc((100vw - 720px) / 2);
+    }
+
+    @media (min-width: 992px) {
+      padding-left: calc((100vw - 960px) / 2);
+      padding-right: calc((100vw - 960px) / 2);
+      scroll-padding: 0 calc((100vw - 960px) / 2);
+    }
+
+    @media (min-width: 1200px) {
+      padding-left: calc((100vw - 1140px) / 2);
+      padding-right: calc((100vw - 1140px) / 2);
+      scroll-padding: 0 calc((100vw - 1140px) / 2);
     }
 
     &::-webkit-scrollbar {
@@ -992,8 +1023,17 @@ $shadow-ambient-hover: 0 8px 40px rgba(61, 43, 31, 0.06);
     padding: 2.5rem 2.25rem;
     position: relative;
 
+    @media (min-width: 576px) {
+      flex: 0 0 75%;
+    }
+
     @media (min-width: 768px) {
-      flex: 0 0 min(100%, 520px);
+      flex: 0 0 520px;
+    }
+
+    @media (min-width: 992px) {
+      flex: 0 0 580px;
+      padding: 3rem 2.5rem;
     }
 
     @media (max-width: 576px) {

@@ -22,6 +22,7 @@ interface Product {
   description: string;
   price: string;
   gradient: string;
+  imageUrl?: string;
 }
 
 interface Step {
@@ -151,6 +152,7 @@ export class PasteleriaComponent implements AfterViewInit {
       description: 'Fermentación lenta 48h con masa madre natural de centeno.',
       price: '5,50 €',
       gradient: 'linear-gradient(135deg, #c4943a 0%, #d4a554 40%, #a07830 100%)',
+      imageUrl: 'assets/images/pasteleria/chef-hands.jpg',
     },
     {
       name: 'Éclairs de Vainilla',

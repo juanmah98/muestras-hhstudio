@@ -333,23 +333,21 @@ export class EsteticaComponent implements AfterViewInit {
   onTestimonialScroll(event: Event): void {
     const container = event.target as HTMLElement;
     const scrollLeft = container.scrollLeft;
-    const gap = 24;
-    const card = container.querySelector('.estetica__testimonials-card') as HTMLElement;
-    if (!card) return;
-    const step = card.offsetWidth + gap;
-    const index = Math.round(scrollLeft / step);
-    this.activeTestimonial = index;
+    const maxScroll = container.scrollWidth - container.clientWidth;
+    if (maxScroll <= 0) return;
+    const ratio = scrollLeft / maxScroll;
+    const index = Math.round(ratio * (this.testimonials.length - 1));
+    this.activeTestimonial = Math.min(index, this.testimonials.length - 1);
   }
 
   scrollToTestimonial(index: number): void {
     const container = document.querySelector('.estetica__testimonials-track');
-    if (container) {
-      const gap = 24;
-      const card = container.querySelector('.estetica__testimonials-card') as HTMLElement;
-      if (!card) return;
-      const step = card.offsetWidth + gap;
-      container.scrollTo({ left: step * index, behavior: 'smooth' });
-    }
+    if (!container) return;
+    const maxScroll = container.scrollWidth - container.clientWidth;
+    const target = maxScroll > 0
+      ? (index / (this.testimonials.length - 1)) * maxScroll
+      : 0;
+    container.scrollTo({ left: target, behavior: 'smooth' });
   }
 
   submitBooking(event: Event): void {
