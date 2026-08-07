@@ -780,6 +780,29 @@ $text-max-width: 680px;
     }
   }
 
+  &__contact-location {
+    margin: 1.5rem 0 1rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid rgba($color-warm-white, 0.06);
+  }
+
+  &__contact-location-label {
+    font-family: $font-body;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: rgba($color-warm-white, 0.3);
+  }
+
+  &__contact-address {
+    font-family: $font-body;
+    font-size: 0.9rem;
+    line-height: 1.7;
+    color: $color-warm-muted;
+    margin-top: 0.4rem;
+    font-style: normal;
+  }
+
   &__form {
     display: flex;
     flex-direction: column;
