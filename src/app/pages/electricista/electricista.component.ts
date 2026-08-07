@@ -24,7 +24,6 @@ interface ProjectItem {
   location: string;
   category: string;
   gradient: string;
-  gridSpan: string;
   image?: string;
 }
 
@@ -139,7 +138,6 @@ export class ElectricistaComponent implements AfterViewInit, OnInit {
       category: 'Industrial',
       gradient:
         'linear-gradient(135deg, #f0a50030 0%, #050505 40%, #1a1d23 100%)',
-      gridSpan: 'span 2',
       image: '/assets/images/electricista/panel-installation.jpg',
     },
     {
@@ -148,7 +146,6 @@ export class ElectricistaComponent implements AfterViewInit, OnInit {
       category: 'Comercial',
       gradient:
         'linear-gradient(135deg, #f0a50030 0%, #050505 50%, #1a1d23 100%)',
-      gridSpan: 'span 1',
       image: '/assets/images/electricista/led-office.jpg',
     },
     {
@@ -157,7 +154,6 @@ export class ElectricistaComponent implements AfterViewInit, OnInit {
       category: 'Industrial',
       gradient:
         'linear-gradient(135deg, #050505 0%, #f0a50020 40%, #1a1d23 100%)',
-      gridSpan: 'span 1',
       image: '/assets/images/electricista/factory-maintenance.jpg',
     },
     {
@@ -166,7 +162,6 @@ export class ElectricistaComponent implements AfterViewInit, OnInit {
       category: 'Comercial',
       gradient:
         'linear-gradient(135deg, #1a1d23 0%, #050505 50%, #f0a50015 100%)',
-      gridSpan: 'span 1',
       image: '/assets/images/electricista/server-room.jpg',
     },
     {
@@ -175,7 +170,6 @@ export class ElectricistaComponent implements AfterViewInit, OnInit {
       category: 'Emergencias',
       gradient:
         'linear-gradient(135deg, #f0a50025 0%, #050505 40%, #1a1d23 100%)',
-      gridSpan: 'span 2',
       image: '/assets/images/electricista/emergency-callout.jpg',
     },
     {
@@ -184,7 +178,6 @@ export class ElectricistaComponent implements AfterViewInit, OnInit {
       category: 'Residencial',
       gradient:
         'linear-gradient(135deg, #f0a50020 0%, #050505 50%, #1a1d23 100%)',
-      gridSpan: 'span 1',
       image: '/assets/images/electricista/smart-home.jpg',
     },
   ];

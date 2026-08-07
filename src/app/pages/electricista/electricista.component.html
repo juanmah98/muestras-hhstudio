@@ -114,7 +114,7 @@
 
     <div class="electricista__projects-grid">
       @for (project of projects; track project.title) {
-        <div class="electricista__project-card" [style.grid-column]="project.gridSpan">
+        <div class="electricista__project-card">
           <div class="electricista__project-glitch-line"></div>
           <div class="electricista__project-image" [style.background]="project.image ? 'url(' + project.image + ') center/cover no-repeat' : project.gradient">
             <span class="electricista__project-chip">{{ project.category }}</span>
