@@ -1,10 +1,401 @@
-<i class="bi bi-lightning-charge-fill placeholder__icon"></i>
-<h1 class="placeholder__title">Electricista</h1>
-<p class="placeholder__desc">
-  Landing page para electricistas, instaladores y servicios de electricidad.
-  Desarrollo pendiente.
-</p>
-<a class="placeholder__back" routerLink="/">
-  <i class="bi bi-arrow-left"></i>
-  Volver al inicio
-</a>
+<div class="electricista">
+
+  <!-- ===== NAVIGATION ===== -->
+  <nav class="electricista__nav" [class.electricista__nav--scrolled]="scrolled">
+    <div class="electricista__nav-inner">
+      <a class="electricista__logo" routerLink="/">VOLTIO</a>
+
+      <ul class="electricista__nav-links" [class.electricista__nav-links--open]="mobileMenuOpen">
+        @for (link of navLinks; track link.fragment) {
+          <li>
+            <a class="electricista__nav-link" (click)="scrollTo(link.fragment)">{{ link.label }}</a>
+          </li>
+        }
+        <li class="electricista__nav-cta-mobile">
+          <button class="electricista__btn electricista__btn--amber" (click)="scrollTo('contacto'); closeMobileMenu()">
+            Solicitar Presupuesto
+          </button>
+        </li>
+      </ul>
+
+      <button class="electricista__btn electricista__btn--amber electricista__nav-cta" (click)="scrollTo('contacto')">
+        Solicitar Presupuesto
+      </button>
+
+      <button
+        class="electricista__hamburger"
+        [class.electricista__hamburger--open]="mobileMenuOpen"
+        (click)="toggleMobileMenu()"
+        aria-label="Toggle navigation"
+      >
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- ===== 1. HERO ===== -->
+  <section class="electricista__hero" id="inicio">
+    <div class="electricista__hero-overlay"></div>
+    <div class="electricista__hero-outer">
+      <div class="container">
+        <div class="row">
+          <div class="col-12 col-lg-8">
+            <div class="electricista__hero-content" #heroContent>
+              <div class="electricista__hero-emergency-badge">
+                <span class="electricista__hero-emergency-pulse"></span>
+                <span>URGENCIAS 24H</span>
+              </div>
+
+              <h1 class="electricista__hero-title">Soluciones Eléctricas Profesionales</h1>
+
+              <p class="electricista__hero-subtitle">
+                Instalaciones, mantenimiento y emergencias 24h. Electricista certificado con 15 años de experiencia en el sector.
+              </p>
+
+              <div class="electricista__hero-phone">
+                <i class="bi bi-telephone-fill"></i>
+                <a href="tel:+34900123456">900 123 456</a>
+              </div>
+
+              <div class="electricista__hero-badges">
+                @for (badge of trustBadges; track badge.text) {
+                  <div class="electricista__hero-badge">
+                    <i class="bi {{ badge.icon }}"></i>
+                    <span>{{ badge.text }}</span>
+                  </div>
+                }
+              </div>
+
+              <div class="electricista__hero-ctas">
+                <button class="electricista__btn electricista__btn--amber" (click)="scrollTo('contacto')">
+                  Solicitar Presupuesto
+                </button>
+                <a class="electricista__btn electricista__btn--cyan-outline" href="tel:+34900123456">
+                  <i class="bi bi-telephone-fill"></i>
+                  Llamar Ahora
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 2. SERVICIOS ===== -->
+  <section class="electricista__services" id="servicios" #animateSection>
+    <div class="container">
+      <h2 class="electricista__section-title">Servicios Eléctricos</h2>
+
+      <div class="row g-4">
+        @for (svc of services; track svc.title) {
+          <div class="col-12 col-sm-6 col-lg-4">
+            <div class="electricista__service-card">
+              <div class="electricista__service-card-inner">
+                <div class="electricista__service-icon">
+                  <i class="bi {{ svc.icon }}"></i>
+                </div>
+                <h3 class="electricista__service-title">{{ svc.title }}</h3>
+                <p class="electricista__service-desc">{{ svc.description }}</p>
+              </div>
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 3. PROYECTOS ===== -->
+  <section class="electricista__projects" id="proyectos" #animateSection>
+    <div class="container">
+      <h2 class="electricista__section-title">Proyectos Realizados</h2>
+
+      <div class="electricista__projects-grid">
+        @for (project of projects; track project.title; let i = $index) {
+          <div class="electricista__project-card" [class.electricista__project-card--featured]="project.size === 'lg'">
+            <div
+              class="electricista__project-image"
+              [style.background]="project.gradient"
+            >
+              <span class="electricista__project-chip">{{ project.category }}</span>
+              <div class="electricista__project-overlay">
+                <h3 class="electricista__project-title">{{ project.title }}</h3>
+                <span class="electricista__project-location">
+                  <i class="bi bi-geo-alt"></i>
+                  {{ project.location }}
+                </span>
+              </div>
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 4. CERTIFICACIONES ===== -->
+  <section class="electricista__certs" id="certificaciones" #animateSection>
+    <div class="container">
+      <h2 class="electricista__section-title">Confianza Garantizada</h2>
+
+      <div class="electricista__certs-row">
+        @for (cert of certifications; track cert.label) {
+          <div class="electricista__cert-card">
+            <div class="electricista__cert-card-inner">
+              <div class="electricista__cert-icon-wrap">
+                <i class="bi {{ cert.icon }}"></i>
+              </div>
+              <span class="electricista__cert-label">{{ cert.label }}</span>
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 5. PROCESO DE TRABAJO ===== -->
+  <section class="electricista__process" id="proceso" #animateSection>
+    <div class="container">
+      <h2 class="electricista__section-title">Cómo Trabajamos</h2>
+
+      <div class="electricista__process-timeline">
+        @for (step of workSteps; track step.step) {
+          <div class="electricista__process-step">
+            <div class="electricista__process-step-card">
+              <div class="electricista__process-step-card-inner">
+                <div class="electricista__process-number">{{ step.step }}</div>
+                <div class="electricista__process-icon">
+                  <i class="bi {{ step.icon }}"></i>
+                </div>
+                <h3 class="electricista__process-title">{{ step.title }}</h3>
+                <p class="electricista__process-desc">{{ step.description }}</p>
+              </div>
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. ZONAS DE SERVICIO ===== -->
+  <section class="electricista__zones" id="zonas" #animateSection>
+    <div class="container">
+      <h2 class="electricista__section-title">Dónde Trabajamos</h2>
+
+      <div class="row g-4">
+        @for (zone of zones; track zone.name) {
+          <div class="col-12 col-sm-6 col-lg-3">
+            <div class="electricista__zone-card">
+              <div class="electricista__zone-card-inner">
+                <div class="electricista__zone-icon">
+                  <i class="bi {{ zone.icon }}"></i>
+                </div>
+                <h3 class="electricista__zone-name">{{ zone.name }}</h3>
+                <p class="electricista__zone-areas">{{ zone.areas }}</p>
+              </div>
+            </div>
+          </div>
+        }
+      </div>
+
+      <div class="electricista__zones-emergency">
+        <div class="electricista__zones-emergency-inner">
+          <i class="bi bi-truck"></i>
+          <span>Servicio urgente disponible en toda la Comunidad de Madrid en menos de 60 minutos</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 7. CONTACTO ===== -->
+  <section class="electricista__contact" id="contacto" #animateSection>
+    <div class="container">
+      <div class="row g-4 align-items-start">
+        <!-- LEFT: Contact Form -->
+        <div class="col-12 col-lg-7">
+          <div class="electricista__contact-card">
+            <div class="electricista__contact-card-inner">
+              <h2 class="electricista__section-title electricista__section-title--contact">
+                Solicita tu Presupuesto
+              </h2>
+              <p class="electricista__contact-desc">
+                Cuéntanos qué necesitas y te responderemos en menos de 2 horas con una primera valoración gratuita.
+              </p>
+
+              <form class="electricista__form" (submit)="submitContact($event)">
+                <div class="row g-3">
+                  <div class="col-12 col-sm-6">
+                    <div class="electricista__field">
+                      <label class="electricista__label" for="contact-name">Nombre completo *</label>
+                      <input
+                        class="electricista__input"
+                        type="text"
+                        id="contact-name"
+                        name="name"
+                        [(ngModel)]="contactForm.name"
+                        placeholder="Tu nombre"
+                        required
+                      />
+                    </div>
+                  </div>
+                  <div class="col-12 col-sm-6">
+                    <div class="electricista__field">
+                      <label class="electricista__label" for="contact-email">Email *</label>
+                      <input
+                        class="electricista__input"
+                        type="email"
+                        id="contact-email"
+                        name="email"
+                        [(ngModel)]="contactForm.email"
+                        placeholder="tu@email.com"
+                        required
+                      />
+                    </div>
+                  </div>
+                  <div class="col-12 col-sm-6">
+                    <div class="electricista__field">
+                      <label class="electricista__label" for="contact-phone">Teléfono</label>
+                      <input
+                        class="electricista__input"
+                        type="tel"
+                        id="contact-phone"
+                        name="phone"
+                        [(ngModel)]="contactForm.phone"
+                        placeholder="+34 6XX XXX XXX"
+                      />
+                    </div>
+                  </div>
+                  <div class="col-12 col-sm-6">
+                    <div class="electricista__field">
+                      <label class="electricista__label" for="contact-message">Cuéntanos qué necesitas</label>
+                      <textarea
+                        class="electricista__input"
+                        id="contact-message"
+                        name="message"
+                        [(ngModel)]="contactForm.message"
+                        rows="4"
+                        placeholder="Describe tu problema, tipo de instalación, urgencia..."
+                      ></textarea>
+                    </div>
+                  </div>
+                  <div class="col-12">
+                    <button class="electricista__btn electricista__btn--amber electricista__btn--full" type="submit">
+                      <span class="electricista__btn__icon-wrap">
+                        <i class="bi bi-send"></i>
+                      </span>
+                      Solicitar Presupuesto
+                    </button>
+                  </div>
+                </div>
+              </form>
+
+              @if (contactSubmitted) {
+                <div class="electricista__contact-success">
+                  <i class="bi bi-check-circle-fill"></i>
+                  <span>¡Gracias! Nos pondremos en contacto contigo en menos de 2 horas.</span>
+                </div>
+              }
+            </div>
+          </div>
+        </div>
+
+        <!-- RIGHT: Info Cards 2x2 Grid -->
+        <div class="col-12 col-lg-5">
+          <div class="electricista__contact-info-grid">
+            <div class="electricista__contact-info-card electricista__contact-info-card--amber">
+              <div class="electricista__contact-info-card-inner">
+                <div class="electricista__contact-info-header">
+                  <i class="bi bi-telephone-fill"></i>
+                  <span>Urgencias 24h</span>
+                </div>
+                <a class="electricista__contact-info-link" href="tel:+34900123456">900 123 456</a>
+                <p class="electricista__contact-info-note">Disponible 24/7, respuesta en &lt;60 min</p>
+              </div>
+            </div>
+
+            <div class="electricista__contact-info-card">
+              <div class="electricista__contact-info-card-inner">
+                <div class="electricista__contact-info-header">
+                  <i class="bi bi-envelope"></i>
+                  <span>Email</span>
+                </div>
+                <a class="electricista__contact-info-link" href="mailto:info@voltio.es">info&#64;voltio.es</a>
+              </div>
+            </div>
+
+            <div class="electricista__contact-info-card electricista__contact-info-card--whatsapp">
+              <div class="electricista__contact-info-card-inner">
+                <div class="electricista__contact-info-header">
+                  <i class="bi bi-whatsapp"></i>
+                  <span>WhatsApp</span>
+                </div>
+                <a
+                  class="electricista__btn electricista__btn--whatsapp"
+                  href="https://wa.me/34600000000"
+                  target="_blank"
+                  rel="noopener"
+                >
+                  <i class="bi bi-whatsapp"></i>
+                  Enviar WhatsApp
+                </a>
+                <p class="electricista__contact-info-note">Respuesta en menos de 15 minutos</p>
+              </div>
+            </div>
+
+            <div class="electricista__contact-info-card">
+              <div class="electricista__contact-info-card-inner">
+                <div class="electricista__contact-info-header">
+                  <i class="bi bi-geo-alt"></i>
+                  <span>Dirección</span>
+                </div>
+                <p class="electricista__contact-info-text">
+                  Calle de la Electricidad, 12<br />
+                  28045 Madrid
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="electricista__contact-map">
+            <div class="electricista__contact-map-inner">
+              <i class="bi bi-geo-alt-fill"></i>
+              <span>Comunidad de Madrid</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="electricista__footer">
+    <div class="container">
+      <div class="electricista__footer-brand">VOLTIO</div>
+      <p class="electricista__footer-tagline">
+        Electricista Profesional en Madrid. Instalaciones, mantenimiento y urgencias 24h con la máxima garantía.
+      </p>
+      <div class="electricista__footer-bottom">
+        <span class="electricista__footer-copy">
+          &copy; {{ currentYear }} Voltio. Todos los derechos reservados.
+        </span>
+        <nav class="electricista__footer-links">
+          <a href="#" class="electricista__footer-link">Aviso Legal</a>
+          <a href="#" class="electricista__footer-link">Política de Privacidad</a>
+          <a href="#" class="electricista__footer-link">Política de Cookies</a>
+        </nav>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Floating WhatsApp -->
+  <a
+    class="electricista__whatsapp"
+    href="https://wa.me/34600000000"
+    target="_blank"
+    rel="noopener"
+    aria-label="Contactar por WhatsApp"
+  >
+    <i class="bi bi-whatsapp"></i>
+  </a>
+</div>

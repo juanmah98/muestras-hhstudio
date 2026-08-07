@@ -58,11 +58,11 @@ export class HomeComponent implements AfterViewInit {
     },
     {
       slug: 'electricista',
-      title: 'Electricista',
+      title: 'VOLTIO Electricista',
       description:
-        'Landing page para electricistas, instaladores y servicios de electricidad.',
-      tags: ['Landing Page', 'Electricidad', 'Instalaciones'],
-      status: 'coming-soon',
+        'Portfolio industrial dark para electricista profesional. Galería de proyectos, certificaciones, zonas de servicio y urgencias 24h.',
+      tags: ['Landing Page', 'Electricidad', 'Portfolio'],
+      status: 'available',
       icon: 'bi bi-lightning-charge-fill',
     },
     {
