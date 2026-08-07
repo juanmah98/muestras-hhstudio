@@ -134,49 +134,52 @@ export class PasteleriaComponent implements AfterViewInit {
       description: 'Hojaldre francés con mantequilla pura, 72 horas de fermentación.',
       price: '2,80 €',
       gradient: 'linear-gradient(135deg, #d4a574 0%, #c17b60 40%, #e8c9a0 100%)',
+      imageUrl: 'assets/images/pasteleria/products/croissant.jpg',
     },
     {
       name: 'Tarta de Chocolate',
       description: 'Chocolate Valrhona 70%, ganache sedosa y crujiente de cacao.',
       price: '32,00 €',
       gradient: 'linear-gradient(135deg, #3d2b1f 0%, #5a3a2a 40%, #2d1f15 100%)',
+      imageUrl: 'assets/images/pasteleria/products/chocolate-cake.jpg',
     },
     {
       name: 'Macarons Franceses',
       description: '12 unidades surtidas: frambuesa, pistacho, limón y caramelo.',
       price: '18,50 €',
-      gradient: 'linear-gradient(135deg, #e8b4b8 0%, #a3b5a6 40%, #c4943a 100%)',
+      gradient: 'linear-gradient(135deg, #f0d4da 0%, #c8d8ca 40%, #e0c8a0 100%)',
     },
     {
       name: 'Pan de Masa Madre',
       description: 'Fermentación lenta 48h con masa madre natural de centeno.',
       price: '5,50 €',
-      gradient: 'linear-gradient(135deg, #c4943a 0%, #d4a554 40%, #a07830 100%)',
-      imageUrl: 'assets/images/pasteleria/chef-hands.jpg',
+      gradient: 'linear-gradient(135deg, #d4c8a8 0%, #c9b896 40%, #b8a682 100%)',
     },
     {
       name: 'Éclairs de Vainilla',
       description: 'Pasta choux crujiente rellena de crema pastelera bourbon.',
       price: '4,50 €',
       gradient: 'linear-gradient(135deg, #faf7f2 0%, #f0e6d8 40%, #e8dcc4 100%)',
+      imageUrl: 'assets/images/pasteleria/products/eclairs.jpg',
     },
     {
       name: 'Tarta de Frutas',
       description: 'Base de sablé breton, crema diplomática y frutas frescas de temporada.',
       price: '28,00 €',
       gradient: 'linear-gradient(135deg, #e8734a 0%, #c17b60 40%, #d4956c 100%)',
+      imageUrl: 'assets/images/pasteleria/products/fruit-tart.jpg',
     },
     {
       name: 'Palmeritas',
       description: 'Hojaldre caramelizado con mantequilla francesa y azúcar perlado.',
       price: '3,20 €',
-      gradient: 'linear-gradient(135deg, #c4943a 0%, #e8c46c 40%, #a07830 100%)',
+      gradient: 'linear-gradient(135deg, #e8d4a0 0%, #f0e0b8 40%, #d4be80 100%)',
     },
     {
       name: 'Pain au Chocolat',
       description: 'Masa hojaldrada con dos barras de chocolate negro 66%.',
       price: '3,00 €',
-      gradient: 'linear-gradient(135deg, #3d2b1f 0%, #5a4030 40%, #c4943a 100%)',
+      gradient: 'linear-gradient(135deg, #6b4c3b 0%, #8b6b5a 40%, #c4943a 100%)',
     },
   ];
 
@@ -314,7 +317,7 @@ export class PasteleriaComponent implements AfterViewInit {
       name: 'Brownie',
       description: 'Intenso y denso, con chocolate de origen. Nueces, dulce de leche y coberturas que lo hacen irresistible.',
       emoji: '🍫',
-      gradient: 'linear-gradient(135deg, #3d2b1f 0%, #5a4030 40%, rgba(193, 123, 96, 0.2) 100%)',
+      gradient: 'linear-gradient(135deg, #f0e6d8 0%, #e0d0b8 40%, rgba(193, 123, 96, 0.1) 100%)',
     },
   ];
 
