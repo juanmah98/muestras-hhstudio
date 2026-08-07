@@ -25,6 +25,7 @@ interface TestimonialItem {
   quote: string;
   author: string;
   role: string;
+  stars: number;
 }
 
 interface NavLink {
@@ -82,7 +83,7 @@ export class SaludComponent implements AfterViewInit {
 
   readonly heroStats: StatItem[] = [
     { number: '15+', label: 'Años' },
-    { number: 'Zurich', label: 'Suiza' },
+    { number: 'Zürich', label: 'Suiza' },
     { number: '+3000', label: 'Pacientes' },
     { number: 'Suiza', label: 'Tecnología' },
   ];
@@ -167,24 +168,28 @@ export class SaludComponent implements AfterViewInit {
         'Por primera vez sentí que un médico realmente me escuchaba. MS LIFE cambió mi forma de ver la salud.',
       author: 'Ana García',
       role: 'Paciente de Nutrición',
+      stars: 5,
     },
     {
       quote:
         'El plan nutricional que diseñaron para mí no fue una dieta, fue un cambio de vida. Bajé 12kg sin pasar hambre.',
       author: 'Carlos Mendoza',
       role: 'Paciente Regular',
+      stars: 5,
     },
     {
       quote:
         'Llegué con ansiedad crónica y ahora tengo herramientas reales para manejarla. El equipo de salud mental es excepcional.',
       author: 'Laura Fernández',
       role: 'Paciente de Psicología',
+      stars: 5,
     },
     {
       quote:
         'La fisioterapia en MS LIFE me devolvió la movilidad que creía perdida. Profesionales increíbles y un ambiente que sana.',
       author: 'Marco Weber',
       role: 'Paciente de Fisioterapia',
+      stars: 5,
     },
   ];
 
@@ -205,9 +210,9 @@ export class SaludComponent implements AfterViewInit {
   ];
 
   readonly socialLinks = [
-    { label: 'Instagram', href: '#' },
-    { label: 'LinkedIn', href: '#' },
-    { label: 'Facebook', href: '#' },
+    { label: 'Instagram', href: '#', icon: 'bi-instagram' },
+    { label: 'LinkedIn', href: '#', icon: 'bi-linkedin' },
+    { label: 'Facebook', href: '#', icon: 'bi-facebook' },
   ];
 
   @ViewChildren('animateSection') animateSections!: QueryList<
@@ -233,72 +238,153 @@ export class SaludComponent implements AfterViewInit {
           if (entry.isIntersecting) {
             const el = entry.target;
             const animation = el.getAttribute('data-anim');
+
             switch (animation) {
               case 'hero':
                 gsap.fromTo(
-                  el.querySelectorAll('.bio__hero-title, .bio__hero-subtitle, .bio__hero-actions'),
-                  { y: 40, opacity: 0 },
-                  { y: 0, opacity: 1, duration: 0.8, stagger: 0.18, ease: 'power3.out' },
-                );
-                gsap.fromTo(
-                  el.querySelectorAll('.bio__hero-stat'),
-                  { y: 24, opacity: 0 },
-                  { y: 0, opacity: 1, duration: 0.5, stagger: 0.1, delay: 0.7, ease: 'power2.out' },
+                  el.querySelectorAll(
+                    '.bio__hero-title, .bio__hero-subtitle, .bio__hero-stats, .bio__hero-actions',
+                  ),
+                  { y: 40, opacity: 0, scale: 0.97 },
+                  {
+                    y: 0,
+                    opacity: 1,
+                    scale: 1,
+                    duration: 0.8,
+                    stagger: 0.1,
+                    ease: 'power3.out',
+                  },
                 );
                 gsap.fromTo(
                   el.querySelector('.bio__hero-leaf'),
-                  { scale: 0.8, opacity: 0 },
-                  { scale: 1, opacity: 1, duration: 1.2, delay: 0.3, ease: 'power3.out' },
+                  { scale: 0.85, opacity: 0 },
+                  {
+                    scale: 1,
+                    opacity: 1,
+                    duration: 1.2,
+                    delay: 0.4,
+                    ease: 'power3.out',
+                  },
+                );
+                gsap.fromTo(
+                  el.querySelector('.bio__hero-deco-bl'),
+                  { scale: 0.85, opacity: 0 },
+                  {
+                    scale: 1,
+                    opacity: 1,
+                    duration: 1,
+                    delay: 0.5,
+                    ease: 'power3.out',
+                  },
                 );
                 break;
+
               case 'services':
                 gsap.fromTo(
                   el.querySelectorAll('.bio__services-card'),
-                  { x: 60, opacity: 0 },
-                  { x: 0, opacity: 1, duration: 0.65, stagger: 0.1, ease: 'power3.out' },
+                  { y: 40, opacity: 0, scale: 0.97 },
+                  {
+                    y: 0,
+                    opacity: 1,
+                    scale: 1,
+                    duration: 0.8,
+                    stagger: 0.1,
+                    ease: 'power3.out',
+                  },
                 );
                 break;
+
               case 'about':
                 gsap.fromTo(
                   el.querySelector('.bio__nosotros-blob-shape'),
-                  { scale: 0.7, opacity: 0 },
-                  { scale: 1, opacity: 1, duration: 1, ease: 'power3.out' },
+                  { scale: 0.8, opacity: 0 },
+                  {
+                    scale: 1,
+                    opacity: 1,
+                    duration: 1,
+                    ease: 'power3.out',
+                  },
                 );
                 gsap.fromTo(
                   el.querySelector('.bio__nosotros-content'),
-                  { x: -30, opacity: 0 },
-                  { x: 0, opacity: 1, duration: 0.7, delay: 0.2, ease: 'power3.out' },
+                  { y: 40, opacity: 0, scale: 0.97 },
+                  {
+                    y: 0,
+                    opacity: 1,
+                    scale: 1,
+                    duration: 0.8,
+                    delay: 0.2,
+                    ease: 'power3.out',
+                  },
                 );
                 gsap.fromTo(
                   el.querySelectorAll('.bio__nosotros-timeline-item'),
-                  { x: -20, opacity: 0 },
-                  { x: 0, opacity: 1, duration: 0.5, stagger: 0.1, delay: 0.4, ease: 'power2.out' },
+                  { y: 40, opacity: 0, scale: 0.97 },
+                  {
+                    y: 0,
+                    opacity: 1,
+                    scale: 1,
+                    duration: 0.8,
+                    stagger: 0.1,
+                    delay: 0.35,
+                    ease: 'power3.out',
+                  },
                 );
                 break;
+
               case 'features':
                 gsap.fromTo(
                   el.querySelectorAll('.bio__features-item'),
-                  { y: 30, opacity: 0 },
-                  { y: 0, opacity: 1, duration: 0.55, stagger: 0.08, ease: 'power3.out' },
+                  { y: 40, opacity: 0, scale: 0.97 },
+                  {
+                    y: 0,
+                    opacity: 1,
+                    scale: 1,
+                    duration: 0.8,
+                    stagger: 0.1,
+                    ease: 'power3.out',
+                  },
                 );
                 break;
+
               case 'testimonials':
                 gsap.fromTo(
                   el.querySelectorAll('.bio__testimonials-card'),
-                  { y: 40, opacity: 0 },
-                  { y: 0, opacity: 1, duration: 0.6, stagger: 0.12, ease: 'power3.out' },
+                  { y: 40, opacity: 0, scale: 0.97 },
+                  {
+                    y: 0,
+                    opacity: 1,
+                    scale: 1,
+                    duration: 0.8,
+                    stagger: 0.1,
+                    ease: 'power3.out',
+                  },
                 );
                 break;
+
               case 'contact':
                 gsap.fromTo(
                   el.querySelector('.bio__contact-info'),
-                  { x: -30, opacity: 0 },
-                  { x: 0, opacity: 1, duration: 0.7, ease: 'power3.out' },
+                  { y: 40, opacity: 0, scale: 0.97 },
+                  {
+                    y: 0,
+                    opacity: 1,
+                    scale: 1,
+                    duration: 0.8,
+                    ease: 'power3.out',
+                  },
                 );
                 gsap.fromTo(
                   el.querySelector('.bio__contact-form'),
-                  { x: 30, opacity: 0 },
-                  { x: 0, opacity: 1, duration: 0.7, delay: 0.15, ease: 'power3.out' },
+                  { y: 40, opacity: 0, scale: 0.97 },
+                  {
+                    y: 0,
+                    opacity: 1,
+                    scale: 1,
+                    duration: 0.8,
+                    delay: 0.15,
+                    ease: 'power3.out',
+                  },
                 );
                 break;
             }
@@ -306,7 +392,7 @@ export class SaludComponent implements AfterViewInit {
           }
         });
       },
-      { threshold: 0.1 },
+      { threshold: 0.15, rootMargin: '0px 0px -40px 0px' },
     );
 
     this.animateSections.forEach((ref) => observer.observe(ref.nativeElement));
@@ -364,5 +450,9 @@ export class SaludComponent implements AfterViewInit {
     if (el) {
       el.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
+  }
+
+  starArray(count: number): number[] {
+    return Array(count).fill(0);
   }
 }

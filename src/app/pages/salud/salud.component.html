@@ -56,6 +56,11 @@
       <span class="bio__hero-leaf-shape bio__hero-leaf-shape--b"></span>
       <span class="bio__hero-leaf-shape bio__hero-leaf-shape--c"></span>
     </div>
+    <div class="bio__hero-deco-bl" aria-hidden="true">
+      <span class="bio__hero-deco-bl-shape bio__hero-deco-bl-shape--a"></span>
+      <span class="bio__hero-deco-bl-shape bio__hero-deco-bl-shape--b"></span>
+      <span class="bio__hero-deco-bl-shape bio__hero-deco-bl-shape--c"></span>
+    </div>
     <div class="bio__hero-vine" aria-hidden="true"></div>
     <div class="container">
       <div class="row align-items-center">
@@ -76,11 +81,11 @@
           </div>
 
           <div class="bio__hero-actions">
-            <a class="bio__btn bio__btn--primary" role="button" tabindex="0"
+            <a class="bio__btn bio__btn--primary bio__btn--lg" role="button" tabindex="0"
               (click)="openBookingModal()" (keydown.enter)="openBookingModal()">
               Agendar Consulta
             </a>
-            <a class="bio__btn bio__btn--outline" role="button" tabindex="0"
+            <a class="bio__btn bio__btn--outline bio__btn--lg" role="button" tabindex="0"
               (click)="scrollTo('servicios')" (keydown.enter)="scrollTo('servicios')">
               Nuestros Servicios
             </a>
@@ -100,7 +105,7 @@
     </div>
   </section>
 
-  <!-- SERVICIOS — Horizontal Scroll -->
+  <!-- SERVICIOS — Full-screen Horizontal Scroll -->
   <section id="servicios" class="bio__services" #animateSection data-anim="services">
     <div class="bio__services-header">
       <div class="container">
@@ -204,6 +209,11 @@
         @for (testimonial of testimonials; track testimonial.author; let idx = $index) {
           <div class="bio__testimonials-card" [class.bio__testimonials-card--tall]="idx % 2 === 1">
             <span class="bio__testimonials-quote-icon" aria-hidden="true">&ldquo;</span>
+            <div class="bio__testimonials-stars" aria-label="5 estrellas">
+              @for (s of starArray(testimonial.stars); track s) {
+                <i class="bi bi-star-fill"></i>
+              }
+            </div>
             <p class="bio__testimonials-quote">{{ testimonial.quote }}</p>
             <div class="bio__testimonials-author">
               <strong>{{ testimonial.author }}</strong>
@@ -297,7 +307,7 @@
           <div class="bio__footer-social">
             @for (social of socialLinks; track social.label) {
               <a [href]="social.href" [attr.aria-label]="social.label">
-                <i [class]="'bi bi-' + social.label.toLowerCase()"></i>
+                <i [class]="'bi ' + social.icon"></i>
               </a>
             }
           </div>
