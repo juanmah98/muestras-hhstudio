@@ -1,13 +1,14 @@
 <!-- ============================================================
   Apro Clínica — Landing Page
   Centro médico-estético. Tema claro, cálido, elegante.
+  Editorial Luxury adapted for Medical-Aesthetic.
   ============================================================ -->
 
 <main class="apro">
   <!-- ===================================================
-    1. NAVIGATION (fixed top)
+    1. NAVIGATION (floating pill, glass effect)
     =================================================== -->
-  <nav class="apro__nav">
+  <nav class="apro__nav" [class.apro__nav--scrolled]="navScrolled">
     <div class="container">
       <div class="apro__nav-inner">
         <a class="apro__nav-brand" href="#">Apro</a>
@@ -25,21 +26,19 @@
         <!-- Mobile toggle -->
         <button class="apro__nav-toggle d-lg-none" (click)="toggleMobileMenu()"
           aria-label="Abrir menú">
-          <i class="bi bi-list"></i>
+          <i [class]="mobileMenuOpen ? 'bi bi-x-lg' : 'bi bi-list'"></i>
         </button>
       </div>
 
-      <!-- Mobile dropdown -->
-      @if (mobileMenuOpen) {
-        <div class="apro__nav-links--mobile">
-          <a role="button" tabindex="0" (click)="scrollTo('inicio')" (keydown.enter)="scrollTo('inicio')">Inicio</a>
-          <a role="button" tabindex="0" (click)="scrollTo('servicios')" (keydown.enter)="scrollTo('servicios')">Servicios</a>
-          <a role="button" tabindex="0" (click)="scrollTo('galeria')" (keydown.enter)="scrollTo('galeria')">Galería</a>
-          <a role="button" tabindex="0" (click)="scrollTo('resenas')" (keydown.enter)="scrollTo('resenas')">Reseñas</a>
-          <a role="button" tabindex="0" (click)="scrollTo('contacto')" (keydown.enter)="scrollTo('contacto')">Contacto</a>
-          <a class="apro__nav-cta" role="button" tabindex="0" (click)="scrollTo('contacto')" (keydown.enter)="scrollTo('contacto')">Reservar Cita</a>
-        </div>
-      }
+      <!-- Mobile dropdown — class-based for smooth transitions -->
+      <div class="apro__nav-links--mobile" [class.apro__nav-links--mobile--open]="mobileMenuOpen">
+        <a role="button" tabindex="0" (click)="scrollTo('inicio')" (keydown.enter)="scrollTo('inicio')">Inicio</a>
+        <a role="button" tabindex="0" (click)="scrollTo('servicios')" (keydown.enter)="scrollTo('servicios')">Servicios</a>
+        <a role="button" tabindex="0" (click)="scrollTo('galeria')" (keydown.enter)="scrollTo('galeria')">Galería</a>
+        <a role="button" tabindex="0" (click)="scrollTo('resenas')" (keydown.enter)="scrollTo('resenas')">Reseñas</a>
+        <a role="button" tabindex="0" (click)="scrollTo('contacto')" (keydown.enter)="scrollTo('contacto')">Contacto</a>
+        <a class="apro__nav-cta" role="button" tabindex="0" (click)="scrollTo('contacto')" (keydown.enter)="scrollTo('contacto')">Reservar Cita</a>
+      </div>
     </div>
   </nav>
 
@@ -47,6 +46,7 @@
     2. HERO SECTION
     =================================================== -->
   <section id="inicio" class="apro__hero" #animateSection>
+    <div class="apro__hero-noise" aria-hidden="true"></div>
     <div class="container">
       <div class="row align-items-center">
         <div class="col-lg-7">
@@ -70,6 +70,50 @@
               Nuestra Clínica
             </a>
           </div>
+          <div class="apro__hero-trust">
+            <div class="apro__hero-trust-item">
+              <span class="apro__hero-trust-number">10+</span>
+              <span class="apro__hero-trust-label">Años</span>
+            </div>
+            <div class="apro__hero-trust-item">
+              <span class="apro__hero-trust-number">+2000</span>
+              <span class="apro__hero-trust-label">Pacientes</span>
+            </div>
+            <div class="apro__hero-trust-item">
+              <span>Tecnología<br>Médica</span>
+            </div>
+            <div class="apro__hero-trust-item">
+              <span>Protocolos<br>Personalizados</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================================================
+    2.5. TRUST BAR (new — before services)
+    =================================================== -->
+  <section class="apro__trust-bar">
+    <div class="container">
+      <div class="apro__trust-bar-grid">
+        <div class="apro__trust-bar-item">
+          <i class="bi bi-clock-history"></i>
+          <span class="apro__trust-bar-number">10+</span>
+          <span class="apro__trust-bar-label">Años de<br>Experiencia</span>
+        </div>
+        <div class="apro__trust-bar-item">
+          <i class="bi bi-people-fill"></i>
+          <span class="apro__trust-bar-number">+2000</span>
+          <span class="apro__trust-bar-label">Pacientes<br>Satisfechos</span>
+        </div>
+        <div class="apro__trust-bar-item">
+          <i class="bi bi-clipboard2-pulse"></i>
+          <span class="apro__trust-bar-label">Tecnología<br>Médica Avanzada</span>
+        </div>
+        <div class="apro__trust-bar-item">
+          <i class="bi bi-stars"></i>
+          <span class="apro__trust-bar-label">Protocolos<br>Personalizados</span>
         </div>
       </div>
     </div>
@@ -182,6 +226,7 @@
               alt="Instalaciones de Apro Clínica — detalle de toallas"
               loading="lazy"
             >
+            <div class="apro__gallery-overlay"></div>
           </div>
         </div>
 
@@ -194,6 +239,7 @@
                 alt="Tratamiento de cera premium en cabina privada"
                 loading="lazy"
               >
+              <div class="apro__gallery-overlay"></div>
             </div>
             <div class="apro__gallery-quote">
               <i class="bi bi-quote"></i>
@@ -214,7 +260,7 @@
     =================================================== -->
   <section id="resenas" class="apro__reviews" #animateSection>
     <div class="container">
-      <div class="apro__section-header apro__section-header--no-line">
+      <div class="apro__section-header">
         <div class="apro__reviews-stars">
           <i class="bi bi-star-fill"></i>
           <i class="bi bi-star-fill"></i>
@@ -228,8 +274,14 @@
       <div class="row g-4">
         <!-- Review 1 -->
         <div class="col-md-6 col-lg-4">
-          <div class="apro__review-card apro__review-card--accent">
-            <i class="bi bi-quote apro__review-quote"></i>
+          <div class="apro__review-card">
+            <div class="apro__review-card-stars">
+              <i class="bi bi-star-fill"></i>
+              <i class="bi bi-star-fill"></i>
+              <i class="bi bi-star-fill"></i>
+              <i class="bi bi-star-fill"></i>
+              <i class="bi bi-star-fill"></i>
+            </div>
             <p class="apro__review-text">
               Una experiencia transformadora. El equipo de Apro Clínica me hizo
               sentir en las mejores manos desde el primer momento. Salí renovada
@@ -247,8 +299,14 @@
 
         <!-- Review 2 -->
         <div class="col-md-6 col-lg-4">
-          <div class="apro__review-card apro__review-card--alt">
-            <i class="bi bi-quote apro__review-quote"></i>
+          <div class="apro__review-card">
+            <div class="apro__review-card-stars">
+              <i class="bi bi-star-fill"></i>
+              <i class="bi bi-star-fill"></i>
+              <i class="bi bi-star-fill"></i>
+              <i class="bi bi-star-fill"></i>
+              <i class="bi bi-star-fill"></i>
+            </div>
             <p class="apro__review-text">
               Los tratamientos faciales son excepcionales. Mi piel nunca había
               lucido tan radiante. La tecnología que usan está a otro nivel.
@@ -266,8 +324,14 @@
 
         <!-- Review 3 -->
         <div class="col-md-6 col-lg-4">
-          <div class="apro__review-card apro__review-card--accent">
-            <i class="bi bi-quote apro__review-quote"></i>
+          <div class="apro__review-card">
+            <div class="apro__review-card-stars">
+              <i class="bi bi-star-fill"></i>
+              <i class="bi bi-star-fill"></i>
+              <i class="bi bi-star-fill"></i>
+              <i class="bi bi-star-fill"></i>
+              <i class="bi bi-star-fill"></i>
+            </div>
             <p class="apro__review-text">
               El ambiente es un remanso de paz. Cada detalle está cuidado para
               que te sientas especial. Vuelvo siempre que necesito un reset de
@@ -299,6 +363,20 @@
         <!-- Info column -->
         <div class="col-lg-6">
           <div class="apro__contact-info">
+            <!-- WhatsApp (prominent) -->
+            <a class="apro__contact-card apro__contact-card--whatsapp"
+               href="https://wa.me/34672141613?text=Hola%2C%20quisiera%20informaci%C3%B3n%20sobre%20sus%20tratamientos."
+               target="_blank"
+               rel="noopener">
+              <i class="bi bi-whatsapp"></i>
+              <div>
+                <div class="apro__contact-label">WhatsApp</div>
+                <div class="apro__contact-value">672 141 613</div>
+                <span class="apro__contact-sub">Respuesta rápida</span>
+              </div>
+              <i class="bi bi-arrow-right apro__contact-card-arrow"></i>
+            </a>
+
             <!-- Location -->
             <div class="apro__contact-item">
               <i class="bi bi-geo-alt"></i>
@@ -417,7 +495,7 @@
   </footer>
 
   <!-- ===================================================
-    8. FAB (WhatsApp)
+    8. FAB (WhatsApp — green, fixed bottom-right)
     =================================================== -->
   <div class="apro__fab">
     <a class="apro__fab-btn"

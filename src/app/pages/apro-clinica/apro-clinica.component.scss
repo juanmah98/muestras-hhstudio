@@ -1,6 +1,6 @@
 // ============================================================
 // Apro Clínica — Design Tokens (local al componente)
-// Tema claro, cálido, elegante. Exclusivo de esta landing.
+// Tema claro, cálido, elegante. Editorial Luxury × Medical.
 // ============================================================
 
 $terra-brown: #8b5e3c;
@@ -17,6 +17,12 @@ $on-surface-variant: #51443c;
 $outline: #83746b;
 $outline-variant: #d5c3b8;
 $secondary-container: #eee1d0;
+$whatsapp-green: #25d366;
+
+// Editorial easing
+$ease-editorial: cubic-bezier(0.16, 1, 0.3, 1);
+$ease-out-expo: cubic-bezier(0.19, 1, 0.22, 1);
+$transition-smooth: 350ms $ease-editorial;
 
 // ============================================================
 // Block: apro
@@ -43,66 +49,73 @@ $secondary-container: #eee1d0;
     color: $on-surface-variant;
   }
 
-  // Shared section header
+  // Shared section header — clean, no badge, no underline
   &__section-header {
     text-align: center;
     margin-bottom: 3rem;
-
-    &-badge {
-      display: inline-block;
-      font-size: 0.75rem;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.15em;
-      color: $terra-brown;
-      margin-bottom: 0.75rem;
-    }
 
     &-title {
       font-size: clamp(1.5rem, 3vw, 2rem);
       font-weight: 700;
       color: $deep-ink;
-      position: relative;
-      display: inline-block;
-
-      &::after {
-        content: '';
-        display: block;
-        width: 60px;
-        height: 3px;
-        background: $terra-brown;
-        margin: 0.75rem auto 0;
-        border-radius: 2px;
-      }
-    }
-
-    &--no-line &-title::after {
-      display: none;
     }
   }
 }
 
 // ============================================================
-// 1. NAVIGATION
+// 1. NAVIGATION — floating pill, glass effect, scrolled state
 // ============================================================
 
 .apro__nav {
   position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
+  top: 1rem;
+  left: 50%;
+  transform: translateX(-50%);
   z-index: 1030;
-  background: rgba($clinical-white, 0.85);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border-bottom: 1px solid $outline-variant;
-  padding: 0.75rem 0;
+  width: calc(100% - 2rem);
+  max-width: 1100px;
+  background: rgba($clinical-white, 0.75);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba($outline-variant, 0.4);
+  border-radius: 100px;
+  padding: 0.6rem 0;
+  transition:
+    background $transition-smooth,
+    box-shadow $transition-smooth,
+    border-color $transition-smooth,
+    top $transition-smooth;
+
+  &--scrolled {
+    top: 0.5rem;
+    background: rgba($clinical-white, 0.92);
+    box-shadow:
+      0 4px 24px rgba($deep-ink, 0.08),
+      0 1px 4px rgba($deep-ink, 0.04);
+    border-color: rgba($outline-variant, 0.6);
+  }
+
+  @media (max-width: 991.98px) {
+    top: 0;
+    width: 100%;
+    max-width: 100%;
+    border-radius: 0;
+    background: rgba($clinical-white, 0.92);
+    border-left: none;
+    border-right: none;
+    border-top: none;
+
+    &--scrolled {
+      top: 0;
+    }
+  }
 }
 
 .apro__nav-inner {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  padding: 0 1.5rem;
 }
 
 .apro__nav-brand {
@@ -113,6 +126,7 @@ $secondary-container: #eee1d0;
   text-transform: uppercase;
   letter-spacing: 0.15em;
   text-decoration: none;
+  flex-shrink: 0;
 
   &:hover {
     color: $terra-brown;
@@ -130,15 +144,46 @@ $secondary-container: #eee1d0;
     color: $on-surface-variant;
     text-decoration: none;
     cursor: pointer;
-    transition: color 0.2s ease;
+    transition: color $transition-smooth;
+
+    &:hover {
+      color: $terra-brown;
+    }
+  }
+}
+
+.apro__nav-links--mobile {
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.75rem;
+  padding: 0 1.5rem;
+  transition:
+    max-height 0.45s $ease-editorial,
+    opacity 0.35s $ease-editorial,
+    padding 0.45s $ease-editorial;
+
+  a {
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: $on-surface-variant;
+    text-decoration: none;
+    cursor: pointer;
+    transition: color $transition-smooth;
 
     &:hover {
       color: $terra-brown;
     }
   }
 
-  &--mobile {
-    display: none;
+  &--open {
+    max-height: 420px;
+    opacity: 1;
+    padding: 1.5rem;
+    border-bottom: 1px solid $outline-variant;
   }
 }
 
@@ -146,16 +191,19 @@ $secondary-container: #eee1d0;
   background: $terra-brown !important;
   color: $clinical-white !important;
   padding: 0.5rem 1.25rem;
-  border-radius: 4px;
+  border-radius: 100px;
   text-transform: uppercase;
   letter-spacing: 0.05em;
   font-weight: 600 !important;
   font-size: 0.8rem !important;
-  transition: background 0.2s ease !important;
+  transition:
+    background $transition-smooth,
+    transform $transition-smooth !important;
 
   &:hover {
     background: $primary !important;
     color: $clinical-white !important;
+    transform: translateY(-1px);
   }
 }
 
@@ -163,28 +211,33 @@ $secondary-container: #eee1d0;
   display: none;
   background: none;
   border: none;
-  font-size: 1.75rem;
+  font-size: 1.5rem;
   color: $deep-ink;
   cursor: pointer;
-  padding: 0;
+  padding: 0.35rem;
   line-height: 1;
+  transition: color $transition-smooth;
+
+  &:hover {
+    color: $terra-brown;
+  }
 }
 
 // ============================================================
-// 2. HERO
+// 2. HERO — enhanced with noise overlay + trust badges
 // ============================================================
 
 .apro__hero {
   min-height: 100vh;
+  min-height: 100dvh;
   display: flex;
   align-items: center;
   background-image: url('/assets/images/apro-clinica/hero.webp');
   background-size: cover;
   background-position: center;
   position: relative;
-  padding: 6rem 0 4rem;
+  padding: 7rem 0 4rem;
 
-  // Gradiente overlay: blanco → transparente (izquierda → derecha)
   &::before {
     content: '';
     position: absolute;
@@ -199,23 +252,30 @@ $secondary-container: #eee1d0;
     z-index: 1;
   }
 
-  // Contenido por encima del overlay
   .container {
     position: relative;
-    z-index: 2;
+    z-index: 4;
   }
+}
+
+.apro__hero-noise {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  opacity: 0.04;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+  background-size: 200px 200px;
 }
 
 .apro__hero-badge {
   display: inline-block;
-  font-size: 0.75rem;
+  font-size: 0.7rem;
   font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 0.40em;
+  letter-spacing: 0.45em;
   color: $terra-brown;
-  /* background: rgba($terra-brown, 0.08); */
-  /* padding: 0.4rem 1rem; */
-  border-radius: 50px;
   margin-bottom: 1.5rem;
 }
 
@@ -223,7 +283,7 @@ $secondary-container: #eee1d0;
   font-size: clamp(2rem, 5vw, 3.5rem);
   font-weight: 700;
   color: $deep-ink;
-  line-height: 1.15;
+  line-height: 1.12;
   margin-bottom: 1.25rem;
 
   em {
@@ -237,13 +297,108 @@ $secondary-container: #eee1d0;
   line-height: 1.7;
   color: $on-surface-variant;
   margin-bottom: 2rem;
-  max-width: 540px;
+  max-width: 520px;
 }
 
 .apro__hero-actions {
   display: flex;
   flex-wrap: wrap;
   gap: 1rem;
+  margin-bottom: 2.5rem;
+}
+
+.apro__hero-trust {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid rgba($outline-variant, 0.5);
+}
+
+.apro__hero-trust-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+
+  span {
+    font-size: 0.825rem;
+    color: $on-surface-variant;
+    line-height: 1.4;
+    font-weight: 500;
+  }
+}
+
+.apro__hero-trust-number {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: $terra-brown;
+  line-height: 1.15;
+}
+
+.apro__hero-trust-label {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: $on-surface-variant;
+}
+
+// ============================================================
+// 2.5 TRUST BAR — full-width stats
+// ============================================================
+
+.apro__trust-bar {
+  background: $soft-sand;
+  padding: 3rem 0;
+  border-top: 1px solid rgba($outline-variant, 0.4);
+  border-bottom: 1px solid rgba($outline-variant, 0.4);
+}
+
+.apro__trust-bar-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 2rem;
+  text-align: center;
+
+  @media (max-width: 767.98px) {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+  }
+
+  @media (max-width: 480px) {
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+  }
+}
+
+.apro__trust-bar-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+
+  i {
+    font-size: 1.75rem;
+    color: $terra-brown;
+    margin-bottom: 0.25rem;
+  }
+}
+
+.apro__trust-bar-number {
+  font-family: 'Playfair Display', serif;
+  font-size: 2rem;
+  font-weight: 700;
+  color: $deep-ink;
+  line-height: 1.1;
+}
+
+.apro__trust-bar-label {
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: $on-surface-variant;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  line-height: 1.4;
 }
 
 // ============================================================
@@ -259,14 +414,23 @@ $secondary-container: #eee1d0;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  border-radius: 4px;
+  border-radius: 100px;
   text-decoration: none;
   cursor: pointer;
   transition:
-    background 0.2s ease,
-    color 0.2s ease,
-    border-color 0.2s ease;
+    background $transition-smooth,
+    color $transition-smooth,
+    border-color $transition-smooth,
+    transform $transition-smooth;
   border: 2px solid transparent;
+
+  i {
+    transition: transform $transition-smooth;
+  }
+
+  &:hover i {
+    transform: translateX(3px);
+  }
 
   &--solid {
     background: $terra-brown;
@@ -277,6 +441,7 @@ $secondary-container: #eee1d0;
       background: $primary;
       border-color: $primary;
       color: $clinical-white;
+      transform: translateY(-1px);
     }
   }
 
@@ -288,6 +453,11 @@ $secondary-container: #eee1d0;
     &:hover {
       background: $terra-brown;
       color: $clinical-white;
+      transform: translateY(-1px);
+    }
+
+    &:hover i {
+      transform: none;
     }
   }
 
@@ -316,7 +486,7 @@ $secondary-container: #eee1d0;
 }
 
 // ============================================================
-// 3. SERVICES (Bento Grid)
+// 3. SERVICES (Bento Grid) — enhanced shadows + hover
 // ============================================================
 
 .apro__services {
@@ -338,17 +508,22 @@ $secondary-container: #eee1d0;
 // Base card
 .apro__service-card {
   background: $clinical-white;
-  border-radius: 8px;
+  border-radius: 12px;
   overflow: hidden;
   display: flex;
   flex-direction: column;
+  box-shadow:
+    0 1px 3px rgba($deep-ink, 0.04),
+    0 2px 8px rgba($deep-ink, 0.03);
   transition:
-    transform 300ms ease,
-    box-shadow 300ms ease;
+    transform 450ms $ease-editorial,
+    box-shadow 450ms $ease-editorial;
 
   &:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+    transform: translateY(-4px);
+    box-shadow:
+      0 4px 12px rgba($deep-ink, 0.06),
+      0 8px 28px rgba($deep-ink, 0.07);
   }
 }
 
@@ -361,11 +536,11 @@ $secondary-container: #eee1d0;
     height: 100%;
     object-fit: cover;
     display: block;
-    transition: transform 0.4s ease;
+    transition: transform 0.6s $ease-editorial;
   }
 
   .apro__service-card:hover & img {
-    transform: scale(1.04);
+    transform: scale(1.05);
   }
 }
 
@@ -498,7 +673,7 @@ $secondary-container: #eee1d0;
 }
 
 // ============================================================
-// 4. GALLERY
+// 4. GALLERY — frame treatment + hover overlays
 // ============================================================
 
 .apro__gallery {
@@ -511,12 +686,22 @@ $secondary-container: #eee1d0;
   aspect-ratio: 4 / 3;
   border-radius: 12px;
   overflow: hidden;
+  position: relative;
+  border: 1px solid rgba($outline-variant, 0.5);
+  box-shadow:
+    0 1px 3px rgba($deep-ink, 0.04),
+    0 4px 16px rgba($deep-ink, 0.05);
 
   img {
     width: 100%;
     height: 100%;
     object-fit: cover;
     display: block;
+    transition: transform 0.7s $ease-editorial;
+  }
+
+  &:hover img {
+    transform: scale(1.03);
   }
 }
 
@@ -532,12 +717,39 @@ $secondary-container: #eee1d0;
   aspect-ratio: 16 / 10;
   border-radius: 12px;
   overflow: hidden;
+  position: relative;
+  border: 1px solid rgba($outline-variant, 0.5);
+  box-shadow:
+    0 1px 3px rgba($deep-ink, 0.04),
+    0 4px 16px rgba($deep-ink, 0.05);
 
   img {
     width: 100%;
     height: 100%;
     object-fit: cover;
     display: block;
+    transition: transform 0.7s $ease-editorial;
+  }
+
+  &:hover img {
+    transform: scale(1.03);
+  }
+}
+
+.apro__gallery-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to top,
+    rgba($deep-ink, 0.1) 0%,
+    transparent 50%
+  );
+  pointer-events: none;
+  transition: opacity 0.4s ease;
+
+  .apro__gallery-main:hover &,
+  .apro__gallery-small:hover & {
+    opacity: 0.5;
   }
 }
 
@@ -549,6 +761,8 @@ $secondary-container: #eee1d0;
   display: flex;
   flex-direction: column;
   justify-content: center;
+  box-shadow:
+    0 4px 16px rgba($terra-brown, 0.15);
 
   i {
     font-size: 2rem;
@@ -570,13 +784,13 @@ $secondary-container: #eee1d0;
   cite {
     font-size: 0.8rem;
     font-style: normal;
-    color: rgba($clinical-white, 0.8);
+    color: rgba($clinical-white, 0.85);
     font-weight: 500;
   }
 }
 
 // ============================================================
-// 5. REVIEWS
+// 5. REVIEWS — enhanced cards with prominent stars
 // ============================================================
 
 .apro__reviews {
@@ -586,11 +800,11 @@ $secondary-container: #eee1d0;
 .apro__reviews-stars {
   display: flex;
   justify-content: center;
-  gap: 0.25rem;
+  gap: 0.3rem;
   margin-bottom: 0.75rem;
 
   i {
-    font-size: 1.25rem;
+    font-size: 1.35rem;
     color: $terra-brown;
   }
 }
@@ -598,35 +812,35 @@ $secondary-container: #eee1d0;
 .apro__review-card {
   background: $clinical-white;
   border: 1px solid $outline-variant;
-  border-radius: 12px;
+  border-radius: 14px;
   padding: 2rem;
   height: 100%;
   display: flex;
   flex-direction: column;
-  position: relative;
-  border-bottom: 3px solid $terra-brown;
+  box-shadow:
+    0 1px 3px rgba($deep-ink, 0.04),
+    0 4px 12px rgba($deep-ink, 0.04);
   transition:
-    transform 0.3s ease,
-    box-shadow 0.3s ease;
+    transform 400ms $ease-editorial,
+    box-shadow 400ms $ease-editorial;
 
   &:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 30px rgba($deep-ink, 0.06);
-  }
-
-  &--alt {
-    border-bottom-color: $arena-beige;
-  }
-
-  &--accent {
-    border-bottom-color: $terra-brown;
+    transform: translateY(-3px);
+    box-shadow:
+      0 4px 12px rgba($deep-ink, 0.06),
+      0 12px 32px rgba($deep-ink, 0.08);
   }
 }
 
-.apro__review-quote {
-  font-size: 1.5rem;
-  color: rgba($terra-brown, 0.25);
-  margin-bottom: 0.75rem;
+.apro__review-card-stars {
+  display: flex;
+  gap: 0.2rem;
+  margin-bottom: 1rem;
+
+  i {
+    font-size: 0.95rem;
+    color: $terra-brown;
+  }
 }
 
 .apro__review-text {
@@ -646,8 +860,8 @@ $secondary-container: #eee1d0;
 }
 
 .apro__review-avatar {
-  width: 40px;
-  height: 40px;
+  width: 42px;
+  height: 42px;
   border-radius: 50%;
   background: $secondary-container;
   color: $terra-brown;
@@ -655,7 +869,7 @@ $secondary-container: #eee1d0;
   align-items: center;
   justify-content: center;
   font-weight: 600;
-  font-size: 0.9rem;
+  font-size: 0.95rem;
   flex-shrink: 0;
 }
 
@@ -671,7 +885,7 @@ $secondary-container: #eee1d0;
 }
 
 // ============================================================
-// 6. CONTACT
+// 6. CONTACT — enhanced cards + WhatsApp CTA
 // ============================================================
 
 .apro__contact {
@@ -682,7 +896,73 @@ $secondary-container: #eee1d0;
 .apro__contact-info {
   display: flex;
   flex-direction: column;
-  gap: 2rem;
+  gap: 1.75rem;
+}
+
+.apro__contact-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  background: $clinical-white;
+  border: 1px solid $outline-variant;
+  border-radius: 12px;
+  padding: 1.25rem 1.5rem;
+  text-decoration: none;
+  transition:
+    transform $transition-smooth,
+    box-shadow $transition-smooth,
+    border-color $transition-smooth;
+  box-shadow:
+    0 1px 3px rgba($deep-ink, 0.03);
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow:
+      0 4px 12px rgba($deep-ink, 0.06),
+      0 8px 28px rgba($deep-ink, 0.05);
+  }
+
+  i:first-child {
+    font-size: 1.5rem;
+    flex-shrink: 0;
+    margin-top: 0.1rem;
+  }
+
+  &--whatsapp {
+    border-color: rgba($whatsapp-green, 0.3);
+    background: rgba($whatsapp-green, 0.04);
+
+    i:first-child {
+      color: $whatsapp-green;
+      font-size: 1.6rem;
+    }
+
+    &:hover {
+      border-color: rgba($whatsapp-green, 0.5);
+      background: rgba($whatsapp-green, 0.08);
+    }
+  }
+}
+
+.apro__contact-card-arrow {
+  margin-left: auto;
+  font-size: 1rem;
+  color: $on-surface-variant;
+  align-self: center;
+  transition: transform $transition-smooth;
+  flex-shrink: 0;
+
+  .apro__contact-card:hover & {
+    transform: translateX(3px);
+  }
+}
+
+.apro__contact-sub {
+  display: block;
+  font-size: 0.75rem;
+  color: $whatsapp-green;
+  font-weight: 500;
+  margin-top: 0.15rem;
 }
 
 .apro__contact-item {
@@ -690,7 +970,7 @@ $secondary-container: #eee1d0;
   gap: 1rem;
 
   i {
-    font-size: 1.5rem;
+    font-size: 1.4rem;
     color: $terra-brown;
     flex-shrink: 0;
     margin-top: 0.15rem;
@@ -723,7 +1003,7 @@ $secondary-container: #eee1d0;
     padding: 0.2rem 0;
     display: flex;
     justify-content: space-between;
-    max-width: 220px;
+    max-width: 240px;
 
     span:last-child {
       font-weight: 500;
@@ -738,6 +1018,10 @@ $secondary-container: #eee1d0;
   border-radius: 12px;
   position: relative;
   overflow: hidden;
+  border: 1px solid rgba($outline-variant, 0.5);
+  box-shadow:
+    0 1px 3px rgba($deep-ink, 0.04),
+    0 4px 16px rgba($deep-ink, 0.05);
 
   &-iframe {
     width: 100%;
@@ -796,7 +1080,7 @@ $secondary-container: #eee1d0;
     font-size: 0.875rem;
     color: $on-surface-variant;
     text-decoration: none;
-    transition: color 0.2s ease;
+    transition: color $transition-smooth;
 
     &:hover {
       color: $terra-brown;
@@ -820,9 +1104,9 @@ $secondary-container: #eee1d0;
     text-decoration: none;
     font-size: 1rem;
     transition:
-      background 0.2s ease,
-      color 0.2s ease,
-      border-color 0.2s ease;
+      background $transition-smooth,
+      color $transition-smooth,
+      border-color $transition-smooth;
 
     &:hover {
       background: $terra-brown;
@@ -850,7 +1134,7 @@ $secondary-container: #eee1d0;
 }
 
 // ============================================================
-// 8. FAB (WhatsApp)
+// 8. FAB (WhatsApp — green)
 // ============================================================
 
 .apro__fab {
@@ -864,25 +1148,29 @@ $secondary-container: #eee1d0;
   width: 56px;
   height: 56px;
   border-radius: 50%;
-  background: $terra-brown;
+  background: $whatsapp-green;
   color: $clinical-white;
   border: none;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.4rem;
+  font-size: 1.5rem;
   cursor: pointer;
-  box-shadow: 0 4px 16px rgba($deep-ink, 0.2);
+  box-shadow:
+    0 4px 16px rgba($whatsapp-green, 0.35),
+    0 2px 8px rgba($deep-ink, 0.15);
   transition:
-    transform 0.2s ease,
-    box-shadow 0.2s ease,
-    background 0.2s ease;
+    transform $transition-smooth,
+    box-shadow $transition-smooth,
+    background $transition-smooth;
   text-decoration: none;
 
   &:hover {
     transform: scale(1.08);
-    box-shadow: 0 6px 24px rgba($deep-ink, 0.28);
-    background: $primary;
+    box-shadow:
+      0 6px 24px rgba($whatsapp-green, 0.45),
+      0 4px 12px rgba($deep-ink, 0.2);
+    background: #1ebe57;
   }
 }
 
@@ -894,12 +1182,12 @@ $secondary-container: #eee1d0;
   background: $deep-ink;
   color: $clinical-white;
   padding: 0.5rem 1rem;
-  border-radius: 6px;
+  border-radius: 8px;
   font-size: 0.8rem;
   white-space: nowrap;
   opacity: 0;
   pointer-events: none;
-  transition: opacity 0.2s ease;
+  transition: opacity 0.25s $ease-editorial;
 
   .apro__fab-btn:hover + &,
   &:hover {
@@ -915,28 +1203,6 @@ $secondary-container: #eee1d0;
 @media (max-width: 991.98px) {
   .apro__nav-links {
     display: none;
-
-    &--mobile {
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-      gap: 0.75rem;
-      position: absolute;
-      top: 100%;
-      left: 0;
-      right: 0;
-      background: $clinical-white;
-      padding: 1.5rem;
-      border-bottom: 1px solid $outline-variant;
-      box-shadow: 0 8px 24px rgba($deep-ink, 0.06);
-    }
-
-    &--open {
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-      gap: 0.75rem;
-    }
   }
 
   .apro__nav-toggle {
@@ -944,9 +1210,10 @@ $secondary-container: #eee1d0;
   }
 }
 
-// Medium devices and below
+// Mobile: 100dvh sections, hero adjustments
 @media (max-width: 767.98px) {
   .apro__hero {
+    min-height: 100dvh;
     text-align: center;
     padding: 5rem 0 3rem;
 
@@ -958,6 +1225,15 @@ $secondary-container: #eee1d0;
     &-actions {
       justify-content: center;
     }
+
+    &-trust {
+      justify-content: center;
+      gap: 1.25rem;
+    }
+  }
+
+  .apro__hero-trust-item {
+    text-align: center;
   }
 
   .apro__gallery-side {
@@ -971,6 +1247,26 @@ $secondary-container: #eee1d0;
   .apro__footer .col-md-4,
   .apro__footer .col-md-3 {
     margin-bottom: 2rem;
+  }
+}
+
+// Small phones
+@media (max-width: 480px) {
+  .apro__hero-trust {
+    flex-direction: column;
+    gap: 0.75rem;
+    align-items: center;
+  }
+
+  .apro__fab {
+    bottom: 1.25rem;
+    right: 1.25rem;
+  }
+
+  .apro__fab-btn {
+    width: 50px;
+    height: 50px;
+    font-size: 1.3rem;
   }
 }
 
@@ -988,7 +1284,13 @@ $secondary-container: #eee1d0;
 
 @media (prefers-reduced-motion: reduce) {
   .apro__review-card,
-  .apro__fab-btn {
+  .apro__service-card,
+  .apro__fab-btn,
+  .apro__contact-card {
+    transition: none;
+  }
+
+  .apro__nav-links--mobile {
     transition: none;
   }
 }

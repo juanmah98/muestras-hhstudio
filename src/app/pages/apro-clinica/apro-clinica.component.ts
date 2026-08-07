@@ -4,6 +4,7 @@ import {
   ElementRef,
   ViewChildren,
   QueryList,
+  HostListener,
 } from '@angular/core';
 import gsap from 'gsap';
 
@@ -16,10 +17,16 @@ import gsap from 'gsap';
 export class AproClinicaComponent implements AfterViewInit {
   readonly currentYear = new Date().getFullYear();
   mobileMenuOpen = false;
+  navScrolled = false;
 
   @ViewChildren('animateSection') animateSections!: QueryList<
     ElementRef<HTMLElement>
   >;
+
+  @HostListener('window:scroll')
+  onWindowScroll(): void {
+    this.navScrolled = window.scrollY > 30;
+  }
 
   ngAfterViewInit(): void {
     if (typeof window === 'undefined') return;
@@ -35,14 +42,14 @@ export class AproClinicaComponent implements AfterViewInit {
           if (entry.isIntersecting) {
             gsap.fromTo(
               entry.target,
-              { y: 40, opacity: 0 },
-              { y: 0, opacity: 1, duration: 0.8, ease: 'power2.out' },
+              { y: 48, opacity: 0 },
+              { y: 0, opacity: 1, duration: 0.9, ease: 'power3.out' },
             );
             observer.unobserve(entry.target);
           }
         });
       },
-      { threshold: 0.1 },
+      { threshold: 0.1, rootMargin: '0px 0px -40px 0px' },
     );
 
     this.animateSections.forEach((ref) => observer.observe(ref.nativeElement));
