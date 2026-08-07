@@ -161,28 +161,31 @@ export class ElectricistaComponent implements AfterViewInit, OnInit {
       image: '/assets/images/electricista/factory-maintenance.jpg',
     },
     {
-      title: 'Restaurante La Latina',
-      location: 'La Latina, Madrid',
+      title: 'Sala de Servidores',
+      location: 'Las Rozas, Madrid',
       category: 'Comercial',
       gradient:
         'linear-gradient(135deg, #1a1d23 0%, #050505 50%, #f0a50015 100%)',
       gridSpan: 'span 1',
+      image: '/assets/images/electricista/server-room.jpg',
     },
     {
-      title: 'Emergencia Centro Logístico Sanse',
-      location: 'San Sebastián de los Reyes',
+      title: 'Emergencia Nocturna',
+      location: 'Madrid Centro',
       category: 'Emergencias',
       gradient:
         'linear-gradient(135deg, #f0a50025 0%, #050505 40%, #1a1d23 100%)',
       gridSpan: 'span 2',
+      image: '/assets/images/electricista/emergency-callout.jpg',
     },
     {
-      title: 'Instalación Domótica en Moralzarzal',
-      location: 'Moralzarzal, Madrid',
+      title: 'Domótica Residencial',
+      location: 'Pozuelo, Madrid',
       category: 'Residencial',
       gradient:
         'linear-gradient(135deg, #f0a50020 0%, #050505 50%, #1a1d23 100%)',
       gridSpan: 'span 1',
+      image: '/assets/images/electricista/smart-home.jpg',
     },
   ];
 
