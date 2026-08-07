@@ -286,6 +286,7 @@ export class PasteleriaComponent implements AfterViewInit {
 
   orderSubmitted = false;
   contactSubmitted = false;
+  priceAnimated = false;
 
   currentStep = 0;
   readonly totalSteps = 5;
@@ -554,16 +555,29 @@ export class PasteleriaComponent implements AfterViewInit {
     return Math.round((bp * this.flavorMultiplier()) - bp);
   }
 
+  private _lastPrice = 0;
+
   calculatedPrice(): number {
     const bp = this.basePrice();
-    if (!bp) return 0;
+    if (!bp) {
+      this._lastPrice = 0;
+      return 0;
+    }
     let price = bp * this.flavorMultiplier();
     for (const d of this.cakeConfig.decorations) {
       const decos = this.getDecorationOptions();
       const deco = decos.find((x) => x.value === d);
       if (deco) price += deco.price;
     }
-    return Math.round(price * 100) / 100;
+    const rounded = Math.round(price * 100) / 100;
+    if (rounded !== this._lastPrice && rounded > 0 && this._lastPrice > 0) {
+      this._lastPrice = rounded;
+      this.priceAnimated = true;
+      setTimeout(() => (this.priceAnimated = false), 420);
+    } else {
+      this._lastPrice = rounded;
+    }
+    return rounded;
   }
 
   selectedDecorations(): CakeDecorationOption[] {

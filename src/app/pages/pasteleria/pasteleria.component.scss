@@ -750,40 +750,45 @@ $shadow-nav: 0 2px 12px rgba(61, 43, 31, 0.06);
   }
 
   // ============================================================
-  // CAKE BUILDER — 40/60 desktop grid
+  // CAKE BUILDER — Centered single-column, max 900px
   // ============================================================
 
   &__cake-builder {
-    display: grid;
-    grid-template-columns: 40% 60%;
-    gap: 2.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    max-width: 900px;
+    margin: 0 auto 2.5rem;
     background-color: $color-white;
     border-radius: $radius-card;
     box-shadow: $shadow-card;
     border: 1px solid rgba($color-terracotta, 0.1);
     padding: 2.5rem;
-    margin-bottom: 2.5rem;
 
     @media (max-width: 992px) {
-      grid-template-columns: 1fr;
-      gap: 2rem;
       padding: 1.5rem;
+      gap: 1.5rem;
+    }
+    @media (max-width: 576px) {
+      padding: 1.25rem;
+      gap: 1rem;
     }
   }
 
-  // --- Cake Preview (Left) ---
+  // --- Cake Preview (Compact top section) ---
   &__cake-preview {
     display: flex;
-    flex-direction: column;
     align-items: center;
     justify-content: center;
-    min-height: 300px;
+    gap: 2rem;
     position: relative;
-    padding: 2rem 1rem;
+    padding: 1rem 1rem 1.75rem;
+    border-bottom: 1px solid rgba($color-espresso, 0.06);
+    min-height: 0;
 
     @media (max-width: 992px) {
-      min-height: 220px;
-      padding: 1rem;
+      gap: 1.25rem;
+      padding: 0.5rem 0.5rem 1.25rem;
     }
   }
 
@@ -794,8 +799,8 @@ $shadow-nav: 0 2px 12px rgba(61, 43, 31, 0.06);
   }
 
   &__cake-preview-cake {
-    width: 160px;
-    height: 160px;
+    width: 130px;
+    height: 130px;
     border-radius: 50%;
     position: relative;
     display: flex;
@@ -810,12 +815,12 @@ $shadow-nav: 0 2px 12px rgba(61, 43, 31, 0.06);
     &::before {
       content: '';
       position: absolute;
-      top: -12px;
+      top: -10px;
       left: 50%;
       transform: translateX(-50%);
-      width: 24px;
-      height: 8px;
-      border-radius: 4px;
+      width: 20px;
+      height: 6px;
+      border-radius: 3px;
       background-color: $color-cream;
       opacity: 0;
       transition: opacity 0.3s ease;
@@ -826,13 +831,13 @@ $shadow-nav: 0 2px 12px rgba(61, 43, 31, 0.06);
     }
 
     @media (max-width: 992px) {
-      width: 130px;
-      height: 130px;
+      width: 100px;
+      height: 100px;
     }
   }
 
   &__cake-preview-icon {
-    font-size: 3rem;
+    font-size: 2.5rem;
     line-height: 1;
     z-index: 2;
     filter: drop-shadow(0 2px 4px rgba($color-espresso, 0.15));
@@ -843,59 +848,65 @@ $shadow-nav: 0 2px 12px rgba(61, 43, 31, 0.06);
     }
 
     @media (max-width: 992px) {
-      font-size: 2.25rem;
+      font-size: 1.8rem;
     }
   }
 
   &__cake-plate {
-    width: 200px;
-    height: 16px;
+    width: 170px;
+    height: 14px;
     border-radius: 50%;
     background: radial-gradient(ellipse at center, rgba($color-espresso, 0.1), rgba($color-espresso, 0.03));
-    margin-top: -4px;
+    margin-top: -3px;
     z-index: 0;
     transition: width 0.5s ease;
 
     @media (max-width: 992px) {
-      width: 160px;
+      width: 130px;
     }
   }
 
   &__cake-label {
     font-family: $font-headlines;
-    font-size: 0.95rem;
+    font-size: 0.9rem;
     color: $color-espresso;
-    margin-top: 1rem;
+    margin-top: 0.75rem;
     text-align: center;
     min-height: 1.5em;
     transition: color 0.3s ease;
     max-width: 200px;
     line-height: 1.4;
+
+    @media (max-width: 992px) {
+      font-size: 0.8rem;
+      max-width: 160px;
+    }
   }
 
   &__cake-badge {
     position: absolute;
-    font-size: 1.3rem;
+    font-size: 1.2rem;
     filter: drop-shadow(0 2px 4px rgba($color-espresso, 0.2));
     animation: float-badge 3s ease-in-out infinite;
     pointer-events: none;
 
-    &:nth-child(2) { top: 8%; right: 12%; }
-    &:nth-child(3) { top: 15%; left: 10%; }
-    &:nth-child(4) { bottom: 22%; right: 8%; }
-    &:nth-child(5) { bottom: 18%; left: 12%; }
-    &:nth-child(6) { top: 35%; right: 2%; }
+    &:nth-child(2) { top: 0%; right: 15%; }
+    &:nth-child(3) { top: 5%; left: 12%; }
+    &:nth-child(4) { bottom: 5%; right: 10%; }
+    &:nth-child(5) { bottom: 2%; left: 15%; }
+    &:nth-child(6) { top: 30%; right: 4%; }
 
     @media (max-width: 992px) {
-      font-size: 1.1rem;
+      font-size: 1rem;
     }
   }
 
-  // --- Cake Wizard (Right) ---
+  // --- Cake Wizard (Full width below preview) ---
   &__cake-wizard {
     display: flex;
     flex-direction: column;
-    gap: 1.25rem;
+    gap: 1.5rem;
+    position: relative;
   }
 
   // --- Progress Steps Breadcrumbs ---
@@ -903,47 +914,53 @@ $shadow-nav: 0 2px 12px rgba(61, 43, 31, 0.06);
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding-bottom: 0.75rem;
+    gap: 0.75rem;
+    padding-bottom: 1rem;
     border-bottom: 1px solid rgba($color-espresso, 0.08);
   }
 
   &__cake-steps-label {
     font-family: $font-body;
-    font-size: 0.78rem;
+    font-size: 0.75rem;
     font-weight: 600;
     color: $color-terracotta;
     text-transform: uppercase;
     letter-spacing: 0.04em;
     white-space: nowrap;
-    min-width: 100px;
+    min-width: 95px;
   }
 
-  &__cake-steps-dots {
+  &__cake-steps-track {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     gap: 0;
     flex: 1;
     justify-content: center;
   }
 
-  &__cake-steps-dot-wrapper {
+  &__cake-steps-step {
     display: flex;
+    flex-direction: column;
     align-items: center;
+    gap: 0.35rem;
+    flex-shrink: 0;
   }
 
   &__cake-steps-dot {
-    width: 14px;
-    height: 14px;
+    width: 32px;
+    height: 32px;
     border-radius: $radius-full;
     background-color: rgba($color-espresso, 0.12);
     transition: all 0.4s ease;
-    display: block;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     flex-shrink: 0;
 
     &--active {
       background-color: $color-terracotta;
       box-shadow: 0 0 0 4px rgba($color-terracotta, 0.18);
-      transform: scale(1.15);
+      transform: scale(1.1);
     }
 
     &--done {
@@ -951,13 +968,40 @@ $shadow-nav: 0 2px 12px rgba(61, 43, 31, 0.06);
     }
   }
 
+  &__cake-steps-dot-check {
+    color: $color-white;
+    font-size: 0.8rem;
+    line-height: 1;
+  }
+
+  &__cake-steps-dot-label {
+    font-family: $font-body;
+    font-size: 0.62rem;
+    font-weight: 600;
+    color: $color-text-soft;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    white-space: nowrap;
+    transition: color 0.3s ease;
+
+    .dulcera__cake-steps-dot--active ~ & {
+      color: $color-terracotta;
+    }
+
+    .dulcera__cake-steps-dot--done ~ & {
+      color: $color-sage-dark;
+    }
+  }
+
   &__cake-steps-line {
-    width: 28px;
+    width: 40px;
     height: 2px;
     background-color: rgba($color-espresso, 0.1);
     transition: background-color 0.4s ease;
     display: block;
     flex-shrink: 0;
+    margin-top: 15px;
+    align-self: flex-start;
 
     &--done {
       background-color: $color-sage;
@@ -969,14 +1013,14 @@ $shadow-nav: 0 2px 12px rgba(61, 43, 31, 0.06);
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 32px;
-    height: 32px;
+    width: 36px;
+    height: 36px;
     border-radius: $radius-full;
     background: none;
     border: 1px solid rgba($color-espresso, 0.12);
     color: $color-text-soft;
     cursor: pointer;
-    font-size: 0.85rem;
+    font-size: 0.9rem;
     transition: all 0.2s ease;
     flex-shrink: 0;
 
@@ -998,29 +1042,29 @@ $shadow-nav: 0 2px 12px rgba(61, 43, 31, 0.06);
 
   &__cake-step-title {
     font-family: $font-headlines;
-    font-size: 1.3rem;
+    font-size: 1.35rem;
     font-weight: 700;
     color: $color-espresso;
-    margin-bottom: 0.25rem;
+    margin-bottom: 0.3rem;
 
     @media (max-width: 992px) {
-      font-size: 1.15rem;
+      font-size: 1.2rem;
     }
   }
 
   &__cake-step-hint {
-    font-size: 0.8rem;
+    font-size: 0.82rem;
     color: $color-text-soft;
-    margin-bottom: 0.75rem;
+    margin-bottom: 1rem;
     margin-top: 0.25rem;
   }
 
-  // --- Type Selection Cards (Step 0) ---
+  // --- Type Selection Cards (Step 0) — Hero cards ---
   &__cake-type-options {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 1rem;
-    margin-top: 1rem;
+    gap: 1.25rem;
+    margin-top: 0.5rem;
 
     @media (max-width: 576px) {
       grid-template-columns: 1fr;
@@ -1031,8 +1075,8 @@ $shadow-nav: 0 2px 12px rgba(61, 43, 31, 0.06);
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 0.5rem;
-    padding: 1.75rem 1.5rem;
+    gap: 0.75rem;
+    padding: 2.25rem 2rem;
     border: 2px solid rgba($color-espresso, 0.08);
     border-radius: $radius-card;
     cursor: pointer;
@@ -1041,58 +1085,127 @@ $shadow-nav: 0 2px 12px rgba(61, 43, 31, 0.06);
     font-family: $font-body;
     position: relative;
     overflow: hidden;
+    background: var(--card-gradient, $color-cream);
+
+    &::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(255,255,255,0.5) 0%, transparent 100%);
+      pointer-events: none;
+      border-radius: $radius-card;
+    }
 
     &:hover {
-      border-color: rgba($color-terracotta, 0.35);
-      transform: translateY(-2px);
-      box-shadow: 0 6px 20px rgba($color-terracotta, 0.12);
+      border-color: rgba($color-terracotta, 0.4);
+      transform: translateY(-4px);
+      box-shadow: 0 12px 32px rgba($color-espresso, 0.12);
     }
 
     &--selected {
       border-color: $color-terracotta !important;
-      transform: scale(1.03);
-      box-shadow: 0 0 0 4px rgba($color-terracotta, 0.12), 0 6px 24px rgba($color-terracotta, 0.15);
+      transform: translateY(-2px) scale(1.02);
+      box-shadow:
+        0 0 0 5px rgba($color-terracotta, 0.12),
+        0 12px 36px rgba($color-terracotta, 0.18);
+      background: var(--card-gradient, $color-cream);
 
       &::after {
         content: '';
         position: absolute;
         inset: 0;
-        background-color: rgba($color-terracotta, 0.04);
+        background-color: rgba($color-terracotta, 0.05);
         pointer-events: none;
+        border-radius: $radius-card;
       }
+
+      &:hover {
+        transform: translateY(-2px) scale(1.02);
+        border-color: $color-terracotta !important;
+      }
+    }
+
+    @media (max-width: 576px) {
+      padding: 1.75rem 1.5rem;
     }
   }
 
   &__cake-type-card-emoji {
-    font-size: 2.5rem;
+    font-size: 3.25rem;
     line-height: 1;
+    position: relative;
+    z-index: 1;
     transition: transform 0.3s ease;
 
-    .dulcera__cake-type-card--selected & {
+    .dulcera__cake-type-card:hover & {
       transform: scale(1.1);
+    }
+
+    .dulcera__cake-type-card--selected & {
+      transform: scale(1.15);
+    }
+
+    @media (max-width: 576px) {
+      font-size: 2.5rem;
     }
   }
 
   &__cake-type-card-name {
     font-family: $font-headlines;
-    font-size: 1.15rem;
+    font-size: 1.3rem;
     font-weight: 700;
     color: $color-espresso;
+    position: relative;
+    z-index: 1;
+
+    @media (max-width: 576px) {
+      font-size: 1.15rem;
+    }
   }
 
   &__cake-type-card-desc {
-    font-size: 0.78rem;
+    font-size: 0.82rem;
     color: $color-text-soft;
-    line-height: 1.5;
-    max-width: 240px;
+    line-height: 1.55;
+    max-width: 280px;
+    position: relative;
+    z-index: 1;
+  }
+
+  &__cake-type-card-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-family: $font-body;
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: $color-terracotta;
+    margin-top: 0.25rem;
+    position: relative;
+    z-index: 1;
+    transition: all 0.3s ease;
+
+    i {
+      font-size: 0.85rem;
+      transition: transform 0.3s ease;
+    }
+
+    .dulcera__cake-type-card:hover &:not(.dulcera__cake-type-card--selected &) i {
+      transform: translateX(3px);
+    }
+
+    .dulcera__cake-type-card--selected & {
+      color: $color-terracotta-dark;
+      font-weight: 700;
+    }
   }
 
   // --- Option Cards Grid ---
   &__cake-options {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 0.75rem;
-    margin-top: 1rem;
+    gap: 0.875rem;
+    margin-top: 0.75rem;
 
     &--deco {
       @media (max-width: 576px) {
@@ -1109,8 +1222,8 @@ $shadow-nav: 0 2px 12px rgba(61, 43, 31, 0.06);
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    gap: 0.4rem;
-    padding: 1rem;
+    gap: 0.5rem;
+    padding: 1.25rem 1.125rem;
     border: 2px solid rgba($color-espresso, 0.08);
     border-radius: $radius;
     background-color: $color-cream;
@@ -1118,32 +1231,45 @@ $shadow-nav: 0 2px 12px rgba(61, 43, 31, 0.06);
     transition: all 0.25s ease;
     text-align: left;
     font-family: $font-body;
+    position: relative;
 
     &:hover {
       border-color: rgba($color-terracotta, 0.35);
-      box-shadow: 0 2px 12px rgba($color-terracotta, 0.1);
-      transform: translateY(-1px);
+      box-shadow: 0 4px 16px rgba($color-espresso, 0.08);
+      transform: translateY(-2px);
     }
 
     &--selected {
       border-color: $color-terracotta;
       background-color: rgba($color-terracotta, 0.05);
-      box-shadow: 0 0 0 3px rgba($color-terracotta, 0.1);
-      transform: scale(1.02);
+      box-shadow: 0 0 0 4px rgba($color-terracotta, 0.1);
+
+      &::after {
+        content: '\2713';
+        position: absolute;
+        top: 8px;
+        right: 10px;
+        font-size: 0.9rem;
+        font-weight: 700;
+        color: $color-terracotta;
+        line-height: 1;
+      }
 
       &:hover {
         border-color: $color-terracotta;
-        transform: scale(1.02);
+        transform: translateY(-2px);
       }
     }
 
     &--chip {
       border-left: 5px solid var(--chip-color, $color-terracotta);
+      border-left-style: solid;
 
       &.dulcera__cake-option--selected {
         border-color: var(--chip-color, $color-terracotta);
         border-left-width: 5px;
-        box-shadow: 0 0 0 3px rgba($color-terracotta, 0.1);
+        background-color: rgba($color-terracotta, 0.06);
+        box-shadow: 0 0 0 4px rgba($color-terracotta, 0.1);
       }
     }
 
@@ -1163,31 +1289,31 @@ $shadow-nav: 0 2px 12px rgba(61, 43, 31, 0.06);
   }
 
   &__cake-option-emoji {
-    font-size: 1.5rem;
+    font-size: 1.65rem;
     line-height: 1;
 
     .dulcera__cake-option--chip & {
-      font-size: 1.6rem;
+      font-size: 1.75rem;
     }
   }
 
   &__cake-option-name {
     font-family: $font-body;
-    font-size: 0.875rem;
+    font-size: 0.9rem;
     font-weight: 600;
     color: $color-espresso;
     line-height: 1.2;
   }
 
   &__cake-option-desc {
-    font-size: 0.75rem;
+    font-size: 0.78rem;
     color: $color-text-soft;
-    line-height: 1.4;
+    line-height: 1.45;
   }
 
   &__cake-option-price {
     font-family: $font-headlines;
-    font-size: 0.85rem;
+    font-size: 0.9rem;
     font-weight: 700;
     color: $color-sage-dark;
     white-space: nowrap;
@@ -1195,30 +1321,30 @@ $shadow-nav: 0 2px 12px rgba(61, 43, 31, 0.06);
 
   &__cake-option-base-price {
     font-family: $font-headlines;
-    font-size: 0.95rem;
+    font-size: 1rem;
     font-weight: 700;
     color: $color-terracotta;
     margin-top: 0.15rem;
   }
 
   &__cake-option-badge {
-    font-size: 0.6rem;
+    font-size: 0.65rem;
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.05em;
     color: $color-gold-dark;
     background-color: rgba($color-gold, 0.12);
-    padding: 0.15rem 0.5rem;
+    padding: 0.2rem 0.55rem;
     border-radius: $radius-full;
   }
 
   // Size visual indicator
   &__cake-option-size-visual {
     width: 100%;
-    height: 6px;
-    border-radius: 3px;
+    height: 8px;
+    border-radius: 4px;
     background-color: rgba($color-espresso, 0.06);
-    margin-top: 0.25rem;
+    margin-top: 0.35rem;
     overflow: hidden;
     position: relative;
 
@@ -1228,7 +1354,7 @@ $shadow-nav: 0 2px 12px rgba(61, 43, 31, 0.06);
       top: 0;
       left: 0;
       height: 100%;
-      border-radius: 3px;
+      border-radius: 4px;
       background-color: $color-terracotta;
       transition: width 0.4s ease;
     }
@@ -1242,39 +1368,41 @@ $shadow-nav: 0 2px 12px rgba(61, 43, 31, 0.06);
   &__cake-deco-chips {
     display: flex;
     flex-wrap: wrap;
-    gap: 0.5rem;
-    margin-top: 0.75rem;
+    gap: 0.6rem;
+    margin-top: 0.875rem;
     animation: scale-in 0.3s ease;
   }
 
   &__cake-deco-chip {
     display: inline-flex;
     align-items: center;
-    gap: 0.35rem;
-    padding: 0.35rem 0.75rem;
-    background-color: rgba($color-terracotta, 0.1);
-    border: 1px solid rgba($color-terracotta, 0.25);
+    gap: 0.4rem;
+    padding: 0.5rem 0.9rem;
+    background-color: $color-terracotta;
+    border: 2px solid $color-terracotta;
     border-radius: $radius-full;
-    font-size: 0.78rem;
-    font-weight: 500;
-    color: $color-terracotta-dark;
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: $color-white;
     cursor: pointer;
     transition: all 0.2s ease;
     user-select: none;
 
     &:hover {
-      background-color: rgba($color-terracotta, 0.18);
-      border-color: $color-terracotta;
+      background-color: $color-terracotta-dark;
+      border-color: $color-terracotta-dark;
       transform: translateY(-1px);
+      box-shadow: 0 2px 8px rgba($color-terracotta, 0.3);
     }
   }
 
   &__cake-deco-chip-remove {
-    font-size: 1rem;
+    font-size: 1.1rem;
     line-height: 1;
     font-weight: 700;
-    opacity: 0.5;
+    opacity: 0.7;
     transition: opacity 0.2s ease;
+    margin-left: 0.1rem;
 
     .dulcera__cake-deco-chip:hover & {
       opacity: 1;
@@ -1287,19 +1415,30 @@ $shadow-nav: 0 2px 12px rgba(61, 43, 31, 0.06);
     align-items: center;
     justify-content: space-between;
     gap: 1rem;
-    min-height: 2.5rem;
+    min-height: 2.75rem;
   }
 
-  // --- Live Price Calculator ---
+  // ============================================================
+  // LIVE PRICE CALCULATOR — Sticky at bottom, animated
+  // ============================================================
+
+  &__cake-price-sticky {
+    position: sticky;
+    bottom: 1rem;
+    z-index: 10;
+    margin-top: 0.5rem;
+  }
+
   &__cake-price {
-    background-color: $color-cream;
+    background: linear-gradient(135deg, $color-cream 0%, rgba($color-terracotta, 0.04) 100%);
     border-radius: $radius;
-    padding: 1.25rem;
-    border: 1px solid rgba($color-terracotta, 0.12);
+    padding: 1.25rem 1.5rem;
+    border: 1.5px solid rgba($color-terracotta, 0.18);
+    box-shadow: 0 2px 16px rgba($color-espresso, 0.06);
     animation: scale-in 0.3s ease;
   }
 
-  &__cake-price-main {
+  &__cake-price-header {
     display: flex;
     align-items: baseline;
     justify-content: space-between;
@@ -1308,21 +1447,33 @@ $shadow-nav: 0 2px 12px rgba(61, 43, 31, 0.06);
 
   &__cake-price-label {
     font-family: $font-body;
-    font-size: 0.8rem;
+    font-size: 0.75rem;
     font-weight: 600;
     color: $color-text-soft;
     text-transform: uppercase;
-    letter-spacing: 0.03em;
+    letter-spacing: 0.05em;
+  }
+
+  @keyframes price-pulse {
+    0% { transform: scale(1); }
+    30% { transform: scale(1.12); }
+    60% { transform: scale(0.98); }
+    100% { transform: scale(1); }
   }
 
   &__cake-price-value {
     font-family: $font-headlines;
-    font-size: 1.75rem;
-    font-weight: 700;
+    font-size: 2rem;
+    font-weight: 800;
     color: $color-terracotta;
+    transition: color 0.3s ease;
+
+    &--pulse {
+      animation: price-pulse 0.4s ease;
+    }
 
     @media (max-width: 992px) {
-      font-size: 1.4rem;
+      font-size: 1.6rem;
     }
   }
 
@@ -1330,44 +1481,60 @@ $shadow-nav: 0 2px 12px rgba(61, 43, 31, 0.06);
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0.4rem 0;
+    padding: 0.45rem 0;
     font-size: 0.8rem;
     color: $color-text-soft;
     border-top: 1px dotted rgba($color-espresso, 0.08);
+  }
 
-    span:last-child {
-      font-family: $font-headlines;
-      font-weight: 600;
-      color: $color-espresso;
-    }
+  &__cake-price-breakdown-value {
+    font-family: $font-headlines;
+    font-weight: 600;
+    font-size: 0.85rem;
+    color: $color-espresso;
+    min-width: 60px;
+    text-align: right;
   }
 
   &__cake-price-total {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0.6rem 0 0;
-    margin-top: 0.25rem;
+    padding: 0.7rem 0 0;
+    margin-top: 0.35rem;
     font-size: 0.95rem;
     font-weight: 700;
     color: $color-espresso;
     border-top: 2px solid rgba($color-terracotta, 0.25);
 
-    span:last-child {
-      font-family: $font-headlines;
+    span:first-child {
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+    }
+  }
+
+  &__cake-price-total-value {
+    font-family: $font-headlines;
+    font-size: 1.4rem;
+    font-weight: 800;
+    color: $color-terracotta;
+
+    &--pulse {
+      animation: price-pulse 0.4s ease;
+    }
+
+    @media (max-width: 992px) {
       font-size: 1.2rem;
-      font-weight: 700;
-      color: $color-terracotta;
     }
   }
 
   &__cake-price-hint {
-    font-size: 0.78rem;
+    font-size: 0.82rem;
     color: $color-text-soft;
     font-style: italic;
     margin: 0;
     text-align: center;
-    padding-top: 0.5rem;
+    padding-top: 0.75rem;
   }
 
   // ============================================================

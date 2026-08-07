@@ -163,21 +163,26 @@
           <!-- Step Progress Breadcrumbs -->
           <div class="dulcera__cake-steps-header">
             <span class="dulcera__cake-steps-label">Paso {{ currentStep + 1 }} de {{ totalSteps }}</span>
-            <div class="dulcera__cake-steps-dots">
+            <div class="dulcera__cake-steps-track">
               @for (i of [0, 1, 2, 3, 4]; track i) {
-                <span class="dulcera__cake-steps-dot-wrapper">
+                <span class="dulcera__cake-steps-step">
                   <span
                     class="dulcera__cake-steps-dot"
                     [class.dulcera__cake-steps-dot--active]="i === currentStep"
                     [class.dulcera__cake-steps-dot--done]="i < currentStep"
-                  ></span>
-                  @if (i < 4) {
-                    <span
-                      class="dulcera__cake-steps-line"
-                      [class.dulcera__cake-steps-line--done]="i < currentStep"
-                    ></span>
-                  }
+                  >
+                    @if (i < currentStep) {
+                      <i class="bi bi-check dulcera__cake-steps-dot-check"></i>
+                    }
+                  </span>
+                  <span class="dulcera__cake-steps-dot-label">{{ stepLabel(i) }}</span>
                 </span>
+                @if (i < 4) {
+                  <span
+                    class="dulcera__cake-steps-line"
+                    [class.dulcera__cake-steps-line--done]="i < currentStep"
+                  ></span>
+                }
               }
             </div>
             <button class="dulcera__cake-reset-btn" (click)="resetBuilder()" title="Empezar de nuevo">
@@ -195,12 +200,19 @@
                     <button
                       class="dulcera__cake-type-card"
                       [class.dulcera__cake-type-card--selected]="cakeConfig.type === type.value"
-                      [style.background]="type.gradient"
+                      [style.--card-gradient]="type.gradient"
                       (click)="selectType(type.value)"
                     >
                       <span class="dulcera__cake-type-card-emoji">{{ type.emoji }}</span>
                       <span class="dulcera__cake-type-card-name">{{ type.name }}</span>
                       <span class="dulcera__cake-type-card-desc">{{ type.description }}</span>
+                      <span class="dulcera__cake-type-card-cta">
+                        @if (cakeConfig.type === type.value) {
+                          <i class="bi bi-check-circle-fill"></i> Seleccionado
+                        } @else {
+                          Seleccionar <i class="bi bi-arrow-right"></i>
+                        }
+                      </span>
                     </button>
                   }
                 </div>
@@ -312,34 +324,42 @@
             }
           </div>
 
-          <!-- Live Price Calculator -->
+          <!-- Live Price Calculator — sticky at bottom -->
           @if (cakeConfig.type) {
-            <div class="dulcera__cake-price">
-              <div class="dulcera__cake-price-main">
-                <span class="dulcera__cake-price-label">Precio estimado</span>
-                <span class="dulcera__cake-price-value">{{ calculatedPrice() | number:'1.2-2' }} €</span>
-              </div>
-              @if (cakeConfig.size) {
-                <div class="dulcera__cake-price-breakdown">
-                  <span>{{ typeLabel() }} · {{ sizeLabel().split(' — ')[0] }}</span>
-                  <span>{{ basePrice() }} €</span>
+            <div class="dulcera__cake-price-sticky">
+              <div class="dulcera__cake-price">
+                <div class="dulcera__cake-price-header">
+                  <span class="dulcera__cake-price-label">Precio estimado</span>
+                  <span
+                    class="dulcera__cake-price-value"
+                    [class.dulcera__cake-price-value--pulse]="priceAnimated"
+                  >{{ calculatedPrice() | number:'1.2-2' }} €</span>
                 </div>
-              }
-              @if (cakeConfig.flavor && isFlavorPremium()) {
-                <div class="dulcera__cake-price-breakdown">
-                  <span>Sabor {{ flavorLabel() }}: +{{ flavorPremiumPercent() }}%</span>
-                  <span>+{{ flavorUpcharge() | number:'1.2-2' }} €</span>
+                @if (cakeConfig.size) {
+                  <div class="dulcera__cake-price-breakdown">
+                    <span>Base: {{ typeLabel() }} · {{ sizeLabel().split(' — ')[0] }}</span>
+                    <span class="dulcera__cake-price-breakdown-value">{{ basePrice() | number:'1.2-2' }} €</span>
+                  </div>
+                }
+                @if (cakeConfig.flavor && isFlavorPremium()) {
+                  <div class="dulcera__cake-price-breakdown">
+                    <span>Sabor {{ flavorLabel() }} (+{{ flavorPremiumPercent() }}%)</span>
+                    <span class="dulcera__cake-price-breakdown-value">+{{ flavorUpcharge() | number:'1.2-2' }} €</span>
+                  </div>
+                }
+                @for (deco of selectedDecorations(); track deco.value) {
+                  <div class="dulcera__cake-price-breakdown">
+                    <span>Decoración: {{ deco.name }}</span>
+                    <span class="dulcera__cake-price-breakdown-value">+{{ deco.price | number:'1.2-2' }} €</span>
+                  </div>
+                }
+                <div class="dulcera__cake-price-total">
+                  <span>Total</span>
+                  <span
+                    class="dulcera__cake-price-total-value"
+                    [class.dulcera__cake-price-total-value--pulse]="priceAnimated"
+                  >{{ calculatedPrice() | number:'1.2-2' }} €</span>
                 </div>
-              }
-              @for (deco of selectedDecorations(); track deco.value) {
-                <div class="dulcera__cake-price-breakdown">
-                  <span>{{ deco.name }}</span>
-                  <span>+{{ deco.price }} €</span>
-                </div>
-              }
-              <div class="dulcera__cake-price-total">
-                <span>Total</span>
-                <span>{{ calculatedPrice() | number:'1.2-2' }} €</span>
               </div>
             </div>
           }
