@@ -365,11 +365,6 @@ $shadow-ambient-hover: 0 8px 40px rgba(61, 43, 31, 0.06);
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    background-attachment: fixed;
-
-    @media (max-width: 768px) {
-      background-attachment: scroll;
-    }
 
     &::after {
       content: '';
