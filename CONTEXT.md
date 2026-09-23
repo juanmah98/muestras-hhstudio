@@ -11,7 +11,20 @@
 
 ## 🎯 Paleta de Colores
 
-> Tema oscuro base. La paleta se refina por sección si el rubro lo requiere.
+> **Alcance de esta paleta.** La tabla de abajo es la paleta de marca propia de HH Studio (variables `--hh-*`), usada por el chrome del proyecto: el índice home, el chrome compartido, la página 404 y las tarjetas sociales/OG.
+>
+> **No es un design system global para los demos.** Cada demo/ruta declara su propia paleta y tipografía, y esa independencia por demo es deliberada y debe preservarse.
+>
+> **Lo que sí debe ser uniforme entre demos es el piso de calidad, no el estilo visual:**
+> - Imágenes renderizadas a resolución nativa o cercana.
+> - Sin scroll jank.
+> - `prefers-reduced-motion` respetado.
+> - Meta tags por ruta.
+> - Comportamiento responsive consistente a 375px.
+> - Foco de teclado visible.
+> - Contraste WCAG AA.
+>
+> **Dónde viven las specs de identidad por demo.** En la práctica, en los briefs de Open Design (cada proyecto Open Design lleva sus propios `customInstructions` con la paleta, fuentes y postura de ese demo). Hoy solo el demo `salud` tiene brief de Open Design, con tokens terracota `#c17b60`, cream `#faf7f4`, texto `#2D2926`, y Playfair Display + Montserrat.
 
 | Nombre | Variable CSS/SCSS | Hex | Uso |
 |--------|------------------|-----|-----|
@@ -43,13 +56,32 @@ $border-color: #2d323c;
 
 ## 🔤 Tipografías
 
-| Uso | Familia | Pesos | Google Fonts Link |
-|-----|---------|-------|-------------------|
-| Body / Headings | Montserrat | 400, 700 | Ya cargada en `index.html` |
-| Body fallback | Open Sans | 400, 700 | Ya cargada en `index.html` |
-| Hero / Acento | Playfair Display | 400, 700, 400i, 700i, 800 | Ya cargada en `index.html` |
-| UI / Hero | Manrope | 300, 400, 500, 700 | Ya cargada en `index.html` |
-| Display alt | Space Grotesk | 700 | Ya cargada en `index.html` |
+Familias cargadas desde Google Fonts de forma global en `src/index.html` (5 familias):
+
+| Familia | Uso | Pesos |
+|---------|-----|-------|
+| Montserrat | Body / Headings | 400, 700 |
+| Playfair Display | Hero / Acento | 400, 700, 400i, 700i, 800 |
+| Space Grotesk | Display alt | 700 |
+| Cormorant Garamond | Headlines serif | 300..700 (+ italic) |
+| Inter | Body sans | 100..900 |
+
+Uso real por demo (verificado):
+
+| Demo | Tipografías |
+|------|-------------|
+| `apro-clinica` | Montserrat + Playfair Display |
+| `salud` | Montserrat + Playfair Display |
+| `estetica` | Playfair Display + Montserrat |
+| `pasteleria` | Playfair Display + Montserrat |
+| `reformas` | Playfair Display + Montserrat |
+| `carpinteria` | Cormorant Garamond (headlines) + Inter (body) |
+| `electricista` | Space Grotesk (headlines) + Montserrat (body) |
+| `seo-ia` | Montserrat, Space Grotesk + stack monospace de sistema |
+
+> Las fuentes se siguen cargando globalmente en `index.html` (un solo `<link>`), **no** por ruta. Es un pendiente conocido: idealmente cada demo debería descargar solo las familias que usa.
+>
+> **Open Sans y Manrope fueron removidas** del link global de fuentes porque solo aparecían como fallback de segunda opción (con fallbacks de sistema ya después), así que removerlas no puede cambiar el render.
 
 ### Escala Tipográfica
 
@@ -64,22 +96,38 @@ $border-color: #2d323c;
 
 ## 🖼️ Assets y Recursos
 
-- **Logo**: `public/assets/logo.svg` *(pendiente — crear/agregar)*
-- **Favicon**: `public/favicon.ico` *(pendiente)*
-- **Imágenes**: `public/assets/images/`
+- **Logo**: `public/assets/logo.svg` *(pendiente — no existe todavía)*
+- **Favicon**: `public/favicon.ico` ✅ (existe, 1565 bytes)
+- **Imágenes**: `public/assets/images/<rubro>/`
 - **Iconos**: Bootstrap Icons (incluido) + custom SVG en `public/assets/icons/`
-- **SEO Preview**: `public/assets/seo-preview.jpg` (1200×630px) *(pendiente)*
+- **SEO Preview**: `public/assets/seo-preview.jpg` ✅ (existe, 1200×630, ~55 KB). Referenciada por `og:image` y `twitter:image` en `src/index.html`. Se genera con `tools/make-og-image.ps1` (PowerShell + GDI+, sin dependencias nuevas), así que se puede regenerar en un solo comando si cambia el branding.
+
+> La tarjeta OG usa fuentes de sistema (Georgia + Segoe UI) en lugar de las webfonts de marca, a propósito, para no enviar archivos de fuente.
 
 ## 🧩 Estructura de Secciones (Rubros)
 
 Cada rubro es una ruta lazy-loading independiente. El home (`/`) es el índice simple que las lista.
 
-| Ruta | Rubro | Descripción | Estado |
-|------|-------|-------------|--------|
-| `/` | Home / Índice | Listado simple de rubros disponibles | 🔲 Pendiente |
-| `/forms` | Signal Forms | Demo de la API `form()` de Angular 22 | ✅ Existe (showcase) |
-| `/rubro-a` | — | Próximo rubro | 🔲 Por definir |
-| `/*` | 404 | Página no encontrada | 🔲 Pendiente |
+Rutas reales registradas en `src/app/app.routes.ts` (todas lazy-loading):
+
+| Ruta | Rubro / Pantalla | Estado |
+|------|------------------|--------|
+| `` (vacío) | Home / Índice | ✅ Registrada |
+| `/apro-clinica` | Apro Clínica | ✅ Registrada |
+| `/salud` | Salud | ✅ Registrada |
+| `/carpinteria` | Carpintería | ✅ Registrada |
+| `/reformas` | ST REFORMAS | ✅ Registrada |
+| `/electricista` | VOLTIO Electricista | ✅ Registrada |
+| `/estetica` | LUMINA Estética | ✅ Registrada |
+| `/pasteleria` | Pastelería | ✅ Registrada |
+| `/seo-ia` | SEO & IA | ✅ Registrada |
+| `**` | Not found | ✅ Registrada |
+
+El índice del home (`src/app/pages/home/home.component.ts`) lista 7 demos en este orden: Apro Clínica, Salud, Carpintería, ST REFORMAS, VOLTIO Electricista, LUMINA Estética, Pastelería.
+
+> **Pregunta abierta**: `seo-ia` tiene ruta y página completa pero **no** está listada en el índice del home — solo se llega por URL directa. ¿Es intencional?
+
+> No existe ruta `/forms`: el showcase de signal forms vive como componente en `src/app/forms/`, pero no está ruteado.
 
 > **Convención**: rutas en español (`/ecommerce`, `/landing`, `/dashboard`), slugs descriptivos.
 
@@ -91,4 +139,6 @@ Cada rubro es una ruta lazy-loading independiente. El home (`/`) es el índice s
 - **Performance**: Imágenes optimizadas (WebP), lazy loading nativo (`loading="lazy"`), componentes con lazy loading de Angular.
 - **SEO**: Tags Open Graph y Twitter Cards por sección. `SeoService` en `core/services/` para actualizar meta tags dinámicamente.
 - **SSR**: La app usa SSR híbrido de Angular 22. GSAP se ejecuta del lado del cliente post-hydration. Las rutas estáticas se prerenderizan para SEO.
+- **Dominio**: El dominio canónico de producción es `muestras.hhstudio.es` (verificado en los meta tags de `src/index.html`). El footer del home enlaza a `hhstudio.es`.
 - **Deploy**: Vercel (free tier) con adaptador SSR automático. Sin funciones serverless adicionales al inicio.
+- **README desactualizado**: `README.md` todavía menciona `hhstudio.com.ar`; está out of date.
