@@ -621,7 +621,7 @@ $section-pad-mobile: 48px;
     overflow-y: auto;
 
     code {
-      font-family: 'JetBrains Mono', 'Fira Code', monospace;
+      font-family: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, 'Liberation Mono', monospace;
       color: $text-secondary;
       white-space: pre;
     }
