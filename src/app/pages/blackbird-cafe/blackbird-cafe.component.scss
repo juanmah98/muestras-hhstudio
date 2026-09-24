@@ -166,7 +166,13 @@ $bb-col-site: 280px; // the address and the hours side by side
     line-height: 0;
     vertical-align: 0.32em;
   }
-  overflow-x: hidden;
+  // `clip`, not `hidden`. With `overflow-x: hidden` the other axis computes to
+  // `auto`, which turns this element into a scroll container, so the sticky
+  // strip below scrolled away with the page and `top: 0` never engaged. `clip`
+  // clips the same overflow without becoming a scrollport, which is what keeps
+  // the strip stuck. (Found by the design audit, not by any code review: the
+  // declaration looks harmless and the effect is silent.)
+  overflow-x: clip;
   // The shell's body is dark; the page owns its own substrate so a short
   // viewport never shows the shell through.
   min-height: 100dvh;
@@ -451,6 +457,20 @@ $bb-col-site: 280px; // the address and the hours side by side
         display: block;
         height: 15rem;
         border: 2px solid $bb-ink;
+
+        // A different exposure, not the same filter. `contrast(2.2)` is a linear
+        // transfer -- out = 2.2 * in - 0.6 -- so it flattens everything below
+        // about #464646 to zero, and `brightness` cannot lift a zero back up.
+        // This plate is a dark frame whose bean bodies sit mostly below that
+        // point, so with the band's filter only its specular tops survived and
+        // the whole column read as an empty ink slot: the 1-bit plate device
+        // existed once on the page instead of twice, and the dot screen over
+        // near-black was under one 8-bit step, so it was invisible too. Lifting
+        // the exposure puts its black point near 0.13 and its highlights near
+        // 0.69, which restores bean tone without clipping.
+        img {
+          filter: grayscale(1) contrast(1.35) brightness(1.75);
+        }
       }
     }
   }

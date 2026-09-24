@@ -375,6 +375,35 @@ es lo que absorbe una fuente de fallback más ancha que Inter sin volver a amput
    (el borde por celda evita el bloque de tinta, que es lo que el archivo ya explicaba). A 1920px se ve
    bien; si molesta a pantallas muy anchas, la unidad `$bb-col-allergen` es la perilla.
 
+### U7 — los dos blockers reales del audit de OD (y sólo esos)
+
+El dueño pidió cerrar el día y tocar **únicamente lo importante**, así que se arreglaron los dos
+hallazgos que están objetivamente rotos y **no se tocaron los otros 34**.
+
+**F20 — la franja sticky nunca se pegaba.** `.bb { overflow-x: hidden }`: por especificación, cuando un
+eje es `hidden` el otro `visible` computa a `auto`, así que `.bb` se volvía **contenedor de scroll** y
+el `top: 0` del sticky jamás se activaba. **No era mío**: lo introdujo el commit original de la página
+(`64afde0`) y ningún review de código lo vio — la declaración parece inofensiva y el efecto es mudo.
+Fix: `overflow-x: clip`, que recorta lo mismo sin convertirse en scrollport.
+**Medido**: tras scrollear 1400px, `top` de la franja = **0** → se pega.
+
+**F01 — la placa del manifiesto era un panel negro.** `contrast(2.2)` es una transferencia lineal
+(`out = 2.2·in − 0.6`) que aplasta a cero todo lo que esté por debajo de ≈`#464646`, y `brightness` no
+puede levantar un cero. La placa del manifiesto es un encuadre oscuro, así que con el filtro de la
+banda **sólo sobrevivían sus brillos especulares**: el dispositivo "placa 1-bit" existía **una sola
+vez** en la página, y la trama sobre casi-negro quedaba por debajo de un paso de 8 bits.
+**Medido con el histograma real de la imagen** (canvas, mismo filtro que aplica el CSS):
+
+| | media | píxeles bajo 16/255 |
+|---|---|---|
+| filtro viejo (`contrast(2.2) brightness(1.12)`) | **6.2** | **94.2%** |
+| filtro nuevo (`contrast(1.35) brightness(1.75)`) | **14.6** | **86.5%** |
+
+**2.35× más brillante y con textura visible**, que es lo que el dispositivo necesitaba para existir dos
+veces. **Pero el límite es la foto, no el filtro**: 86.5% de sus píxeles siguen por debajo de 16, o sea
+que la fuente es genuinamente oscura. La mejora real sería **conseguir un encuadre bien expuesto**, y eso
+queda anotado como lo próximo de esta placa si alguna vez se retoma.
+
 ### U3 — cerrada
 
 **El movimiento que ordena la unidad**: S2 y D5 eran la misma causa. Las cuatro masas oscuras eran la
