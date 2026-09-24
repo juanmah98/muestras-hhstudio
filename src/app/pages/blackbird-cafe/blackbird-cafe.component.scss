@@ -27,6 +27,32 @@
 // on paper and 4.26:1 on ink, so it fails on both. The pair is the correct
 // workaround, and the audit agreed.
 // ---------------------------------------------------------------------
+// ---------------------------------------------------------------------
+// Full bleed, measured text.
+//
+// The page runs to the viewport edge: the strip, the plate bands, the ink
+// reversal, the registers and every 2px rule span the full width. That is what
+// the archetype asks for (skill 2.1, "oversized, viewport-bleeding
+// letterforms"), and it is also what the audit's L9 finding says: trapping
+// macro type inside the frame is the fragile move, not the bold one.
+//
+// The measure therefore lives on the TEXT, never on the page, and it is applied
+// as right padding rather than as max-width: padding shrinks the content box
+// while the element's own 2px rule still spans the full width. So the rules
+// bleed and the text inside them keeps the measure. It lands on the four
+// registers that carry right-aligned text or an open-ended run — the section
+// heads, whose note annotates the column below it; the ledger, where an
+// unmeasured dot leader puts the price two metres from its name; and the two
+// asides, whose allergen matrix would otherwise thin out to twelve columns and
+// leave its trailing row as a bordered void.
+//
+// An earlier revision capped main at that same 1320px instead, which bought the
+// ledger its measure with 300px of dead paper per side on a 1920px display.
+// main.bb__main is now the page root and carries no declarations of its own.
+//
+// L1 of the audit asked for a page measure and L9 asked for bleed. They are not
+// in conflict: L1 is a text-measure rule, L9 is a composition rule.
+// ---------------------------------------------------------------------
 $bb-paper: #f4f4f0;
 $bb-paper-deep: #eae8e3;
 $bb-ink: #0a0a0a;
@@ -47,6 +73,20 @@ $bb-mono: ui-monospace, 'SFMono-Regular', 'Cascadia Mono', Menlo, Consolas,
 $bb-sans: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
 
 $bb-pad: clamp(1.15rem, 4vw, 3.5rem);
+
+// The one measure on the page: the width of the text registers. Every band,
+// plate and rule bleeds; only text is measured. See the note at the top of this
+// file for why this lives on the text and not on the page.
+$bb-measure: 1320px;
+
+// Records the measure as right padding rather than as max-width. A rule that is
+// capped stops mid-page while the register under it continues, which reads as a
+// mistake; padding keeps the rule full width and shrinks only the content box.
+// max() with $bb-pad is what makes it a no-op on a narrow display, where
+// `100% - $bb-measure` goes to zero or negative.
+@mixin bb-measure {
+  padding-right: max(#{$bb-pad}, calc(100% - #{$bb-measure}));
+}
 
 :host {
   display: block;
@@ -104,6 +144,10 @@ $bb-pad: clamp(1.15rem, 4vw, 3.5rem);
     align-items: baseline;
     gap: 0.5rem 1.25rem;
     padding: 2.75rem $bb-pad 0.9rem;
+    // Measured like the ledger below it, so the right-hand note ("precios en
+    // euros") keeps sitting above the price column it annotates. Applied as
+    // padding so the 2px rule under the head still spans the page.
+    @include bb-measure;
     border-bottom: 2px solid $bb-ink;
   }
 
@@ -126,16 +170,6 @@ $bb-pad: clamp(1.15rem, 4vw, 3.5rem);
   // -------------------------------------------------------------------
   // 01 · technical strip
   // -------------------------------------------------------------------
-  // A ledger needs a measure. The page had none anywhere, and
-  // `.container{max-width:1320px}` was defined in this file and never used by
-  // anything, so on a wide display the price sat roughly two metres from the
-  // name it belongs to. Capping main also brings the ink band in from the
-  // viewport edge, which the audit wanted for a different reason.
-  &__main {
-    max-width: 1320px;
-    margin-inline: auto;
-  }
-
   &__strip {
     position: sticky;
     top: 0;
@@ -184,7 +218,7 @@ $bb-pad: clamp(1.15rem, 4vw, 3.5rem);
     // that renders wider than Inter.
     font-size: clamp(2.4rem, 13.6vw, 13rem);
     font-weight: 900;
-    line-height: 0.82;
+    line-height: 0.9;
     letter-spacing: -0.045em;
     text-transform: uppercase;
     margin: 0 0 clamp(1.25rem, 3vw, 2.25rem) -0.055em;
@@ -261,7 +295,7 @@ $bb-pad: clamp(1.15rem, 4vw, 3.5rem);
   //
   // The archetype wants imagery secondary and print-like, not photographic, so
   // the plates are pushed to a NEUTRAL monochrome: no chroma at all, straight
-  // from paper to ink.
+  // from paper toward ink.
   //
   // This is done with a filter chain and nothing else. The first version
   // multiplied a coffee layer over each plate with mix-blend-mode, and the
@@ -271,7 +305,7 @@ $bb-pad: clamp(1.15rem, 4vw, 3.5rem);
   // accent family, and with the band full-bleed that was the largest accent
   // mass on the page. `brightness(0.72)` is multiplicative and can never reach
   // #0a0a0a either. Grayscale plus contrast is neutral, deterministic, needs no
-  // blending context, and lets the plates actually reach ink.
+  // blending context, and lets the plates approach ink.
   //
   // It is also what keeps stock texture honest. There is no photograph of the
   // shop, its staff or its equipment anywhere on this page, because a stock
@@ -342,6 +376,10 @@ $bb-pad: clamp(1.15rem, 4vw, 3.5rem);
   &__group {
     background: $bb-paper;
     padding: 0 $bb-pad;
+    // The one register that is a table, and a table needs a measure: without it
+    // the dot leader stretches the price two metres from its name on a wide
+    // display. The bed and the hairlines still bleed, because this is padding.
+    @include bb-measure;
   }
 
   &__group-title {
@@ -432,6 +470,10 @@ $bb-pad: clamp(1.15rem, 4vw, 3.5rem);
   &__supplements,
   &__allergens {
     padding: 1.75rem $bb-pad;
+    // Measured so the allergen matrix keeps the six columns it is drawn for
+    // instead of thinning out to twelve and leaving its trailing row as a
+    // bordered void. The band's 2px rule still spans the page.
+    @include bb-measure;
     border-bottom: 2px solid $bb-ink;
   }
 
@@ -538,7 +580,7 @@ $bb-pad: clamp(1.15rem, 4vw, 3.5rem);
     font-size: clamp(1.15rem, 2.2vw, 1.5rem);
     font-weight: 900;
     line-height: 0.95;
-    letter-spacing: -0.025em;
+    // Negative tracking is reserved for macro type (>=32px); see audit T5.
     text-transform: uppercase;
   }
 
@@ -593,7 +635,6 @@ $bb-pad: clamp(1.15rem, 4vw, 3.5rem);
     font-size: clamp(1.5rem, 3.4vw, 2.3rem);
     font-weight: 900;
     line-height: 0.9;
-    letter-spacing: -0.03em;
     text-transform: uppercase;
     margin: 0;
   }
@@ -688,16 +729,18 @@ $bb-pad: clamp(1.15rem, 4vw, 3.5rem);
 
     &:hover,
     &:focus-visible {
-      background: $bb-paper-deep;
+      background: $bb-coffee;
+      color: $bb-paper;
 
       .bb__action-value {
         text-decoration: underline;
+        text-decoration-color: $bb-rule-on-ink;
         text-underline-offset: 0.25em;
       }
     }
 
     &:focus-visible {
-      outline: 2px solid $bb-coffee;
+      outline: 2px solid $bb-ink;
       outline-offset: -4px;
     }
   }
@@ -733,7 +776,6 @@ $bb-pad: clamp(1.15rem, 4vw, 3.5rem);
     color: $bb-ink;
     margin: 0 0 0.6rem;
     padding-top: 1.25rem;
-    border-top: 2px solid $bb-ink;
   }
 
   &__footer-note {
@@ -743,13 +785,26 @@ $bb-pad: clamp(1.15rem, 4vw, 3.5rem);
 
     a {
       color: $bb-ink-soft;
+      transition: color 0.18s linear;
+
+      &:hover,
+      &:focus-visible {
+        color: $bb-ink;
+        text-decoration: underline;
+      }
+
+      &:focus-visible {
+        outline: 2px solid $bb-ink;
+        outline-offset: 3px;
+      }
     }
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .bb__action,
-  .bb__site-tel {
+  .bb__site-tel,
+  .bb__footer-note a {
     transition: none;
   }
 }
