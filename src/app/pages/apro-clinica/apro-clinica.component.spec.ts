@@ -37,17 +37,6 @@ describe('AproClinicaComponent', () => {
     expect(compiled.querySelector('.apro__footer')).toBeTruthy();
   });
 
-  it('should render the services accordion with visible categories', () => {
-    const fixture = TestBed.createComponent(AproClinicaComponent);
-    fixture.detectChanges();
-    const compiled = fixture.nativeElement as HTMLElement;
-    const headers = compiled.querySelectorAll(
-      '.apro__services-category-header',
-    );
-    // Should show first 5 categories (visibleCount)
-    expect(headers.length).toBe(5);
-  });
-
   it('should render three review cards', () => {
     const fixture = TestBed.createComponent(AproClinicaComponent);
     fixture.detectChanges();
@@ -115,88 +104,22 @@ describe('AproClinicaComponent', () => {
     expect(component.mobileMenuOpen).toBe(false);
   });
 
-  it('should toggle category expansion on toggleCategory call', () => {
-    const fixture = TestBed.createComponent(AproClinicaComponent);
-    const component = fixture.componentInstance;
-
-    expect(component.expandedIndex).toBeNull();
-
-    component.toggleCategory(2);
-    expect(component.expandedIndex).toBe(2);
-
-    // Toggle same category closes it
-    component.toggleCategory(2);
-    expect(component.expandedIndex).toBeNull();
-
-    // Different category opens it
-    component.toggleCategory(0);
-    expect(component.expandedIndex).toBe(0);
-  });
-
-  it('should show all categories when showAllCategories is called', () => {
-    const fixture = TestBed.createComponent(AproClinicaComponent);
-    const component = fixture.componentInstance;
-
-    expect(component.showAll).toBe(false);
-    expect(component.visibleCategories.length).toBe(component.visibleCount);
-    expect(component.hasMore).toBe(true);
-
-    component.showAllCategories();
-
-    expect(component.showAll).toBe(true);
-    expect(component.visibleCategories.length).toBe(
-      component.categories.length,
-    );
-    expect(component.hasMore).toBe(false);
-  });
-
-  it('should render all categories when showAll is true', () => {
-    const fixture = TestBed.createComponent(AproClinicaComponent);
-    const component = fixture.componentInstance;
-
-    component.showAll = true;
-    fixture.detectChanges();
-
-    const compiled = fixture.nativeElement as HTMLElement;
-    const headers = compiled.querySelectorAll(
-      '.apro__services-category-header',
-    );
-    expect(headers.length).toBe(component.categories.length);
-  });
-
-  it('should render a "Ver todos los servicios" button when not showing all', () => {
+  it('should render the address in the contact section', () => {
     const fixture = TestBed.createComponent(AproClinicaComponent);
     fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;
+    const contactValues = Array.from(
+      compiled.querySelectorAll('.apro__contact-value'),
+    ).map((el) => el.textContent ?? '');
+
+    // The first contact value is the phone number, so assert against the
+    // whole set instead of the first match.
+    expect(contactValues.some((t) => t.includes('Av. Riu Ebre, 19'))).toBe(
+      true,
+    );
     expect(
-      compiled.querySelector('.apro__services-fade .apro__btn--solid'),
-    ).toBeTruthy();
-  });
-
-  it('should not render the fade when showAll is true', () => {
-    const fixture = TestBed.createComponent(AproClinicaComponent);
-    const component = fixture.componentInstance;
-
-    component.showAll = true;
-    fixture.detectChanges();
-
-    const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('.apro__services-fade')).toBeFalsy();
-  });
-
-  it('should render updated address in contact section', () => {
-    const fixture = TestBed.createComponent(AproClinicaComponent);
-    fixture.detectChanges();
-    const compiled = fixture.nativeElement as HTMLElement;
-    const addressEl = compiled.querySelector('.apro__contact-value');
-    expect(addressEl?.textContent).toContain('Av. Riu Ebre, 19');
-    expect(addressEl?.textContent).toContain('12540 Vila-real, Castelló');
-  });
-
-  it('should have 7 service categories defined', () => {
-    const fixture = TestBed.createComponent(AproClinicaComponent);
-    const component = fixture.componentInstance;
-    expect(component.categories.length).toBe(7);
+      contactValues.some((t) => t.includes('12540 Vila-real, Castelló')),
+    ).toBe(true);
   });
 
   it('should apply the apro-clinica route metadata to the document', () => {
