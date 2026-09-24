@@ -194,12 +194,50 @@ Verificados con evidencia, no inferidos. Los archivos y líneas están en el his
   previo al prerender.
   *Prueba de que Vercel resuelve filesystem antes que rewrites*: si no, `/main-abc.js` y
   `/assets/*` también caerían en el catch-all y la app no cargaría nunca.
-- [ ] **T7b** — Conectar `SeoService` en las 10 rutas, ahora sí con efecto real
-  sobre las previews sociales.
-- [ ] **T9** — Agregar `seo-ia` al índice del home (8 demos).
+- [x] **T7b** — Conectar `SeoService` en las 10 rutas. **Hecho.** Las 10 páginas llaman
+  `updateMetaTags` en el constructor (no en `ngAfterViewInit`), para que el prerender lo
+  hornee en el HTML estático. Verificado en `dist/`: 9 rutas con `<title>` y `og:title`
+  **únicos** y `og:image` / `og:url` / `canonical` propios por ruta.
+
+  **Regresión que introduje y corregí**: en la consigna le pasé al writer rutas de imagen
+  **relativas** (`/assets/og/x.jpg`). `ogp.me` define el tipo URL como *"All valid URLs that
+  utilize the http:// or https:// protocols"*, así que un path relativo **no** es un
+  `og:image` válido y los scrapers no lo resuelven. Peor: el `<head>` global ya tenía la
+  absoluta correcta, así que cada ruta la **pisaba con una relativa**. Corregido a absolutas
+  en las 10 páginas + 3 specs.
+  *Cuidado que casi me come un reemplazo masivo*: hay 9 `'/assets/...'` que **no** son meta
+  tags (6 galerías de `electricista`, `imageUrl` de `estetica` y `reformas`) y deben seguir
+  relativos. La regla aplicada fue tocar solo `/assets/og/` y `/assets/seo-preview.jpg`.
+- [x] **T9** — Agregar `seo-ia` al índice del home (8 demos). **Hecho.** La entrada se agregó
+  al final de `sections`, con `bi bi-graph-up-arrow`. El spec del home pasó de 7 a 8.
   *Dominio resuelto*: es `muestras.hhstudio.es` (confirmado en los meta tags).
   El footer del home usa `hhstudio.es` (correcto). El `README.md` dice
   `hhstudio.com.ar` -> desactualizado.
+
+### Defecto preexistente encontrado (NO es de este trabajo)
+
+- [ ] **T13** — `npm test` está en rojo **desde el refactor `609b0ff`**, no por este trabajo.
+  `src/app/pages/apro-clinica/apro-clinica.component.spec.ts` testea una forma del
+  componente que ya no existe: `categories`, `visibleCategories`, `visibleCount`, `showAll`,
+  `hasMore`, `showAllCategories()`, `toggleCategory()`, `expandedIndex`, y las clases
+  `.apro__services-category-header` / `.apro__services-fade` / `.apro__btn--solid`.
+  El componente actual solo expone `currentYear`, `mobileMenuOpen`, `navScrolled`,
+  `onWindowScroll`, `ngAfterViewInit`, `toggleMobileMenu`, `closeMobileMenu`, `scrollTo`.
+  **Verificado como preexistente**: las referencias están en `HEAD`, y el componente en
+  `HEAD` tampoco define esos miembros.
+
+  El builder `@angular/build:unit-test` compila todo el bundle de specs junto, así que **un
+  solo error de TS impide que corra cualquier test**. Consecuencia concreta: los 3 tests de
+  metadata agregados en T7b están escritos pero **no pudieron ejecutarse**.
+
+  *Pregunta de producto antes de tocarlo*: ¿la feature de acordeón de servicios con
+  "Ver todos los servicios" se **eliminó a propósito** en el refactor premium, o se perdió?
+  Según la respuesta, el arreglo es borrar los tests obsoletos (feature eliminada) o
+  reimplementar la feature (se perdió). **No borro tests por mi cuenta.**
+
+  *Evidencia primaria alternativa ya observada*: la prueba end-to-end en `dist/` demuestra
+  que los meta tags se aplican en el pipeline real de prerender, que es más fuerte que el
+  unit test que no puede correr.
 
 ### Dependen de imágenes nuevas (T2/T4)
 
@@ -222,8 +260,7 @@ Verificados con evidencia, no inferidos. Los archivos y líneas están en el his
 |---|---|---|---|
 | A | Imágenes huérfanas | T5 | `chore(assets): drop unreferenced images` |
 | B | Prerender | T7a + T7a-bis + T12 | `feat(prerender): emit per-route HTML so social previews work` |
-| C | Metadata por ruta | T7b + T9 | `feat(seo): per-route metadata across the showcase` |
-| D | Imaginería piloto | T2 | `fix(estetica): native-resolution imagery` |
+| C | Metadata por ruta | T7b + T9 | `feat(seo): per-route metadata across the showcase` || D | Imaginería piloto | T2 | `fix(estetica): native-resolution imagery` |
 | E | Imaginería resto | T4 | `fix(imagery): native-resolution hero imagery` |
 | F | Revisión de diseño | T8 | sin código |
 

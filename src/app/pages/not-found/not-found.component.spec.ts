@@ -31,4 +31,15 @@ describe('NotFoundComponent', () => {
     expect(link).toBeTruthy();
     expect(link?.getAttribute('href')).toBe('/');
   });
+
+  it('should apply the not-found route metadata to the document', () => {
+    TestBed.createComponent(NotFoundComponent);
+
+    expect(document.title).toBe('Página no encontrada | HH Studio');
+    expect(
+      document
+        .querySelector('meta[property="og:image"]')
+        ?.getAttribute('content'),
+    ).toBe('https://muestras.hhstudio.es/assets/seo-preview.jpg');
+  });
 });

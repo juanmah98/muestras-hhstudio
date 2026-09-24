@@ -6,10 +6,12 @@ import {
   ViewChild,
   ViewChildren,
   QueryList,
+  inject,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CurrencyPipe, LowerCasePipe } from '@angular/common';
 import { RouterLink } from '@angular/router';
+import { SeoService } from '../../core/services/seo.service';
 import gsap from 'gsap';
 
 interface ServiceItem {
@@ -58,6 +60,18 @@ interface CompareSlider {
   styleUrl: './reformas.component.scss',
 })
 export class ReformasComponent implements AfterViewInit {
+  private readonly seo = inject(SeoService);
+
+  constructor() {
+    this.seo.updateMetaTags({
+      title: 'ST REFORMAS | Reformas integrales — HH Studio',
+      description:
+        'Demo de landing para reformas integrales: calculadora de presupuesto, antes y después y siete secciones full-screen.',
+      image: 'https://muestras.hhstudio.es/assets/og/reformas.jpg',
+      url: 'https://muestras.hhstudio.es/reformas',
+    });
+  }
+
   readonly currentYear = new Date().getFullYear();
   mobileMenuOpen = false;
   scrolled = false;

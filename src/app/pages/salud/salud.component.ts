@@ -5,8 +5,10 @@ import {
   ViewChildren,
   QueryList,
   HostListener,
+  inject,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { SeoService } from '../../core/services/seo.service';
 import gsap from 'gsap';
 
 interface ServiceItem {
@@ -62,6 +64,18 @@ interface FooterLink {
   styleUrl: './salud.component.scss',
 })
 export class SaludComponent implements AfterViewInit {
+  private readonly seo = inject(SeoService);
+
+  constructor() {
+    this.seo.updateMetaTags({
+      title: 'MS LIFE | Clínica de bienestar — HH Studio',
+      description:
+        'Demo de landing biophilic para clínicas y consultorios: paleta sage, secciones full-screen y servicios por especialidad.',
+      image: 'https://muestras.hhstudio.es/assets/og/salud.jpg',
+      url: 'https://muestras.hhstudio.es/salud',
+    });
+  }
+
   readonly currentYear = new Date().getFullYear();
   mobileMenuOpen = false;
   scrolled = false;

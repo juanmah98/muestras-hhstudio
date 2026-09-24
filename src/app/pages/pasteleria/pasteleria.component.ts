@@ -6,10 +6,12 @@ import {
   ViewChild,
   ViewChildren,
   QueryList,
+  inject,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { DecimalPipe } from '@angular/common';
+import { SeoService } from '../../core/services/seo.service';
 import gsap from 'gsap';
 
 interface NavLink {
@@ -105,6 +107,18 @@ interface CakeConfig {
   styleUrl: './pasteleria.component.scss',
 })
 export class PasteleriaComponent implements AfterViewInit {
+  private readonly seo = inject(SeoService);
+
+  constructor() {
+    this.seo.updateMetaTags({
+      title: 'DULCERA | Pastelería artesanal — HH Studio',
+      description:
+        'Demo de landing para pastelería artesanal: catálogo de productos, proceso de elaboración y pedidos por WhatsApp.',
+      image: 'https://muestras.hhstudio.es/assets/og/pasteleria.jpg',
+      url: 'https://muestras.hhstudio.es/pasteleria',
+    });
+  }
+
   readonly currentYear = new Date().getFullYear();
   scrolled = false;
   mobileMenuOpen = false;
