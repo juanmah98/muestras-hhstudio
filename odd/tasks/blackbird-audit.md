@@ -65,7 +65,11 @@ Los IDs son los del audit. ✅ = arreglado · ⬜ = abierto · ❌ = falso posit
   de la D amputados**, invisibles. Avance medido del wordmark: **5.842 em** → el límite es
   ~15.75vw. **Arreglado** con `clamp(2.4rem, 13.6vw, 13rem)`. Verificado: 43.52px, 254.3px en
   283.2px, 29px de margen, sin scroll horizontal.
-- ⬜ **T3** (warn) — el stack mono resuelve distinto por sistema operativo (3 anchos de avance),
+- ✅ **T3** (warn) — el stack mono resuelve distinto por sistema operativo (3 anchos de avance),
+  así que la grilla mecánica era client-dependiente. **Cerrado en U4**: se carga **JetBrains Mono**
+  (la primera cara que nombra el §3.2) junto a Inter en el mismo `<link>` de `index.html`, con el stack
+  del SO conservado detrás como fallback. Verificado en el navegador: `fonts.check('16px "JetBrains
+  Mono"') → true` y la familia computada del precio es `'JetBrains Mono'`. A 320 y 2560px sin overflow.
   así que la grilla mecánica es client-dependiente. Arreglarlo pediría cargar un mono webfont,
   que va **contra** T6 (reducir familias). **Decisión pendiente.**
 - ✅ **T4** (warn) — 7 valores de tracking mono, dos bajo el piso de 0.05em. **Arreglado.**
@@ -134,11 +138,18 @@ Los IDs son los del audit. ✅ = arreglado · ⬜ = abierto · ❌ = falso posit
 - ✅ **D1** (warn) — `[ 01 ] → (sin marcador) → [ 02 ] → [ 03 ]`: secuencia que no indexa nada,
   compitiendo con una segunda secuencia `01–04`. **Arreglado**: se rotulan por nombre
   (`[ CARTA ]`, `[ LOCAL ]`, `[ PEDIDOS ]`). *Era una regresión del recorte de eyebrows de T8.*
-- ⬜ **D2** (nit) — `>>>` literal en el manifiesto y en suplementos: guarnición de telemetría
+- ✅ **D2** (nit) — `>>>` literal en el manifiesto y en suplementos: guarnición de telemetría sobre
+  sustrato de imprenta. **Cerrado en U5**, y la decisión fue **sacarlo de los dos lados**: §2 dice
+  elegir UN modo por proyecto y no mezclarlos, y `>>>` es el dispositivo direccional del modo *Tactical
+  Telemetry*. El manifiesto pierde el prefijo y la lista de suplementos pasa a `–`, que es puntuación
+  de imprenta. Verificado: `>>>` restante → `false`.
   sobre sustrato de imprenta. El audit dice **elegir UN modo y no mezclar**.
 - ✅ **D3** (warn) — `+` significaba **viñeta** en el hero e **incremento de precio** en la
   carta, a un scroll de distancia. **Arreglado**: `/` en el hero.
-- ⬜ **D4** (nit) — `®` y `©` inline a 0.7rem = texto legal, no elemento estructural.
+- ✅ **D4** (nit) — `®` y `©` inline a 0.7rem = texto legal, no elemento estructural. **Cerrado en
+  U5**: los tres pasan a ser **marcas** (`.bb__mark`: más grandes que su vecino y elevados con
+  `vertical-align`), o sea sellos sobre el rótulo en vez de texto legal corrido. Verificado: 3 marcas
+  en el DOM. *(El año `© 2026` no era un bug de código: es `new Date().getFullYear()`.)*
 - ✅ **D5** (warn) — **toda la degradación analógica del §7 ausente**: sin halftone, sin
   1-bit dithering, sin scanlines, sin grain. *"La sección más incumplida, y explica por qué
   las superficies leen vector-clean."* **Cerrado en U3**: las placas pasan a
@@ -246,8 +257,8 @@ Cuatro unidades de trabajo, cada una un candidato de review chico. ⬜ pendiente
 | U2a | Sangre y medida | L1 (revertido y re-resuelto) | `.scss` | ✅ |
 | U2b | Grilla declarada | L2 (parcial: unidad y regla declaradas, medida acota los conteos) | `.scss` | ✅ |
 | U3 | Superficie | S1, S2, S4, D5, D6 + BB-R8 | `.scss`, `.html` | ✅ |
-| U4 | Mono determinista | T3 | `.scss`, asset `woff2` | ⬜ |
-| U5 | Cierre y desviaciones | D2, D4 + BB-R9 + las disposiciones escritas | `.scss`, `.ts`, docs | ⬜ |
+| U4 | Mono determinista | T3 | `.scss`, `index.html` | ✅ |
+| U5 | Cierre y desviaciones | D2, D4 + BB-R9 + las disposiciones escritas | `.scss`, `.html`, `.ts` | ✅ |
 
 **U2 va antes que U3 a propósito**: conviene ver la página a sangre completa en 1920 y 2560px *antes*
  de agregar la trama 1-bit, porque el 1-bit interactúa con el ancho de la banda (S3 ya había marcado
@@ -297,6 +308,32 @@ reemplaza un mecanismo **auto-ajustado por construcción** (`auto-fill`/`auto-fi
 contenido) por **4 o 5 breakpoints a mano por registro** — o sea degrada el mantenimiento para ganar
 una coincidencia de bordes que hoy nadie ve. Queda disponible: si el usuario quiere el alineamiento
 literal, son ~40 líneas de media queries y una verificación en 320/480/768/1024/1320/2560.
+
+### U4 y U5 — cerradas
+
+**U4 (T3)**: JetBrains Mono se carga en el `<link>` de Google Fonts que ya traía Inter — cero
+infraestructura nueva, mismo mecanismo que el resto de la vidriera — y el stack del SO queda detrás
+como fallback. La verificación que importa no es la vista sino `fonts.check()`: que la familia
+*computada* diga `'JetBrains Mono'` no prueba que el archivo haya cargado, y una fuente que no carga
+se ve igual (cae al fallback) mientras la grilla sigue sin ser reproducible.
+
+**U5**: `–` en los suplementos, `>>>` fuera, las tres marcas `®`/`©` elevadas, y `detail` opcional en
+`bar` con las dos cadenas vacías borradas. Además, en el archivo: **la interacción de la medida con
+los bordes por celda de la matriz de alérgenos** (que el review levantó como
+`R3-MEASURE-ALLERGEN-CELL-BORDERS`) y **las dos desviaciones deliberadas** de L9 (nada sangra) y L8
+(dos composiciones asimétricas), escritas ahí para que un pase futuro no "arregle" una decisión.
+
+### R3-LEADER-BASELINE — cerrado como falso positivo, MEDIDO
+
+Se midió en el navegador, que es lo que el propio doc pedía ("no confiar ni descartarlo"). Método:
+baseline del nombre = `top` del elemento + half-leading + `fontBoundingBoxAscent` del canvas con la
+fuente computada; se compara contra el borde inferior del líder.
+
+**Resultado: DELTA = −0.09px** — el borde del líder queda **0.09px por encima** de la baseline del
+texto. La hipótesis del reviewer ("unos píxeles arriba") **no es alcanzable**: un span vacío
+blockificado no tiene line box, así que por especificación su baseline se sintetiza desde el borde
+inferior, y eso es exactamente el comportamiento observado. Sub-píxel, imperceptible, y coherente con
+la medición física previa (la caja del líder mide ancho-de-pista × 1px). **Falso positivo.**
 
 ### U3 — cerrada
 
@@ -361,17 +398,43 @@ frases del comentario que afirmaban algo que `brightness(0.82)` no puede hacer.
 
 ## Pendientes que salieron de los reviews nativos
 
-- ⬜ **R3-LEADER-BASELINE** (WARNING, `scss:365-372`) — sobre el arreglo de L4. **Hipótesis a
-  verificar mirando**: un span vacío no tiene baseline de texto, y por spec la suya es su
-  *bottom margin edge*, así que la línea punteada puede haber quedado unos píxeles arriba de la
-  baseline del nombre. **No confiar en el WARNING ni descartarlo: medir.**
-- ⬜ **R3-plate-filter-reachability** (SUGGESTION, `scss:288-291`) — sobre el filtro neutro.
-- ⬜ **R3-ROUND-SEQUENCE / R3-HOVER-COLOR / R3-RULE-VARS / R3-NOWRAP-FLOOR** — sin descripción
-  en el sobre, no accionables con precisión.
-- ⬜ **BB-R9** — `detail: ''` en el array `bar` (`.ts:271`/`273`). **No perseguir suelto**: viaja con
-  el próximo cambio real que toque el `.ts`.
+- ✅ **R3-LEADER-BASELINE** (WARNING) — **cerrado como falso positivo, medido**: DELTA = **−0.09px**
+  (el borde del líder queda 0.09px por encima de la baseline del nombre). Sub-píxel, imperceptible, y
+  es exactamente lo que predice la especificación para un span vacío sin line box. Ver la sección
+  "R3-LEADER-BASELINE — cerrado como falso positivo, MEDIDO".
+- ✅ **R3-plate-filter-reachability** (SUGGESTION) — cerrado en U1 corrigiendo el comentario que
+  prometía un rango que `brightness()` no puede alcanzar, y el filtro entero desapareció en U3 al
+  pasar las placas a la trama 1-bit.
+- ⬜ **R3-ROUND-SEQUENCE / R3-HOVER-COLOR / R3-RULE-VARS / R3-NOWRAP-FLOOR** — el sobre trae
+  `id`/`lens`/`location`/`severity`/`disposition` **sin descripción**. **Hueco de evidencia, no
+  hallazgo accionable.** El mapeo propuso una línea candidata para cada uno con el nivel de confianza
+  marcado como conjetura; no se tocan sin el texto del sobre.
+- ✅ **BB-R9** — cerrado en U5: `bar` tiene tipo explícito con `detail?` opcional y se borraron las dos
+  cadenas vacías.
 - ✅ **BB-R8** — los dos `alt` de las placas eran casi iguales y las placas son **textura decorativa**,
   así que el alt correcto es **vacío**. Cerrado en U3: ambos pasaron a `alt=""`.
+
+### Del review del rango de cierre (`review-33208a1fea43b7ca`, aprobado y quemado)
+
+Tres hallazgos, **todos `informational`**: ninguno abrió corrección, ninguno reabre el candidato, y por
+contrato se tratan como trabajo posterior — **nunca** como motivo para re-correr el review.
+
+- ⬜ **`R3-MULTIPLY-Z-INDEX-OVERLAY`** (WARNING, `scss:142-155`) — la capa de grain a página completa
+  con `mix-blend-mode`. Es **el riesgo que ya estaba marcado antes de correr el review** (compositing
+  de una capa de blend sobre la franja sticky que repinta al scrollear). Quedó **documentado en el
+  archivo como el precio aceptado** del grain unificado que pide §7, y anotado como lo primero a
+  revisar si el scroll se siente pesado.
+- ⬜ **`R3-MEASURE-ALLERGEN-CELL-BORDERS`** (WARNING, `scss:926-935`) — la interacción entre la medida
+  y los bordes por celda de la matriz de alérgenos. **Documentado en el archivo**: la medida acorta el
+  registro pero nunca los bordes propios de las celdas, y la fila final parcial es el resultado
+  esperado, no un desborde.
+- ⬜ **`R3-SCREEN-PSEUDO-OVER-PLATE`** (SUGGESTION, `scss:403-410`) — el pseudoelemento de la trama
+  sobre la placa. **Documentado en el archivo**: pinta por encima de la imagen a propósito, porque la
+  trama es lo que convierte una foto contrastada en una plancha impresa.
+
+**Dato de proceso del review**: ofrecido en **78 archivos / 3843 inserciones** (`base-ref e97e9bd`, la
+8ª vez que no avanza) y re-anclado a **3 archivos / 490 líneas**. Tier `medium`, **un solo lente**
+(`review-reliability`): el conjunto de lentes lo elige el riesgo, no la cantidad de líneas.
 
 ## Cómo volver a correr el audit
 

@@ -92,8 +92,14 @@ $bb-stripe: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' wi
 $bb-barcode: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='22' height='9'%3E%3Cg fill='%230a0a0a'%3E%3Crect width='2' height='9'/%3E%3Crect x='4' width='1' height='9'/%3E%3Crect x='7' width='3' height='9'/%3E%3Crect x='12' width='1' height='9'/%3E%3Crect x='15' width='2' height='9'/%3E%3Crect x='19' width='1' height='9'/%3E%3C/g%3E%3C/svg%3E");
 $bb-grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3CfeComponentTransfer%3E%3CfeFuncR type='linear' slope='.14' intercept='.86'/%3E%3CfeFuncG type='linear' slope='.14' intercept='.86'/%3E%3CfeFuncB type='linear' slope='.14' intercept='.86'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
 
-$bb-mono: ui-monospace, 'SFMono-Regular', 'Cascadia Mono', Menlo, Consolas,
-  'Liberation Mono', monospace;
+// Audit T3: this used to be a pure platform stack, so `ui-monospace` resolved to
+// Consolas on Windows, SF Mono on macOS and DejaVu Sans Mono on Linux -- three
+// different advance widths. The bracket column and the price column were then not
+// reproducible between machines, which is the one thing a mechanical grid cannot
+// afford. One named face, loaded alongside Inter in index.html, with the platform
+// stack kept behind it as the fallback.
+$bb-mono: 'JetBrains Mono', ui-monospace, 'SFMono-Regular', 'Cascadia Mono', Menlo,
+  Consolas, 'Liberation Mono', monospace;
 $bb-sans: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
 
 $bb-pad: clamp(1.15rem, 4vw, 3.5rem);
@@ -141,6 +147,13 @@ $bb-col-site: 280px; // the address and the hours side by side
   // without it. The transfer curve inside the SVG is what keeps the tile near
   // white: raw turbulence averages mid-grey, and multiplying a whole page by
   // mid-grey would halve its brightness.
+  //
+  // z-index 30 puts it above the sticky strip deliberately: §7 asks for ONE grain
+  // across the whole page, and in this design the strip is part of the same sheet
+  // rather than a floating chrome layer. The acknowledged price is that a
+  // full-page blend layer has to be re-blended when the sticky strip repaints on
+  // scroll. That is the first thing to revisit if scrolling ever feels heavy
+  // (review raised it as R3-MULTIPLY-Z-INDEX-OVERLAY).
   &::after {
     content: '';
     position: absolute;
@@ -156,6 +169,15 @@ $bb-col-site: 280px; // the address and the hours side by side
   font-family: $bb-sans;
   font-size: 1rem;
   line-height: 1.5;
+
+  // §6: registration and copyright are meant to work as geometric marks rather
+  // than as legal text at 0.7rem inside a run. Raised and set larger than its
+  // neighbours, so each reads as a stamp on the label it sits on.
+  &__mark {
+    font-size: 1.15em;
+    line-height: 0;
+    vertical-align: 0.32em;
+  }
   overflow-x: hidden;
   // The shell's body is dark; the page owns its own substrate so a short
   // viewport never shows the shell through.
@@ -406,6 +428,10 @@ $bb-col-site: 280px; // the address and the hours side by side
     // plate instead of translating tone into dot density. What it does is put the
     // plate back on the page as ink on paper rather than as a window. Multiply,
     // never opacity, so the paper shows through the highlight dots.
+    // It paints above the image by design: the ruling is what turns a contrasty
+    // photograph into a printed plate, so it has to sit over it, and the plate
+    // background underneath is the same ink the dots are drawn in.
+    // (Review raised the stacking as R3-SCREEN-PSEUDO-OVER-PLATE.)
     &::after {
       content: '';
       position: absolute;
@@ -596,7 +622,11 @@ $bb-col-site: 280px; // the address and the hours side by side
     font-size: 0.88rem;
 
     li::before {
-      content: '>>> ';
+      // Print punctuation, not terminal punctuation. `>>>` is §6's directional
+      // device in the Tactical Telemetry mode, and §2 says pick ONE mode per
+      // project: this page is Swiss Print, so a transmission arrow decoration a
+      // list of supplements was the wrong mode's garnish.
+      content: '–  ';
       font-family: $bb-mono;
       font-size: 0.72rem;
       color: $bb-ink-soft;
@@ -927,6 +957,22 @@ $bb-col-site: 280px; // the address and the hours side by side
   // is in here because with no measure it thins from six columns to twelve on a
   // wide display and leaves its trailing row as a bordered void. The manifesto
   // is in here so its kitchen-hours note stops detaching to the far edge.
+  //
+  // Interaction worth knowing, raised by review as R3-MEASURE-ALLERGEN-CELL-BORDERS:
+  // the allergen register's cells carry their own right and bottom borders instead
+  // of sitting on the 1px ink bed, because with 14 items the trailing row is almost
+  // always partial and the bed would show through the empty tracks as a solid
+  // block. This cap therefore shortens the register but never the cells' own
+  // edges, and a partial trailing row is the expected outcome, not an overflow.
+  //
+  // Deliberately NOT done, so that a later pass does not "fix" a decision:
+  //   - No letterform bleeds the viewport. Skill 2.1 asks for bleeding letterforms
+  //     and audit L9 flagged their absence, but bleed at 320px produces horizontal
+  //     scroll and competes with the hero's optical negative margin, which the
+  //     audit itself protects in its WHAT-NOT-TO-CHANGE list.
+  //   - Two asymmetric compositions only, the manifesto and the hero bar, which
+  //     audit L8 called thin. The space this page spends on asymmetry is the
+  //     measure's own right-hand void, not more broken columns.
   &__head,
   &__groups,
   &__methods-grid,

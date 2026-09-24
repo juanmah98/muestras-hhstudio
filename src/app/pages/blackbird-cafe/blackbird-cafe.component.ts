@@ -267,10 +267,12 @@ export class BlackbirdCafeComponent
   // appear in any of the sources. They were invented. Faking engineering
   // precision on behalf of a real business misinforms its customers, so the
   // invented values are gone and only the sourced facts remain.
-  readonly bar = [
-    { id: '01', name: 'Espresso', detail: '' },
+  // `detail` is optional: two of the four methods have no spec, and an empty
+  // string was only ever a placeholder for "there is nothing to say".
+  readonly bar: ReadonlyArray<{ id: string; name: string; detail?: string }> = [
+    { id: '01', name: 'Espresso' },
     { id: '02', name: 'Filtro (batch brew)', detail: 'S / L' },
-    { id: '03', name: 'Cold brew', detail: '' },
+    { id: '03', name: 'Cold brew' },
     { id: '04', name: 'Leches vegetales', detail: 'avena · coco · soja' },
   ];
 
