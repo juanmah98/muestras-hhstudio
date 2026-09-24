@@ -78,9 +78,12 @@ Los IDs son los del audit. ✅ = arreglado · ⬜ = abierto · ❌ = falso posit
 ### Layout (L)
 
 - ✅ **L1** (warn) — **sin medida de página en ningún lado**, y `.container{max-width:1320px}`
-  **definido en el mismo archivo y nunca usado**. A 2560px el precio quedaba a ~2.2 m del
-  nombre. **Arreglado**: `.bb__main` capada a 1320px. *Efecto secundario*: la banda de tinta
-  dejó de ser a sangre, que es lo que S3 pedía por otra razón.
+  **definido en el mismo archivo y nunca usado**. A 2560px el precio quedaba a ~2.2 m del nombre.
+  **Primer intento**: capar `.bb__main` a 1320px. **Revertido** — el usuario vio los márgenes en un
+  monitor ancho y los rechazó (a 1920px eran 300px de papel muerto por lado; a 2560px, 620px), y era
+  la **única** página de la vidriera capada así. **Arreglo final**: la medida se movió de la *página*
+  al *texto*, aplicada como `padding-right` y no como `max-width`, así las reglas y los lechos sangran
+  completos y sólo el texto respeta los 1320px. Ver U2a.
 - ⬜ **L2** (warn) — cuatro `minmax(208/230/240/280px)` mágicos, cuatro conteos de columna no
   controlados. Solo `.bb__manifesto` es una composición declarada.
 - ✅ **L3** (warn) — el precio a **112px** mientras todo lo demás está en la línea de 56px
@@ -219,7 +222,8 @@ Cuatro unidades de trabajo, cada una un candidato de review chico. ⬜ pendiente
 | # | Unidad | Hallazgos | Archivos | Estado |
 |---|---|---|---|---|
 | U1 | Tipografía y estados | T5, T6, L10, P9, P10 + comentario de `R3-plate-filter-reachability` | `.scss` | ✅ |
-| U2 | Sangre y medida | L1 (revertido) + L2 (grilla de columnas compartida) | `.scss` | ⬜ |
+| U2a | Sangre y medida | L1 (revertido y re-resuelto) | `.scss` | ✅ |
+| U2b | Grilla de columnas compartida | L2 | `.scss` | ⬜ |
 | U3 | Superficie | S2, S4, D5, D6 + BB-R8 | `.scss`, `.html` | ⬜ |
 | U4 | Mono determinista | T3 | `.scss`, asset `woff2` | ⬜ |
 | U5 | Cierre y desviaciones | D2, D4 + BB-R9 + las disposiciones escritas | `.scss`, `.ts`, docs | ⬜ |
@@ -227,6 +231,33 @@ Cuatro unidades de trabajo, cada una un candidato de review chico. ⬜ pendiente
 **U2 va antes que U3 a propósito**: conviene ver la página a sangre completa en 1920 y 2560px *antes*
  de agregar la trama 1-bit, porque el 1-bit interactúa con el ancho de la banda (S3 ya había marcado
  que una masa de acento a sangre es la que erosiona la escasez del acento).
+
+### U2a — cerrada
+
+El idioma que resuelve esto, y que conviene no olvidar: **la medida se aplica como `padding-right`, no
+como `max-width`.** Un `max-width` capa el elemento *y su regla*, así que la regla de 2px de una
+cabecera termina a mitad de página mientras el registro de abajo sigue a sangre — se lee como error.
+El `padding` encoge sólo la caja de contenido, así que **la regla sangra y el texto adentro respeta la
+medida**. Se implementó como `@mixin bb-measure` y se aplica a los cuatro registros con texto alineado
+a la derecha o corrida abierta: las cabeceras de sección, el grupo del ledger, y los dos `<aside>`
+(suplementos y alérgenos).
+
+Dos defectos propios, encontrados **mirando el render** y no razonando:
+1. Las cabeceras con `max-width` dejaban su regla cortada a 1320px arriba de un registro a sangre.
+2. La matriz de alérgenos, sin medida, pasaba de 6 a 12 columnas a 2560px y su fila final dejaba una
+   banda entera vacía *y con borde* — una regresión introducida al quitar el cap.
+
+**Evidencia medida (no estimada)**: borde derecho de la nota de cabecera = **1320px** = borde derecho
+del precio, a 2560 y a 1920px; `scrollWidth == innerWidth` en 2560, 1920 y **320** (sin scroll
+horizontal); la regla de 2px de cada cabecera y las hairlines del ledger ahora **sí** spannean el ancho
+completo. Build exit 0, tests 31/31.
+
+**Observaciones sin resolver, para el usuario**: el manifiesto (`02`) tiene la misma clase de problema —
+su nota de cocina queda al borde derecho, a ~2400px de su texto, a 2560px. El audit lo llamó *“una de
+las dos composiciones asimétricas legítimas”*, así que **no se tocó**: el mismo mixin lo comprimiría a
+sus proporciones diseñadas (`11rem / 1fr / 14rem` dentro de 1320px), que es defendible, pero es una
+decisión de composición. También queda a criterio si los registros de celdas (métodos, sedes, pedidos)
+debieran medirse: hoy sangran y sus celdas a 2560px van de 640 a 1280px.
 
 ### U1 — cerrada
 
