@@ -273,25 +273,45 @@ Verificados con evidencia, no inferidos. Los archivos y líneas están en el his
 - [x] **T14** — Nit: canonical del 404. **Hecho.** Se sacó `url` de la llamada de
   `not-found`, así que ya no emite un canonical hacia una URL inexistente.
 
-### Defectos preexistentes nuevos, NO arreglados
+### Defectos preexistentes nuevos
 
-- [ ] **T15** — **La integración de Supabase está muerta y es una bomba latente.**
-  `src/environments/environment.ts` y `environment.development.ts` tienen **placeholders**
-  (`'URL_DE_SUPABASE_AQUI'`, `'ANON_KEY_DE_SUPABASE_AQUI'`), y `environment.ts` declara
-  `production: false` con un comentario que dice "cámbialo a true".
-  - **No hay `fileReplacements` en `angular.json`**, así que `environment.ts` es el único que
-    se usa y `production` nunca se pone en `true`. Es un campo muerto.
-  - `SupabaseService` **no lo inyecta nadie**: cero usos en todo `src/`.
-    `@supabase/supabase-js` se importa solo desde ahí.
-  - `createClient` con una URL placeholder **lanza** `Invalid supabaseUrl`. Como el servicio
-    es `providedIn: 'root'`, el constructor explotaba al inyectarlo.
-  - **Arreglado parcialmente y de forma defensiva**: el cliente ahora se crea **lazy** (en el
-    getter `client`), así que falla al usarse y no al inyectarse. La API pública no cambió.
+- [x] **T15** — Supabase: **NO se borra. Es plan documentado, no andamiaje muerto.**
+  **Decisión del usuario (2026-09-24)**, tomada después de que yo corrigiera un análisis
+  incompleto mío. Yo lo había llamado *"andamiaje muerto que nadie usa"* basándome **solo** en
+  que hoy no lo inyecta nadie, **sin haber leído los docs**. Eso no significa muerto:
+  significa **sin conectar todavía**.
 
-  *Decisión pendiente del usuario*: ¿se conecta Supabase de verdad (credenciales + token de
-  config), o se elimina el servicio, su spec y la dependencia? Hoy es andamiaje que nadie usa.
-  `vi.mock` con imports relativos está prohibido por el sistema de tests de Angular, así que
-  no se puede simplemente mockear el environment desde el spec.
+  **Dónde está documentado como plan:**
+  - `PRD.md` — **P2, Formulario de contacto**: *"Se envía a Supabase y notifica al equipo"*.
+    Supabase es el **backend de un requisito P2**, no un residuo.
+  - `README.md` — lo lista como tecnología del proyecto.
+  - `ESTRUCTURA.md` — documenta `core/services/supabase/` como "Cliente Supabase".
+  - `ia-rules.md` — sección `## 🗄️ Supabase` completa, y usa `SupabaseService` como
+    **ejemplo de nomenclatura** y `@core/services/supabase/supabase.service` como ejemplo de
+    import.
+
+  Borrarlo no era un cambio de 4 archivos: dejaba **cuatro documentos mintiendo**, incluido el
+  ejemplo de nomenclatura del propio `ia-rules.md`.
+
+  **Los defectos REALES, para cuando se conecte de verdad** (no son motivo de borrado):
+
+  - [ ] **T15-a** — **Credenciales placeholder.** `environment.ts` y `environment.development.ts`
+    tienen `'URL_DE_SUPABASE_AQUI'` / `'ANON_KEY_DE_SUPABASE_AQUI'`. `createClient` **lanza**
+    `Invalid supabaseUrl` con eso.
+  - [ ] **T15-b** — **No hay `fileReplacements` en `angular.json`.** Así que
+    `environment.development.ts` **nunca se usa** y `environment.production` queda siempre en
+    `false`: el archivo de development es decorativo y el flag `production` es campo muerto.
+  - [ ] **T15-c** — **`ia-rules.md` documenta un mecanismo que no existe.** Dice *"Credenciales
+    en `.env` → NUNCA commitear `.env`"*, pero **no hay `.env`** ni nada que lea uno: ni
+    `dotenv`, ni `define` en el build, ni env vars cableadas en Vercel. O se implementa, o se
+    corrige el doc.
+
+  - [x] **Ya hecho**: el cliente se crea **lazy** (en el getter `client`), así que falla al
+    usarse y no al inyectarse. La API pública no cambió. Sin eso, **cualquiera que inyectara el
+    servicio tumbaba la app**.
+
+  *Nota de test*: `vi.mock` con imports relativos está prohibido por el sistema de tests de
+  Angular, así que no se puede mockear el environment desde el spec.
 
 ### Imaginería — cerrada el 2026-09-24
 

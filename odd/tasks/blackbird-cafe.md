@@ -206,8 +206,19 @@ que re-incluía cinco commits ya aprobados** en los dos reviews anteriores.
   HTML estático: Angular prerenderiza el contenido de `app-root`, no serializa los atributos
   del `body`. Solo aplica post-hidratación. Mitigado con `min-height: 100dvh` en la raíz de la
   página, así que el sustrato nunca deja ver el shell.
-- [ ] **BB-R4** (`R3-OG-COUNT-GUARD`, SUGGESTION) — `tools/make-og-image.ps1:483-489`. El guard
-  de cantidad es un número escrito a mano (hoy 10) que hay que subir al agregar cada tarjeta.
+- [x] **BB-R4** (`R3-OG-COUNT-GUARD`, SUGGESTION) — **CERRADO COMO FALSO POSITIVO, no como
+  defecto.** El reviewer sugirió que el guard de `tools/make-og-image.ps1:483-489` no debería
+  ser "un número escrito a mano".
+
+  **El número escrito a mano ES el mecanismo del guard.** El guard existe para detectar el bug
+  de parseo de `@(...)` con finales de línea mezclados, que **colapsa el array en un solo
+  string**. En ese caso `$cards.Count` vale **1**, así que un guard *derivado* del propio array
+  **no dispararía nunca**: sería exactamente el chequeo que no puede detectar su propia falla.
+
+  Y ya demostró su valor: al agregar la tarjeta de Blackbird tiró `Expected 9 cards, got 10`,
+  que es lo que me obligó a subir el número. Un guard que se auto-deriva no habría dicho nada.
+
+  **No cambiar.** Si un reviewer lo vuelve a marcar, es esperado.
 
 ## Verificación visual — Chrome headless
 
