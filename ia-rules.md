@@ -131,7 +131,13 @@ TestBed.configureTestingModule({
 
 ## 🗄️ Supabase
 
-- Credenciales en `.env` → NUNCA commitear `.env`
+- **Credenciales en `src/environments/environment.ts` y `environment.development.ts`.** El build
+  reemplaza `environment.ts` por `environment.development.ts` en la configuración `development`
+  (via `fileReplacements` en `angular.json`), así que cada uno se usa en un modo distinto.
+- **NO existe un mecanismo de `.env`.** No hay `dotenv`, ni `define` en el builder, ni variables
+  de entorno cableadas en Vercel. Cualquier `.env` no lo lee nadie. Si en algún momento se
+  quieren credenciales fuera del repo, hay que implementar ese mecanismo primero. Hasta
+  entonces, las credenciales viven en esos dos archivos.
 - Cliente inicializado en `SupabaseService` (singleton, `providedIn: 'root'`)
 - Usar RLS (Row Level Security) en producción
 - Tipos generados con `supabase generate types`

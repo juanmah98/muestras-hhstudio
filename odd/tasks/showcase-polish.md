@@ -152,9 +152,24 @@ Verificados con evidencia, no inferidos. Los archivos y líneas están en el his
   **Hecho** en `587e5cf`. `Open Sans` y `Manrope` fuera (solo eran fallback de
   segunda opción). `styles-*.css` quedó idéntico (316.19 kB): el beneficio es un
   request externo menos, no tamaño de bundle.
-  **Pendiente dentro de T6**: carga de fuentes por demo (sigue global) y el mono
-  de `seo-ia` (`Fira Code` / `JetBrains Mono` se declaran pero NO se cargan, caen a
-  `monospace`).
+  **Pendiente dentro de T6**: carga de fuentes por demo (sigue global).
+
+  **CORRECCIÓN (2026-09-24) de una afirmación FALSA de este mismo documento**: decía que
+  `seo-ia` *"declara `Fira Code` / `JetBrains Mono` pero NO se cargan"*. **Es falso.**
+  Verificado: `seo-ia` **no menciona** ninguna de esas dos familias. Lo que sí declara
+  **5 veces** es `font-family: 'Space Grotesk', monospace` (y una vez el stack del sistema).
+
+  **El problema real es otro, y es peor:** *Space Grotesk **no es monoespaciada*** (es una sans
+  geométrica proporcional) y además el `<link>` global la carga **solo en peso 700**
+  (`family=Space+Grotesk:wght@700`). Así que esa declaración miente dos veces: no es mono, y en
+  cualquier peso distante de 700 cae al `monospace` del sistema.
+
+  - [ ] **T6-a** — Decidir qué hacer con esas 5 declaraciones de `seo-ia`. **Es una decisión de
+    diseño, no un bug de una línea**: si la intención era que esos datos se vieran
+    monoespaciados, lo correcto es el stack del sistema (como en `blackbird-cafe`) y la página
+    **cambia de aspecto**; si el autor eligió Space Grotesk a propósito por cómo renderiza,
+    entonces la declaración está bien y lo que corresponde es sacarle el `monospace` del final.
+    **No lo cambio por mi cuenta.**
 - [x] **T10** — Crear `public/assets/seo-preview.jpg` (1200x630).
   **Hecho** en `546927e`. Los meta tags `og:image` y `twitter:image` apuntaban a un
   archivo que NO existía -> preview rota al compartir el link con un cliente.
