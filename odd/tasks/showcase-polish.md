@@ -499,3 +499,35 @@ posterior y separado, **nunca** motivo para re-correr el review sobre este candi
   `restoreMocks`.
 - [ ] **R4** (`R3-seo-constructor-side-effect`, SUGGESTION) —
   `src/app/pages/not-found/not-found.component.ts:12-20`. Efecto de lado del constructor.
+
+## Entrega — merge fast-forward a `main` (2026-09-24)
+
+`main` estaba en **`e97e9bd`**, que es **ancestro estricto** de esta rama: el merge es
+**fast-forward**, sin merge commit y sin conflictos. Alcance: **36 commits, 78 archivos,
++3998 / −231**, el mismo rango `e97e9bd..2c17338` que el review de cierre
+(`review-33208a1fea43b7ca`) declaró como su candidato ofrecido (78 archivos, base-ref
+`e97e9bd`) y que cerró **aprobado y quemado**.
+
+Las catorce ramas de slice (`slice/01-*` … `slice/13-*`, `feat/showcase-apro-clinica`)
+verificaron ser ancestros de esta rama: **no queda trabajo suelto fuera del merge.**
+
+Esta nota de entrega es un commit **solo de documentación** por encima de la revisión
+aprobada `2c17338`: no cambia código ni build, y por contrato no reabre ni exige review.
+El candidato revisado es `e97e9bd..2c17338`; el merge lleva además este commit.
+
+### Verificación previa a la entrega (delegada, read-only, `2c17338`)
+
+| Comando | Resultado |
+|---|---|
+| `npm run build` | OK — `Prerendered 10 static routes`, `dist/muestras-hhstudio/browser` emitido |
+| `npm test` | OK — 7 archivos / **31 tests**, 0 fallos |
+
+- El WARNING de presupuesto de `pasteleria.component.scss` (**32.18 kB** contra el techo de
+  warning de 31 kB; el de error es 38 kB) **no rompe el build** y es deuda previa.
+- El riesgo que el hallazgo **R2** dejó anotado quedó **refutado en la práctica**: `dist/muestras-hhstudio/browser/index.csr.html` existe tras el build, así que el rewrite
+  catch-all de `vercel.json:5-8` tiene destino real. Sigue sin ejercitarse la **precedencia**
+  filesystem-vs-rewrite en el runtime de Vercel: no se testeó acá.
+
+Al hacer el fast-forward, `main` queda apuntando **exactamente a esta revisión de rama**, y el
+push a `origin/main` dispara el deploy de producción de Vercel. Commit, push y merge son
+política ordinaria del repo: el review nativo no autoriza entrega.
