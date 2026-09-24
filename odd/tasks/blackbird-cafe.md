@@ -240,6 +240,58 @@ Para capturar una región baja a resolución completa sin PIL: servir un shim HT
 `<iframe>` de 9000px de alto desplazado con `style.top = -Ypx`, y capturar una ventana de
 altura fija.
 
+### ⚠️ Trampa grande del método: GSAP NO anima en las capturas headless
+
+**El ticker de GSAP no avanza en `--headless=new --screenshot`.** Cualquier sección con
+`#reveal` queda clavada en el estado inicial del `fromTo`, o sea **`opacity ≈ 0.35`**, y en la
+captura se ve **lavada**. `--virtual-time-budget=5000` **no** lo arregla.
+
+**Cómo se descubrió, y un diagnóstico falso mío.** La placa duotono del manifiesto se veía gris
+claro en las capturas. **Culpé al `mix-blend-mode`** del tratamiento duotono y reescribí el CSS
+por eso. El diagnóstico era **falso**: comparé la imagen cruda sin filtro y cuatro variantes de
+filtro, y **todas renderizan oscuras**. La causa real era la opacidad parcial de la sección
+animada. El cambio a filtros se conservó (es más determinista y elimina una dependencia de
+blending que se leía como translucidez), pero **la razón por la que lo hice era incorrecta**.
+
+**La solución**: capturar con **`--force-prefers-reduced-motion`**. Eso hace que
+`ngAfterViewInit` retorne temprano, GSAP no corra nunca, y se vea el **estado final real**.
+Además ejercita la rama de accesibilidad de paso.
+
+**Consecuencia a recordar**: toda captura hecha **sin** ese flag puede mostrar secciones
+animadas a opacidad parcial. **Nunca diagnosticar un problema de diseño desde una de ellas sin
+repetir la captura con reduced-motion forzado.**
+
+### Auditoría T8 — design review con Open Design
+
+Las skills `design-review` y `plan-design-review` de OD son **entradas de catálogo, no
+workflows** (remiten a instalar el bundle de `github.com/garrytan/gstack`). La que sí tiene
+contenido real y opinionado es **`design_taste_frontend`** (1203 líneas). Usada como rúbrica,
+encontró tres defectos:
+
+- [x] **BB-R5 — DATOS INVENTADOS. Arreglado.** La sección "Métodos" afirmaba
+  `9 bar · 92 °C · 25 s`, `1:16 · 94 °C · 4 min`, `1:8 · en frío · 18 h`. **Ninguna de esas
+  cifras existe en las fuentes de Blackbird** (verificado: `°C`, `1:16`, `1:8`, `25 s`, `4 min`,
+  `18 h` → 0 ocurrencias). Se reemplazó por **`EN LA BARRA`**, con solo lo que tiene fuente:
+  Espresso, Filtro (batch brew) `S / L`, Cold brew, Leches vegetales `avena · coco · soja`.
+
+  **Lección estructural, la más importante de la sesión: la fabricación de contenido es
+  INVISIBLE al code review.** El review nativo aprobó esta página con esos datos adentro. Un
+  revisor de código no puede saber qué número sale de una fuente y cuál lo inventó el autor.
+  Las páginas con contenido de un negocio real necesitan **auditoría de contenido contra
+  fuentes**, separada del code review.
+- [x] **BB-R6 — Eyebrows. Arreglado.** Había 5 marcadores en 7 secciones; la rúbrica permite
+  `ceil(secciones/3)` = 3. Quedaron `[ 01 ]`, `[ 02 ]`, `[ 03 ]`.
+- [x] **BB-R7 — Imágenes. Arreglado.** La rúbrica es tajante: *"A pure-text page is not
+  minimalism. It is incomplete work."* Se agregaron **2 placas duotono**. Yo había leído
+  `industrial_brutalist_ui` ("imagery is secondary") como si dijera "imagery is absent":
+  **secundaria ≠ ausente**.
+
+  **Restricción de honestidad aplicada**: las placas son **solo producto y textura** (grano
+  macro, grano disperso). **No hay ninguna foto del local, del personal ni del equipo**, porque
+  una foto de stock en esos lugares afirmaría documentar un negocio real. Por la misma razón se
+  descartaron las imágenes de tostadoras: la carta dice que el café lo tuesta *"por los mejores
+  micro-tostadores"*, así que **ellos no tuestan**.
+
 ## Decisiones del usuario
 
 - [x] **Horarios**: el **horario de verano** del Facebook (ver arriba).
