@@ -18,10 +18,13 @@ $bb-ink-soft: #4a4a46;
 $bb-coffee: #6b4423;
 $bb-coffee-lift: #c08a5e;
 
-// Neutral rule values for each substrate. These are values on the ink and
-// paper scales, not extra accents.
-$bb-rule: #d5d2cb;
-$bb-rule-on-ink: #33332f;
+// Neutral rule values for each substrate. Both need to be VISIBLE: the first
+// pair here (#d5d2cb on paper, #33332f on ink) measured 1.37:1 and 1.56:1, so
+// every hairline drawn with them was effectively invisible while the ones made
+// by the 1px ink-bed trick sat at 17.96:1. The rules are now symmetric across
+// the two substrates instead of decorative on one and absent on the other.
+$bb-rule: $bb-ink-soft;
+$bb-rule-on-ink: $bb-paper;
 
 $bb-mono: ui-monospace, 'SFMono-Regular', 'Cascadia Mono', Menlo, Consolas,
   'Liberation Mono', monospace;
@@ -145,7 +148,15 @@ $bb-pad: clamp(1.15rem, 4vw, 3.5rem);
   }
 
   &__hero-title {
-    font-size: clamp(3.6rem, 17vw, 13rem);
+    // 5.8420 em of advance for the word, measured in-browser.
+    //
+    // The previous floor was 3.6rem, and at a 320px viewport that floor FLOORED
+    // UP to 57.6px against only 48.5px of room: `white-space: nowrap` plus
+    // `overflow: hidden` then amputated about 53px of the final D with nothing
+    // to show it had happened. 13.6vw clears the measured limit of 15.75vw with
+    // roughly a 10% margin, which also absorbs a font-substitution fallback
+    // that renders wider than Inter.
+    font-size: clamp(2.4rem, 13.6vw, 13rem);
     font-weight: 900;
     line-height: 0.82;
     letter-spacing: -0.045em;
