@@ -288,6 +288,20 @@ Verificados con evidencia, no inferidos. Los archivos y líneas están en el his
 - [x] **T14** — Nit: canonical del 404. **Hecho.** Se sacó `url` de la llamada de
   `not-found`, así que ya no emite un canonical hacia una URL inexistente.
 
+### Review del fix de configuración — APROBADO y quemado (2026-09-24)
+
+Linaje `review-1260b340ef758167`, 5 archivos / 50 líneas, `prompt_bytes: 17111`.
+Re-anclar bajó el candidato de los **77 archivos / 3186 líneas** que ofrecía el preflight a
+**5 archivos / 50 líneas**.
+
+3 hallazgos, ninguno bloqueante — y **2 de los 3 son el mismo tema ya conocido**:
+
+- `R3-001` (WARNING, `environment.ts:5`) y `R3-003` (WARNING,
+  `environment.development.ts:6-9`) → **las credenciales placeholder**. Es `T15-a`, que sigue
+  esperando credenciales reales. **El reviewer marcó lo que ya sabíamos.**
+- [ ] **R3-002** (SUGGESTION, `angular.json:62-68`) → el bloque `fileReplacements` que se agregó.
+  El sobre no trae descripción del hallazgo, solo la ubicación.
+
 ### Defectos preexistentes nuevos
 
 - [x] **T15** — Supabase: **NO se borra. Es plan documentado, no andamiaje muerto.**
@@ -313,6 +327,9 @@ Verificados con evidencia, no inferidos. Los archivos y líneas están en el his
   - [ ] **T15-a** — **Credenciales placeholder.** `environment.ts` y `environment.development.ts`
     tienen `'URL_DE_SUPABASE_AQUI'` / `'ANON_KEY_DE_SUPABASE_AQUI'`. `createClient` **lanza**
     `Invalid supabaseUrl` con eso.
+    *Confirmado por el reviewer* (`R3-001` / `R3-003`, 2 WARNING en el review
+    `review-1260b340ef758167` sobre `environment.ts:5` y `environment.development.ts:6-9`).
+    **No es un defecto nuevo: es lo que ya sabíamos y sigue esperando credenciales reales.**
   - [ ] **T15-b** — **No hay `fileReplacements` en `angular.json`.** Así que
     `environment.development.ts` **nunca se usa** y `environment.production` queda siempre en
     `false`: el archivo de development es decorativo y el flag `production` es campo muerto.
