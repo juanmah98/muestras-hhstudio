@@ -211,8 +211,63 @@ $bb-pad: clamp(1.15rem, 4vw, 3.5rem);
     gap: 1.5rem;
 
     @media (min-width: 900px) {
-      grid-template-columns: 8rem minmax(0, 1fr) 14rem;
+      // The plate takes the leading column, the statement sits in the middle and
+      // the aside hangs on the right. Asymmetry is the point.
+      grid-template-columns: 11rem minmax(0, 1fr) 14rem;
       column-gap: 2rem;
+      align-items: start;
+    }
+  }
+
+  // -------------------------------------------------------------------
+  // duotone plates
+  //
+  // The archetype wants imagery secondary and print-like, not photographic, so
+  // the plates are pushed to a coffee monochrome that matches the page's single
+  // accent.
+  //
+  // This is done with a filter chain and nothing else. The first version
+  // multiplied a coffee layer over each plate with mix-blend-mode, and the
+  // manifesto plate came out washed to near-white: the blend resolved against
+  // the page background instead of against the image, so the darkest plate on
+  // the page rendered as the lightest thing in it. Filters are deterministic
+  // and need no blending context. It also drops a rule that read as the glassy
+  // translucency this page forbids.
+  //
+  // It is also what keeps stock texture honest. There is no photograph of the
+  // shop, its staff or its equipment anywhere on this page, because a stock
+  // image in those places would claim to document a real business.
+  // -------------------------------------------------------------------
+  &__plate {
+    position: relative;
+    overflow: hidden;
+    margin: 0;
+    background: $bb-ink;
+
+    img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: grayscale(1) sepia(1) hue-rotate(-18deg) saturate(1.5)
+        brightness(0.72) contrast(1.12);
+    }
+
+    &--band {
+      height: clamp(8rem, 20vw, 14rem);
+      border-bottom: 2px solid $bb-ink;
+    }
+
+    // Hidden on narrow screens: at that size it crowds the statement instead of
+    // framing it, and the band above already carries the texture.
+    &--manifesto {
+      display: none;
+
+      @media (min-width: 900px) {
+        display: block;
+        height: 15rem;
+        border: 2px solid $bb-ink;
+      }
     }
   }
 
@@ -404,6 +459,14 @@ $bb-pad: clamp(1.15rem, 4vw, 3.5rem);
   // -------------------------------------------------------------------
   // 05 · métodos
   // -------------------------------------------------------------------
+  // This head carries no number marker, so the title takes the full width
+  // instead of sitting in the indented column the marked heads use.
+  &__methods {
+    .bb__head {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+
   &__methods-grid {
     list-style: none;
     margin: 0;

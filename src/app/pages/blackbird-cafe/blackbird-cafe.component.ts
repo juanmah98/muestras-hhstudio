@@ -262,11 +262,16 @@ export class BlackbirdCafeComponent
     { code: '14', label: 'Altramuces / Lupins' },
   ];
 
-  readonly methods = [
-    { id: '01', name: 'Espresso', spec: '9 bar · 92 °C · 25 s' },
-    { id: '02', name: 'Filtro / batch', spec: '1:16 · 94 °C · 4 min' },
-    { id: '03', name: 'Cold brew', spec: '1:8 · en frío · 18 h' },
-    { id: '04', name: 'Leches vegetales', spec: 'avena · coco · soja' },
+  // Only what the shop's own menu states. This list used to carry brew
+  // parameters — bar pressure, water temperature, ratio, time — and none of them
+  // appear in any of the sources. They were invented. Faking engineering
+  // precision on behalf of a real business misinforms its customers, so the
+  // invented values are gone and only the sourced facts remain.
+  readonly bar = [
+    { id: '01', name: 'Espresso', detail: '' },
+    { id: '02', name: 'Filtro (batch brew)', detail: 'S / L' },
+    { id: '03', name: 'Cold brew', detail: '' },
+    { id: '04', name: 'Leches vegetales', detail: 'avena · coco · soja' },
   ];
 
   readonly sites: Site[] = [

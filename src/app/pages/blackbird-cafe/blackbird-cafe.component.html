@@ -24,9 +24,31 @@
       </div>
     </section>
 
+    <!-- placa de textura: es atmósfera, no documenta el local ni al personal -->
+    <figure class="bb__plate bb__plate--band">
+      <img
+        src="assets/images/blackbird-cafe/beans-band.webp"
+        alt="Granos de café tostados"
+        loading="lazy"
+        decoding="async"
+        width="1600"
+        height="500"
+      />
+    </figure>
+
     <!-- 03 · manifiesto -->
     <section class="bb__manifesto" #reveal>
-      <p class="bb__kicker">[ 001 · MANIFIESTO ]</p>
+      <figure class="bb__plate bb__plate--manifesto">
+        <img
+          src="assets/images/blackbird-cafe/beans-plate.webp"
+          alt="Granos de café tostados, en detalle"
+          loading="lazy"
+          decoding="async"
+          width="640"
+          height="820"
+        />
+      </figure>
+
       <p class="bb__manifesto-body">{{ statement }}</p>
       <p class="bb__manifesto-aside">
         &gt;&gt;&gt; Todo se hornea en nuestro obrador. La cocina abre de 9 a 15.
@@ -36,7 +58,7 @@
     <!-- 04 · la carta -->
     <section class="bb__carta" #reveal>
       <header class="bb__head">
-        <span class="bb__kicker">[ 002 ]</span>
+        <span class="bb__kicker">[ 01 ]</span>
         <h2 class="bb__head-title">La carta</h2>
         <span class="bb__head-note">precios en euros</span>
       </header>
@@ -102,19 +124,20 @@
       </aside>
     </section>
 
-    <!-- 05 · métodos -->
+    <!-- 05 · en la barra -->
     <section class="bb__methods" #reveal>
       <header class="bb__head">
-        <span class="bb__kicker">[ 003 ]</span>
-        <h2 class="bb__head-title">Métodos</h2>
+        <h2 class="bb__head-title">En la barra</h2>
       </header>
 
       <ul class="bb__methods-grid">
-        @for (method of methods; track method.id) {
+        @for (item of bar; track item.id) {
           <li class="bb__method">
-            <span class="bb__method-id">{{ method.id }}</span>
-            <span class="bb__method-name">{{ method.name }}</span>
-            <span class="bb__method-spec">{{ method.spec }}</span>
+            <span class="bb__method-id">{{ item.id }}</span>
+            <span class="bb__method-name">{{ item.name }}</span>
+            @if (item.detail) {
+              <span class="bb__method-spec">{{ item.detail }}</span>
+            }
           </li>
         }
       </ul>
@@ -123,7 +146,7 @@
     <!-- 06 · el local (banda de tinta) -->
     <section class="bb__sites" #reveal>
       <header class="bb__head bb__head--inverse">
-        <span class="bb__kicker">[ 004 ]</span>
+        <span class="bb__kicker">[ 02 ]</span>
         <h2 class="bb__head-title">El local</h2>
         <span class="bb__head-note">horario de verano</span>
       </header>
@@ -158,7 +181,7 @@
     <!-- 07 · pedidos -->
     <section class="bb__order" #reveal>
       <header class="bb__head">
-        <span class="bb__kicker">[ 005 ]</span>
+        <span class="bb__kicker">[ 03 ]</span>
         <h2 class="bb__head-title">Pedidos</h2>
         <span class="bb__head-note">realiza tu pedido en barra</span>
       </header>

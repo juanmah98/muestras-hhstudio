@@ -1,6 +1,7 @@
-// src/environments/environment.ts (y environment.development.ts)
+// src/environments/environment.ts — el que se usa en `production` (default del build).
+// En `development` el builder lo reemplaza por `environment.development.ts` (fileReplacements).
 export const environment = {
-    production: false, // (En environment.ts cámbialo a true)
+    production: true,
     supabase: {
         url: 'URL_DE_SUPABASE_AQUI',
         key: 'ANON_KEY_DE_SUPABASE_AQUI'
