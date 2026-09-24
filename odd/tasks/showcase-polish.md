@@ -405,3 +405,45 @@ El preflight de review (RDD global activo) llegó a `status: ready` con lineage
 `review-4b3c3c38a075c40b`, pero la proyección `workspace` arrastraba cuatro
 archivos ajenos (`.atl/*`, `.gitignore`, `opencode.json`). El candidato correcto
 es el **rango commiteado** de esta rama, no el workspace sucio.
+
+## Review nativo — APROBADO y quemado (2026-09-24)
+
+**Linaje** `review-9fe87faefc6461cd`, tier **medium**, lente `review-reliability`,
+58 archivos / 1527 líneas, presupuesto de corrección 200. Candidato: **rango commiteado**
+`26999a160281fc6c43c5ec3f3ad02d5272763383..71c64de`.
+
+**Cierre**: `outcome: native-approved-acknowledgement-completed`, `authority: burned`,
+`burn_evidence: gentle-ai.review-acknowledged/v1`, `delivery: ordinary-repository-policy`.
+
+### Incidentes del propio review (para no repetirlos)
+
+1. **`baseRef` no acepta IDs abreviados.** `26999a1` fue rechazado con
+   `base-ref-unresolvable`; hay que pasar el hash completo de 40 o 64 caracteres, `HEAD`, o un
+   nombre de ref. No creó linaje (`lineage_created: false`).
+2. **Falta `mode` en el input.** El controller exige `{"mode":"ordinary", …}`; sin eso,
+   error pre-autoridad.
+3. **El primer STATUS agotó su presupuesto de tiempo** (`operation_timeout`,
+   `retry_safe: false`, `next_action: stop`). El usuario autorizó explícitamente **un**
+   reintento, y ese reintento funcionó. Sin esa autorización, lo correcto era detenerse.
+4. **El primer resultado del reviewer fue rechazado en admisión**:
+   `finding[0]: at least one proof reference is required`. El slot de la lente **no se
+   consumió** y el payload rechazado quedó en `.git/gentle-ai/rejected-results/`.
+   Lo correcto es leer STATUS fresco y correr **solo** el slot que reofrezca, nunca reenviar
+   los bytes rechazados. El segundo intento sobre el mismo slot sí fue admitido.
+5. **Lección de proceso (error mío)**: acumulé 9 commits / 1527 líneas sin revisar ninguno.
+   El plan ya tenía unidades A–F justamente para esto. Un candidato de ese tamaño es
+   aproximadamente 4× el tamaño de un review sano. **Rebanar el review en su momento.**
+
+### Hallazgos del review — los 4 son NO bloqueantes
+
+`disposition: informational`. Ninguno abrió corrección ni reabre el review. Son trabajo
+posterior y separado, **nunca** motivo para re-correr el review sobre este candidato.
+
+- [ ] **R1** (`R3-noop-intersection-observer`, WARNING) — `src/test-setup.ts:28-41`.
+  El shim nunca dispara el callback: toda la animación GSAP queda sin cobertura.
+- [ ] **R2** (`R3-vercel-csr-fallback-depends-on-build-output`, WARNING) — `vercel.json:5-8`.
+  El fallback SPA apunta a `index.csr.html`, un archivo que solo existe si el build lo emite.
+- [ ] **R3** (`R3-restore-mocks-scope`, SUGGESTION) — `vitest.config.ts:12-16`. Alcance de
+  `restoreMocks`.
+- [ ] **R4** (`R3-seo-constructor-side-effect`, SUGGESTION) —
+  `src/app/pages/not-found/not-found.component.ts:12-20`. Efecto de lado del constructor.
