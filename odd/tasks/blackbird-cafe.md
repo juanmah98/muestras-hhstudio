@@ -150,7 +150,97 @@ duotono papel/tinta. Esto además esquiva el problema de resolución que ya nos 
 - [ ] **B8** — Imágenes (2–3, duotono) si aportan. **Opcional y al final**: la página puede
   sostenerse sin imágenes, que es lo más fiel al arquetipo.
 
-## Decisiones pendientes del usuario
+## Review nativo — APROBADO y quemado (2026-09-24)
+
+**Linaje** `review-4164352cb23b8252`, tier **medium**, lente `review-reliability`,
+11 archivos / 1385 líneas. Candidato re-anclado con `baseRef` al commit previo
+(`e767f124649f67ec748240a53679cdc9edfa7fa5`) + `committedOnly: true`, **porque el candidato
+que ofrecía el preflight era un `base-diff` desde `e97e9bd` con 72 archivos y 2869 líneas,
+que re-incluía cinco commits ya aprobados** en los dos reviews anteriores.
+
+**Cierre**: `outcome: native-approved-acknowledgement-completed`, `authority: burned`,
+`burn_evidence: gentle-ai.review-acknowledged/v1`. Aprobado **al primer intento**
+(`prompt_bytes: 64110`, `result_bytes: 6140`).
+
+### Hallazgos — los 4 son NO bloqueantes
+
+`disposition: informational`. Ninguno abrió corrección. Son trabajo posterior y separado.
+
+- [x] **BB-R1** (`R3-BB-INTCLEANUP`, WARNING) — **ARREGLADO.**
+  El `IntersectionObserver` creado en `ngAfterViewInit` nunca se desconectaba: `ngOnDestroy`
+  existía pero solo sacaba la clase del body. Fuga real de observer (mantiene vivos los
+  element refs después de destruida la vista).
+  Ahora la instancia se guarda en `private revealObserver?: IntersectionObserver` y
+  `ngOnDestroy` hace `disconnect()` y la limpia. Verificado: build exit 0, 31/31 tests,
+  y el cierre presente en el código.
+  *Limitación honesta*: sin spec (ver BB-R2) la verificación es build + tests + inspección del
+  código, más el veredicto del reviewer sobre el arreglo. No hay aserción automática de que el
+  observer se cierre.
+
+  **Review del arreglo — APROBADO y quemado** (`review-fe472e8a42a22c8e`, 2026-09-24).
+  Candidato re-anclado a **2 archivos / 44 líneas** (`baseRef` al commit previo) en vez de los
+  **72 archivos / 2919 líneas** que ofrecía el preflight. `prompt_bytes: 15344` contra 64110 del
+  review de la página: **la cuarta parte**, por el solo hecho de acotar el candidato.
+  2 hallazgos no bloqueantes: `R3-001` (WARNING, `component.ts:327`) y `R3-002` (SUGGESTION,
+  `component.ts:64-67`) — ambos sobre el código que el arreglo tocó.
+- [x] **BB-R2** (`R3-BB-NO-SPEC`, WARNING) — **CERRADO COMO DISPOSICIÓN ACEPTADA, no como
+  defecto.** El WARNING era la opinión de la lente de confiabilidad, no política del proyecto.
+
+  **Decisión del usuario:** *"specs no harán falta ya que usamos ODD"*.
+
+  El razonamiento es sólido y vale escribirlo: **ODD ya aporta la disciplina de verificación**
+  —build, prerender con contenido real por ruta, capturas reales con Chrome headless, y el
+  review nativo— y agregar un spec por demo escala la suite **linealmente con la cantidad de
+  demos** para re-afirmar cosas que la verificación de prerender ya prueba de punta a punta.
+
+  **Qué cubre Blackbird entonces, sin spec propio:**
+  - `home.component.spec.ts` afirma que la grilla tiene **8 demos** (cubre la integración al índice).
+  - El build verifica que la ruta se prerenderiza (`Prerendered 10 static routes`) y que el HTML
+    estático lleva su `<title>` y su `og:image` absoluta con contenido real (25.505 chars).
+  - Las capturas con Chrome headless verifican el render de las dos mitades de la página.
+  - El review nativo aprobado cubrió el conjunto. **NO agregar spec para esta página.**
+
+  Si alguna vez se revisa esta página otra vez, este punto va a reaparecer como WARNING:
+  **es esperado y aceptado**, no reabrir por eso.
+- [ ] **BB-R3** (`R3-BB-SSR-BODY`, WARNING) — la clase `bb-paper-theme` **no se hornea** en el
+  HTML estático: Angular prerenderiza el contenido de `app-root`, no serializa los atributos
+  del `body`. Solo aplica post-hidratación. Mitigado con `min-height: 100dvh` en la raíz de la
+  página, así que el sustrato nunca deja ver el shell.
+- [x] **BB-R4** (`R3-OG-COUNT-GUARD`, SUGGESTION) — **CERRADO COMO FALSO POSITIVO, no como
+  defecto.** El reviewer sugirió que el guard de `tools/make-og-image.ps1:483-489` no debería
+  ser "un número escrito a mano".
+
+  **El número escrito a mano ES el mecanismo del guard.** El guard existe para detectar el bug
+  de parseo de `@(...)` con finales de línea mezclados, que **colapsa el array en un solo
+  string**. En ese caso `$cards.Count` vale **1**, así que un guard *derivado* del propio array
+  **no dispararía nunca**: sería exactamente el chequeo que no puede detectar su propia falla.
+
+  Y ya demostró su valor: al agregar la tarjeta de Blackbird tiró `Expected 9 cards, got 10`,
+  que es lo que me obligó a subir el número. Un guard que se auto-deriva no habría dicho nada.
+
+  **No cambiar.** Si un reviewer lo vuelve a marcar, es esperado.
+
+## Verificación visual — Chrome headless
+
+Se sirvió el build con `python -m http.server` dentro de
+`dist/muestras-hhstudio/browser` y se capturó la página real con Chrome headless
+(`--headless=new --screenshot --window-size=…`). **Encontró dos defectos que el build y los
+tests no muestran**, y ambos se arreglaron antes de commitear:
+
+1. **Bloque marrón sólido en la grilla de alérgenos.** Con `auto-fill` y 14 ítems la última
+   fila queda parcial y el lecho de tinta del truco `gap: 1px` se veía como un rectángulo
+   macizo. Se pasó a bordes explícitos.
+   *Lección*: el truco del lecho de 1px solo sirve si los ítems llenan las filas, o con
+   `auto-fit` (que colapsa los tracks vacíos). `auto-fill` **no** los colapsa.
+2. **Debajo del footer se veía negro.** El `body` del shell es `--hh-bg: #121418`. Se agregó
+   `min-height: 100dvh` a la raíz de la página y la clase `bb-paper-theme` en
+   `ngOnInit` / `ngOnDestroy` más una regla global en `src/styles.scss`.
+
+Para capturar una región baja a resolución completa sin PIL: servir un shim HTML con un
+`<iframe>` de 9000px de alto desplazado con `style.top = -Ypx`, y capturar una ventana de
+altura fija.
+
+## Decisiones del usuario
 
 - [x] **Horarios**: el **horario de verano** del Facebook (ver arriba).
 - [x] **Segunda sede**: **sí**, se incluyen las dos (Ruzafa y Little Blackbird).

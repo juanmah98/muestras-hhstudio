@@ -61,6 +61,11 @@ export class BlackbirdCafeComponent
   }
 
   ngOnDestroy(): void {
+    // Leaving the observer registered keeps the component's element refs alive
+    // after the view is gone, so it has to be torn down with the rest.
+    this.revealObserver?.disconnect();
+    this.revealObserver = undefined;
+
     if (typeof document === 'undefined') return;
     document.body.classList.remove(BlackbirdCafeComponent.PAPER_THEME_CLASS);
   }
@@ -291,6 +296,8 @@ export class BlackbirdCafeComponent
 
   @ViewChildren('reveal') reveals!: QueryList<ElementRef<HTMLElement>>;
 
+  private revealObserver?: IntersectionObserver;
+
   ngAfterViewInit(): void {
     if (typeof window === 'undefined') return;
 
@@ -320,6 +327,7 @@ export class BlackbirdCafeComponent
       { threshold: 0.08, rootMargin: '0px 0px -32px 0px' },
     );
 
+    this.revealObserver = observer;
     blocks.forEach((block) => observer.observe(block));
   }
 }
