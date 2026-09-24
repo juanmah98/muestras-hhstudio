@@ -99,6 +99,25 @@ Verificados con evidencia, no inferidos. Los archivos y líneas están en el his
     10 de 11 páginas ya tienen guarda; la única sin ninguna es `not-found`, que no
     se prerenderiza (es la ruta catch-all `**`). Riesgo bajo.
 
+12. **[2026-09-24] La auditoría de imaginería estaba mal y sobre-dimensionaba el problema.**
+    Comparaba la resolución nativa contra el **ancho del viewport**, ignorando las dos cosas
+    que deciden si una imagen se ve borrosa:
+    - **el tamaño de la caja donde se dibuja**, y
+    - **la opacidad con la que se pinta**.
+
+    Medido de nuevo: de las 6 imágenes "críticas", **4 se dibujaban al 4–7% de opacidad**.
+    Eso incluye a `pasteleria/chef-hands.jpg`, dibujada en una caja de **320×380** — o sea su
+    fuente de 343×512 se **reduce** y nunca fue borrosa. Otras dos
+    (`estetica/hero-bg`, `reformas/hero-bg`) sí estaban detrás de un gradiente del **mismo
+    color que el `background-color`**, que existía para oscurecer la foto, no para dar
+    profundidad. El problema real eran **2 imágenes, no 6**.
+
+13. **[2026-09-24] No hay forma de codificar WebP en esta máquina.** GDI+ expone solo
+    `image/bmp`, `image/jpeg`, `image/gif`, `image/tiff`, `image/png`; `ImageFormat.Webp` no
+    existe. Tampoco hay `cwebp`, ImageMagick, `ffmpeg` ni `sharp`. **Salida sin instalar nada**:
+    el CDN de Unsplash sirve WebP real vía `?fm=webp&w=…`, verificado leyendo los magic bytes
+    (`RIFF` + `WEBP` en offset 8).
+
 ## Decisiones tomadas
 
 - **Piloto: `estetica`.** Es el peor caso visual del showcase (dos imágenes a 5.6×),
@@ -274,14 +293,49 @@ Verificados con evidencia, no inferidos. Los archivos y líneas están en el his
   `vi.mock` con imports relativos está prohibido por el sistema de tests de Angular, así que
   no se puede simplemente mockear el environment desde el spec.
 
-### Dependen de imágenes nuevas (T2/T4)
+### Imaginería — cerrada el 2026-09-24
 
-- [ ] **T2** — Resolver la imaginería de `estetica`: obtener `hero-bg` y
-  `treatment-room` en resolución adecuada (≥1440px de ancho), en WebP.
-  El overlay del hero es `rgba(61,43,31, 0.88 → 0.55)`, así que la imagen es
-  textura/color más que detalle.
-- [ ] **T4** — Aplicar el mismo tratamiento de imaginería a `pasteleria`, `reformas`
-  y `salud` (5 fondos de viewport en total).
+> **La auditoría original estaba mal.** Ver hallazgo 12. De las 6 "críticas", 4 se dibujaban
+> al 4–7% de opacidad. El problema real eran **2 imágenes, no 6**.
+
+- [x] **T2** — `estetica/hero-bg` y `reformas/hero-bg` (las 2 que sí se veían borrosas).
+  **Hecho, con decisión del usuario**: en vez de buscar reemplazo, **se sacó la foto y se dejó
+  el gradiente**. Motivo verificado: en ambos heroes el gradiente es **del mismo color que el
+  `background-color`** (`rgba(61,43,31,…)` sobre `#3d2b1f`; `rgba(26,45,61,…)` sobre `#1a2d3d`),
+  así que existía para **oscurecer la foto**, no para dar profundidad. También se quitaron
+  `background-size`/`position`/`repeat`, que solo posicionaban la foto.
+  *Pendiente de gusto*: los dos heroes quedan como campo oscuro texturizado (grain al 0.04 en
+  `estetica`, más dos radial-glow al 0.08/0.06). Si se quiere profundidad, la corrección es
+  cambiar ese gradiente mismo-color por uno de dos tonos.
+- [x] **T4** — Texturas casi invisibles + `salud/clinic-interior`.
+  - Borrados **3 archivos** (137.824 bytes) con sus 4 usos al 4–7%: `estetica/treatment-room.jpg`
+    (0.05), `pasteleria/chef-hands.jpg` (0.055, caja 320×380), `salud/spa-treatment.jpg`
+    (0.07 / 0.06 / 0.04 — un archivo, tres usos). Los bloques `::before` eran **textura pura**
+    (content / position / inset / background / opacity / pointer-events); se borraron enteros,
+    conservando `position: relative` y `overflow` de los padres.
+  - **`salud/clinic-interior.jpg` reemplazada** por `clinic-interior.webp` 1600×900
+    (157.720 bytes), elegida por el usuario entre candidatas (se descartó una con texto legible
+    incrustado). La referencia del SCSS pasó a `.webp`.
+
+  **Corrección de un error mío**: al ofrecer la opción dije "4 archivos, 208 KB". Son
+  **3 archivos y 137.824 bytes**.
+
+  **Licencia verificada en la fuente**: Unsplash permite uso comercial libre, **sin atribución
+  obligatoria**; no permite vender la imagen sin modificar ni compilar para replicar un servicio
+  competidor. Se prefirieron interiores/texturas sobre caras identificables (la licencia no
+  incluye releases de modelo).
+- [x] **T5-bis** — El método de detección de huérfanas estaba roto y se corrigió.
+  Buscaba por **nombre de archivo**, y `hero-bg.jpg` existe en 4 demos, así que las referencias
+  de una página tapaban la orfandad de otra. Con búsqueda por **path completo** aparecieron
+  **2 huérfanas que T5 no vio**: `electricista/hero-bg.jpg` (69.630 bytes) y
+  `pasteleria/hero-bg.jpg` (62.641 bytes). Borradas. Las 10 de `bedc7de` tenían nombres únicos,
+  así que ese borrado sigue siendo correcto — pero el método era poco sólido.
+  `public/assets/images/` quedó en **980 KB** (venía de ~3.85 MB).
+- [ ] **T16** — Home: la tarjeta de `seo-ia` no debe parecer un demo. **Pedido del usuario.**
+  Hoy quedó como la 8ª tarjeta de la misma grilla (`sections` en `home.component.ts`), pero
+  `seo-ia` es **contenido informativo**, no una muestra: hay que **bajarla** de la grilla de
+  demos y darle **una card de otro tipo**. Ojo con `home.component.spec.ts`, que ahora afirma
+  que `sections` tiene 8 elementos — si `seo-ia` sale de ese array, el test vuelve a 7.
 
 ### Al final
 

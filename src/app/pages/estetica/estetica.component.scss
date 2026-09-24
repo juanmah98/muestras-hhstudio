@@ -359,12 +359,11 @@ $shadow-ambient-hover: 0 8px 40px rgba(61, 43, 31, 0.06);
     padding: 0;
     overflow: hidden;
     background-color: $color-bg-dark;
-    background-image:
-      linear-gradient(to bottom, rgba(61, 43, 31, 0.88), rgba(61, 43, 31, 0.55)),
-      url('/assets/images/estetica/hero-bg.jpg');
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
+    background-image: linear-gradient(
+      to bottom,
+      rgba(61, 43, 31, 0.88),
+      rgba(61, 43, 31, 0.55)
+    );
 
     &::after {
       content: '';
@@ -472,15 +471,6 @@ $shadow-ambient-hover: 0 8px 40px rgba(61, 43, 31, 0.06);
     padding: $section-pad;
     background-color: $color-bg;
     position: relative;
-
-    &::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: url('/assets/images/estetica/treatment-room.jpg') center/cover no-repeat;
-      opacity: 0.05;
-      pointer-events: none;
-    }
 
     @media (min-width: 768px) {
       padding: 6rem 2rem;
