@@ -63,8 +63,13 @@ Los IDs son los del audit. ✅ = arreglado · ⬜ = abierto · ❌ = falso posit
   así que la grilla mecánica es client-dependiente. Arreglarlo pediría cargar un mono webfont,
   que va **contra** T6 (reducir familias). **Decisión pendiente.**
 - ✅ **T4** (warn) — 7 valores de tracking mono, dos bajo el piso de 0.05em. **Arreglado.**
-- ⬜ **T5** (nit) — tracking negativo aplicado a 18–24px donde debería reservarse a ≥32px.
-- ⬜ **T6** (nit) — `line-height: 0.82` en el hero, bajo el rango 0.85–0.95.
+- ✅ **T5** (nit) — tracking negativo aplicado a 18–24px donde debería reservarse a ≥32px.
+  **Arreglado** en U1: borradas las dos declaraciones por debajo del umbral (`.bb__method-name`,
+  `.bb__site-name`), con la regla escrita en el archivo. El `-0.045em` del hero **no se toca**: es
+  *load-bearing* del presupuesto de T2, y el `-0.03em` de `.bb__head-title` está sobre el umbral.
+- ✅ **T6** (nit) — `line-height: 0.82` en el hero, bajo el rango 0.85–0.95. **Arreglado** en U1:
+  `0.9`. Es inerte hoy porque el hero es de una sola línea (`nowrap`), pero era el valor que
+  colisionaba en cuanto se restaure el wrapping.
 - ✅ **T7** (nit) — `__site-hours-note` era el único rótulo de su grupo sin mayúsculas.
   **Arreglado.**
 - ✅ **T8** — el split macro/micro es real y limpio. **PASS.**
@@ -96,7 +101,9 @@ Los IDs son los del audit. ✅ = arreglado · ⬜ = abierto · ❌ = falso posit
 - ⬜ **L9** (nit) — el type oversize está calibrado para quedar **dentro** de su gutter, o sea
   lo contrario de "viewport-bleeding". *(Nota: bleed en mobile causa scroll horizontal, así que
   puede ser una desviación deliberada.)*
-- ⬜ **L10** (nit) — regla doble de 2px en el único límite acciones/footer.
+- ✅ **L10** (nit) — regla doble de 2px en el único límite acciones/footer. **Arreglado** en U1: se
+  quitó el `border-top` de `.bb__footer-line`; queda el `border-bottom` de `.bb__actions`, que es el
+  que cierra un compartimento de `gap: 1px`. El `padding-top` se mantuvo para no colapsar el ritmo.
 
 ### Color (C)
 
@@ -137,9 +144,13 @@ Los IDs son los del audit. ✅ = arreglado · ⬜ = abierto · ❌ = falso posit
 - ✅ **P8** (warn) — `.bb__site-tel:hover` **atenuaba** el teléfono: 17.96:1 → 6.64:1, una
   **reducción de contraste del 63%** como señal de "interactivo". **Arreglado**: invierte y
   sube el contraste.
-- ⬜ **P9** (nit) — `.bb__footer-note a` es el único link sin hover/focus/transition.
-- ⬜ **P10** (nit) — `.bb__action:hover` a `#eae8e3` da ΔL de 0.035 en OKLab contra 0.06–0.12
-  requeridos: la señal de hover es solo el marco.
+- ✅ **P9** (nit) — `.bb__footer-note a` es el único link sin hover/focus/transition. **Arreglado**
+  en U1: `transition` + hover/focus que **suben** el contraste (a `$bb-ink`, + underline) + outline
+  propio en `:focus-visible`, y sumado al bloque `prefers-reduced-motion`.
+- ✅ **P10** (nit) — `.bb__action:hover` a `#eae8e3` da ΔL de 0.035 en OKLab contra 0.06–0.12
+  requeridos. **Arreglado** en U1: el hover pasa a `$bb-coffee` con texto en papel → ΔL ~0.55, y es
+  el acento señalando *acción*, que es exactamente su función desde C3. El outline de foco pasó a
+  `$bb-ink` porque un anillo marrón sobre fondo marrón era invisible.
 
 ## WHAT NOT TO CHANGE (textual del audit)
 
@@ -162,6 +173,93 @@ El audit **calculó** que el acento que exige el contrato falla su propio requis
 `#FF2A2A` da 3.39:1 sobre papel. Conclusión textual: el par de dos luminosidades *"no es una
 licencia que la página se dio a sí misma, es **el workaround correcto para un defecto real del
 contrato**"*.
+
+## Plan de cierre — decidido en sesión 2
+
+Cuatro unidades de trabajo, cada una un candidato de review chico. ⬜ pendiente · 🔄 en curso · ✅ cerrada.
+
+### Decisiones tomadas
+
+1. **Superficie (S2/S4/D5/D6): 1-bit + grain.** Las dos placas pasan a trama determinista 1-bit
+   con `mix-blend-mode: multiply`; grain global también por `multiply`. El grain **no** se hace con
+   `opacity`, porque la dimensión Geometría del audit prohíbe translucidez, aunque §7 pida
+   "low-opacity": se resuelve con el modo de fusión, no con alfa.
+   **La idea que ordena esto**: S2 y D5 son la misma causa. Las dos placas son oscuras
+   *fotográficamente*, no por tinta. Con 1-bit, las cuatro masas oscuras pasan a **dos**: una
+   reversión a tinta deliberada (la banda de sedes) + una sola familia fotográfica.
+2. **Acento (C1): se mantiene el marrón de marca.** Es una desviación de **matiz**, respaldada por
+   la medición del propio audit: el rojo del contrato falla AA en los dos sustratos (`#E61919`
+   **4.22:1** sobre papel y **4.26:1** sobre tinta; `#FF2A2A` **3.39:1** sobre papel). Queda escrito
+   en el archivo y acá.
+3. **Mono (T3): se carga JetBrains Mono** (primera cara del §3.2), subset latino. Hoy
+   `ui-monospace` resuelve como Consolas / SF Mono / DejaVu → tres anchos de avance distintos, así
+   que la columna de corchetes y la de precios **no son reproducibles** entre máquinas.
+4. **Espacio: sólo L2** (una gramática de columnas compartida). **L8 y L9 quedan como desviación
+   documentada**: el bleed pelea con el presupuesto de `13.6vw` que ya se midió en T2 y arriesga
+   scroll horizontal en mobile.
+5. **CORRECCIÓN (feedback del usuario mirando la página en un monitor ancho): la página vuelve a
+   sangre completa.** El usuario vio márgenes laterales y los rechazó: *"me gustaba la vista sin
+   márgenes"*. Esos márgenes eran el cap de **L1** (`max-width: 1320px; margin-inline: auto` en
+   `.bb__main`, commit `fb93c29`): a 1920px dejaba **300px** de papel muerto por lado y a 2560px,
+   **620px**. Blackbird era la **única** página de la vidriera capada así (las otras usan el
+   `.container` de Bootstrap, que es convención preexistente).
+
+   **El audit se contradice, y eso hay que saberlo**: L1 pide una medida de página y **L9** marca como
+   defecto que *"nada sangra"* — textual: atrapar el tipo macro perfectamente dentro del marco es
+   *"el movimiento opuesto a sangrarlo, y el más frágil"*. No es una contradicción real: **L1 es una
+   regla de medida de texto; L9 es una regla de composición.** Se resuelven en capas distintas.
+
+   **Resolución**: no se capa la *página*, se capa la *medida del texto*. La página sangra de borde a
+   borde (franja, bandas, placas, reglas) y el **ledger** se ata a una columna declarada de una
+   grilla compartida. Ese es el movimiento de la imprenta suiza: la grilla ocupa todo el ancho, el
+   texto respeta su medida. Arregla L1 **y** L2 con el mismo cambio.
+
+### Unidades
+
+| # | Unidad | Hallazgos | Archivos | Estado |
+|---|---|---|---|---|
+| U1 | Tipografía y estados | T5, T6, L10, P9, P10 + comentario de `R3-plate-filter-reachability` | `.scss` | ✅ |
+| U2 | Sangre y medida | L1 (revertido) + L2 (grilla de columnas compartida) | `.scss` | ⬜ |
+| U3 | Superficie | S2, S4, D5, D6 + BB-R8 | `.scss`, `.html` | ⬜ |
+| U4 | Mono determinista | T3 | `.scss`, asset `woff2` | ⬜ |
+| U5 | Cierre y desviaciones | D2, D4 + BB-R9 + las disposiciones escritas | `.scss`, `.ts`, docs | ⬜ |
+
+**U2 va antes que U3 a propósito**: conviene ver la página a sangre completa en 1920 y 2560px *antes*
+ de agregar la trama 1-bit, porque el 1-bit interactúa con el ancho de la banda (S3 ya había marcado
+ que una masa de acento a sangre es la que erosiona la escasez del acento).
+
+### U1 — cerrada
+
+Build `exit 0`, **31/31 tests en 7 archivos**, y los 7 cambios confirmados línea por línea por un
+verificador independiente. Cambios: `line-height: 0.82 → 0.9`; dos `letter-spacing` negativos
+borrados por debajo de 32px (con la regla escrita para que no vuelvan); el borde duplicado del footer
+reducido a uno; el link del footer con estados que **suben** contraste; el hover de acción pasado a
+`$bb-coffee` (ΔL 0.035 → ~0.55, y es el acento marcando *acción*, que es su función); y las dos
+frases del comentario que afirmaban algo que `brightness(0.82)` no puede hacer.
+
+### Disposiciones — se cierran sin arreglar, con razón verificable
+
+- **C1** — desviación de matiz, respaldada por contraste (ver arriba).
+- **L8 / L9** — desviación deliberada: el documento prioriza que nada sangre antes que el
+  arquetipo, porque el bleed rompe a 320px y compite con el margen óptico del hero
+  (WHAT-NOT-TO-CHANGE #4).
+- **P6** — no accionable en el componente: `<!---->`, `_nghost-*`, `ngh` y `routerlink` los emite
+  Angular. El `<title>` que anunciaba *"copia para revisión"* era de la copia que armé para
+  alimentar el audit, no del repo. Los `<meta>` escasos también son de esa copia.
+- **S1** — el audit mismo lo declara *dispositivo legítimo*; se cierra junto con S2.
+- **R3-ROUND-SEQUENCE / R3-HOVER-COLOR / R3-RULE-VARS / R3-NOWRAP-FLOOR** — el sobre del review trae
+  `id`/`lens`/`location`/`severity`/`disposition` **pero ninguna descripción**. Es un **hueco de
+  evidencia**, no un hallazgo accionable: cualquier cambio sería adivinar.
+- **R3-plate-filter-reachability** — único accionable de los R3: el comentario del bloque promete
+  *"de papel a tinta"* y `brightness(0.82)` es multiplicativo, así que nunca llega a `#0a0a0a`. Se
+  corrige el comentario en U1 — y el filtro desaparece en U2 con el 1-bit.
+- **BB-R8 / BB-R9** — cosméticos, viajan con U2 y U4 en vez de merecer un ciclo de review propio
+  (regla ya establecida: *no perseguir nits sueltos*).
+- **R3-LEADER-BASELINE** — el mapeo determinó que el desprendimiento **ya está arreglado** por
+  `align-items: baseline`, y que la desviación física máxima del líder vacío es **1px**: su caja mide
+  exactamente *ancho de pista × 1px* (0 de contenido + el borde punteado), así que el peor caso es
+  `[baseline−1px, baseline]`. **Se mide en navegador antes de tocar nada**; si no hay desvío
+  visible, se cierra como falso positivo.
 
 ## Pendientes que salieron de los reviews nativos
 

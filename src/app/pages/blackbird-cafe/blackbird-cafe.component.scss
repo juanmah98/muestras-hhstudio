@@ -184,7 +184,7 @@ $bb-pad: clamp(1.15rem, 4vw, 3.5rem);
     // that renders wider than Inter.
     font-size: clamp(2.4rem, 13.6vw, 13rem);
     font-weight: 900;
-    line-height: 0.82;
+    line-height: 0.9;
     letter-spacing: -0.045em;
     text-transform: uppercase;
     margin: 0 0 clamp(1.25rem, 3vw, 2.25rem) -0.055em;
@@ -261,7 +261,7 @@ $bb-pad: clamp(1.15rem, 4vw, 3.5rem);
   //
   // The archetype wants imagery secondary and print-like, not photographic, so
   // the plates are pushed to a NEUTRAL monochrome: no chroma at all, straight
-  // from paper to ink.
+  // from paper toward ink.
   //
   // This is done with a filter chain and nothing else. The first version
   // multiplied a coffee layer over each plate with mix-blend-mode, and the
@@ -271,7 +271,7 @@ $bb-pad: clamp(1.15rem, 4vw, 3.5rem);
   // accent family, and with the band full-bleed that was the largest accent
   // mass on the page. `brightness(0.72)` is multiplicative and can never reach
   // #0a0a0a either. Grayscale plus contrast is neutral, deterministic, needs no
-  // blending context, and lets the plates actually reach ink.
+  // blending context, and lets the plates approach ink.
   //
   // It is also what keeps stock texture honest. There is no photograph of the
   // shop, its staff or its equipment anywhere on this page, because a stock
@@ -538,7 +538,7 @@ $bb-pad: clamp(1.15rem, 4vw, 3.5rem);
     font-size: clamp(1.15rem, 2.2vw, 1.5rem);
     font-weight: 900;
     line-height: 0.95;
-    letter-spacing: -0.025em;
+    // Negative tracking is reserved for macro type (>=32px); see audit T5.
     text-transform: uppercase;
   }
 
@@ -593,7 +593,6 @@ $bb-pad: clamp(1.15rem, 4vw, 3.5rem);
     font-size: clamp(1.5rem, 3.4vw, 2.3rem);
     font-weight: 900;
     line-height: 0.9;
-    letter-spacing: -0.03em;
     text-transform: uppercase;
     margin: 0;
   }
@@ -688,16 +687,18 @@ $bb-pad: clamp(1.15rem, 4vw, 3.5rem);
 
     &:hover,
     &:focus-visible {
-      background: $bb-paper-deep;
+      background: $bb-coffee;
+      color: $bb-paper;
 
       .bb__action-value {
         text-decoration: underline;
+        text-decoration-color: $bb-rule-on-ink;
         text-underline-offset: 0.25em;
       }
     }
 
     &:focus-visible {
-      outline: 2px solid $bb-coffee;
+      outline: 2px solid $bb-ink;
       outline-offset: -4px;
     }
   }
@@ -733,7 +734,6 @@ $bb-pad: clamp(1.15rem, 4vw, 3.5rem);
     color: $bb-ink;
     margin: 0 0 0.6rem;
     padding-top: 1.25rem;
-    border-top: 2px solid $bb-ink;
   }
 
   &__footer-note {
@@ -743,13 +743,26 @@ $bb-pad: clamp(1.15rem, 4vw, 3.5rem);
 
     a {
       color: $bb-ink-soft;
+      transition: color 0.18s linear;
+
+      &:hover,
+      &:focus-visible {
+        color: $bb-ink;
+        text-decoration: underline;
+      }
+
+      &:focus-visible {
+        outline: 2px solid $bb-ink;
+        outline-offset: 3px;
+      }
     }
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .bb__action,
-  .bb__site-tel {
+  .bb__site-tel,
+  .bb__footer-note a {
     transition: none;
   }
 }
