@@ -1,0 +1,198 @@
+<div class="bb">
+  <!-- 01 · franja técnica -->
+  <div class="bb__strip">
+    <span class="bb__strip-cell">[ BLACKBIRD® ]</span>
+    <span class="bb__strip-cell bb__strip-cell--mid">VALENCIA / ES</span>
+    <span class="bb__strip-cell bb__strip-cell--end">#madefresheveryday</span>
+  </div>
+
+  <main class="bb__main">
+    <!-- 02 · hero -->
+    <section class="bb__hero">
+      <h1 class="bb__hero-title">Blackbird</h1>
+
+      <div class="bb__hero-bar">
+        <p class="bb__hero-tagline">
+          Pastelería artesana / Café de especialidad
+          <span class="bb__hero-tagline-en">From scratch bakery / Specialty coffee</span>
+        </p>
+        <p class="bb__hero-index">
+          <span>Obrador propio</span>
+          <span>Micro-tostadores</span>
+          <span>Tostado de temporada</span>
+        </p>
+      </div>
+    </section>
+
+    <!-- 03 · manifiesto -->
+    <section class="bb__manifesto" #reveal>
+      <p class="bb__kicker">[ 001 · MANIFIESTO ]</p>
+      <p class="bb__manifesto-body">{{ statement }}</p>
+      <p class="bb__manifesto-aside">
+        &gt;&gt;&gt; Todo se hornea en nuestro obrador. La cocina abre de 9 a 15.
+      </p>
+    </section>
+
+    <!-- 04 · la carta -->
+    <section class="bb__carta" #reveal>
+      <header class="bb__head">
+        <span class="bb__kicker">[ 002 ]</span>
+        <h2 class="bb__head-title">La carta</h2>
+        <span class="bb__head-note">precios en euros</span>
+      </header>
+
+      <div class="bb__groups">
+        @for (group of menu; track group.id) {
+          <section class="bb__group">
+            <h3 class="bb__group-title">
+              {{ group.label }}
+              @if (group.note) {
+                <span class="bb__group-note">{{ group.note }}</span>
+              }
+            </h3>
+
+            <ul class="bb__items">
+              @for (item of group.items; track item.name) {
+                <li class="bb__item">
+                  <span class="bb__item-name">
+                    {{ item.name }}
+                    @if (item.allergens) {
+                      <span class="bb__item-allergens">({{ item.allergens }})</span>
+                    }
+                  </span>
+
+                  <span class="bb__item-lead" aria-hidden="true"></span>
+
+                  <span class="bb__item-price">
+                    @if (item.size) {
+                      <span class="bb__item-size">{{ item.size }}</span>
+                    }
+                    <data [attr.value]="item.price">€{{ item.price }}</data>
+                  </span>
+
+                  @if (item.detail) {
+                    <span class="bb__item-detail">{{ item.detail }}</span>
+                  }
+                </li>
+              }
+            </ul>
+          </section>
+        }
+      </div>
+
+      <aside class="bb__supplements">
+        <h3 class="bb__supplements-title">[ SUPLEMENTOS ]</h3>
+        <ul class="bb__supplements-list">
+          @for (extra of supplements; track extra) {
+            <li>{{ extra }}</li>
+          }
+        </ul>
+      </aside>
+
+      <aside class="bb__allergens">
+        <h3 class="bb__allergens-title">[ ALÉRGENOS ]</h3>
+        <dl class="bb__allergens-list">
+          @for (allergen of allergens; track allergen.code) {
+            <div class="bb__allergen">
+              <dt class="bb__allergen-code">{{ allergen.code }}</dt>
+              <dd class="bb__allergen-label">{{ allergen.label }}</dd>
+            </div>
+          }
+        </dl>
+      </aside>
+    </section>
+
+    <!-- 05 · métodos -->
+    <section class="bb__methods" #reveal>
+      <header class="bb__head">
+        <span class="bb__kicker">[ 003 ]</span>
+        <h2 class="bb__head-title">Métodos</h2>
+      </header>
+
+      <ul class="bb__methods-grid">
+        @for (method of methods; track method.id) {
+          <li class="bb__method">
+            <span class="bb__method-id">{{ method.id }}</span>
+            <span class="bb__method-name">{{ method.name }}</span>
+            <span class="bb__method-spec">{{ method.spec }}</span>
+          </li>
+        }
+      </ul>
+    </section>
+
+    <!-- 06 · el local (banda de tinta) -->
+    <section class="bb__sites" #reveal>
+      <header class="bb__head bb__head--inverse">
+        <span class="bb__kicker">[ 004 ]</span>
+        <h2 class="bb__head-title">El local</h2>
+        <span class="bb__head-note">horario de verano</span>
+      </header>
+
+      <div class="bb__sites-grid">
+        @for (site of sites; track site.name) {
+          <article class="bb__site">
+            <p class="bb__site-label">{{ site.label }}</p>
+            <h3 class="bb__site-name">{{ site.name }}</h3>
+
+            <address class="bb__site-address">
+              {{ site.street }}<br />
+              {{ site.city }}
+            </address>
+
+            <dl class="bb__site-hours">
+              <dt>Horario de verano</dt>
+              <dd>
+                {{ site.hours }}
+                @if (site.hoursNote) {
+                  <span class="bb__site-hours-note">{{ site.hoursNote }}</span>
+                }
+              </dd>
+            </dl>
+
+            <a class="bb__site-tel" [href]="phoneHref">{{ phone }}</a>
+          </article>
+        }
+      </div>
+    </section>
+
+    <!-- 07 · pedidos -->
+    <section class="bb__order" #reveal>
+      <header class="bb__head">
+        <span class="bb__kicker">[ 005 ]</span>
+        <h2 class="bb__head-title">Pedidos</h2>
+        <span class="bb__head-note">realiza tu pedido en barra</span>
+      </header>
+
+      <div class="bb__actions">
+        <a class="bb__action" [href]="phoneHref">
+          <span class="bb__action-label">Teléfono</span>
+          <span class="bb__action-value">{{ phone }}</span>
+        </a>
+        <a class="bb__action" [href]="'mailto:' + email">
+          <span class="bb__action-label">Email</span>
+          <span class="bb__action-value">{{ email }}</span>
+        </a>
+        <a
+          class="bb__action"
+          [href]="instagramUrl"
+          target="_blank"
+          rel="noopener"
+        >
+          <span class="bb__action-label">Instagram</span>
+          <span class="bb__action-value">{{ instagram }}</span>
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="bb__footer">
+    <p class="bb__footer-line">
+      <span>BLACKBIRD® · Café de especialidad · València</span>
+      <span>&copy; {{ currentYear }}</span>
+    </p>
+    <p class="bb__footer-note">
+      Demo de HH Studio ·
+      <a routerLink="/">volver al índice</a>
+    </p>
+  </footer>
+</div>

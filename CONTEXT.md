@@ -78,6 +78,7 @@ Uso real por demo (verificado):
 | `carpinteria` | Cormorant Garamond (headlines) + Inter (body) |
 | `electricista` | Space Grotesk (headlines) + Montserrat (body) |
 | `seo-ia` | Montserrat, Space Grotesk + stack monospace de sistema |
+| `blackbird-cafe` | Inter (macro, weight 900) + stack monospace de sistema. **No suma familias**: `Inter` ya se carga como variable `wght@100..900`. |
 
 > Las fuentes se siguen cargando globalmente en `index.html` (un solo `<link>`), **no** por ruta. Es un pendiente conocido: idealmente cada demo debería descargar solo las familias que usa.
 >
@@ -120,12 +121,13 @@ Rutas reales registradas en `src/app/app.routes.ts` (todas lazy-loading):
 | `/electricista` | VOLTIO Electricista | ✅ Registrada |
 | `/estetica` | LUMINA Estética | ✅ Registrada |
 | `/pasteleria` | Pastelería | ✅ Registrada |
+| `/blackbird-cafe` | BLACKBIRD Café (brutalismo suizo, sustrato claro) | ✅ Registrada |
 | `/seo-ia` | SEO & IA | ✅ Registrada |
 | `**` | Not found | ✅ Registrada |
 
-El índice del home (`src/app/pages/home/home.component.ts`) lista 7 demos en este orden: Apro Clínica, Salud, Carpintería, ST REFORMAS, VOLTIO Electricista, LUMINA Estética, Pastelería.
+El índice del home (`src/app/pages/home/home.component.ts`) lista **8 demos** en este orden: Apro Clínica, Salud, Carpintería, ST REFORMAS, VOLTIO Electricista, LUMINA Estética, Pastelería, BLACKBIRD Café.
 
-> **Pregunta abierta**: `seo-ia` tiene ruta y página completa pero **no** está listada en el índice del home — solo se llega por URL directa. ¿Es intencional?
+> **`seo-ia` ya NO está en la grilla de demos** (decisión del usuario, 2026-09-24). No es un demo sino una guía sobre cómo lee la IA las búsquedas, así que sale del array `sections` y se renderiza como una **tira informativa a ancho completo debajo de la grilla**, con estructura y estilo propios (grilla horizontal, eyebrow "Recurso", CTA "Ver la guía"). Se llega por esa tira o por URL directa.
 
 > No existe ruta `/forms`: el showcase de signal forms vive como componente en `src/app/forms/`, pero no está ruteado.
 

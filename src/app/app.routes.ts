@@ -56,6 +56,13 @@ export const routes: Routes = [
       ),
   },
   {
+    path: 'blackbird-cafe',
+    loadComponent: () =>
+      import('./pages/blackbird-cafe/blackbird-cafe.component').then(
+        (m) => m.BlackbirdCafeComponent,
+      ),
+  },
+  {
     path: 'seo-ia',
     loadComponent: () =>
       import('./pages/seo-ia/seo-ia.component').then(

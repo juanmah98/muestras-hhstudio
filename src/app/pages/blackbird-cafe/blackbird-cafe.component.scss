@@ -1,0 +1,636 @@
+// =====================================================================
+// BLACKBIRD CAFÉ — Swiss Industrial Print (brutalist)
+//
+// Light substrate only: the skill forbids mixing light and dark substrates
+// in one interface, and two other demos already own the dark space.
+//
+// ONE accent (coffee) at TWO lightnesses, because a single value cannot
+// serve both substrates and still pass WCAG AA. Contrast measured:
+//   ink / paper              17.96:1
+//   ink-soft / paper          8.07:1
+//   coffee / paper            7.69:1
+//   coffee-lift / ink         6.64:1   (coffee itself is 3.55:1 on ink: FAILS)
+// =====================================================================
+$bb-paper: #f4f4f0;
+$bb-paper-deep: #eae8e3;
+$bb-ink: #0a0a0a;
+$bb-ink-soft: #4a4a46;
+$bb-coffee: #6b4423;
+$bb-coffee-lift: #c08a5e;
+
+// Neutral rule values for each substrate. These are values on the ink and
+// paper scales, not extra accents.
+$bb-rule: #d5d2cb;
+$bb-rule-on-ink: #33332f;
+
+$bb-mono: ui-monospace, 'SFMono-Regular', 'Cascadia Mono', Menlo, Consolas,
+  'Liberation Mono', monospace;
+$bb-sans: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+
+$bb-pad: clamp(1.15rem, 4vw, 3.5rem);
+
+:host {
+  display: block;
+}
+
+.bb {
+  // The brutalist contract, enforced rather than assumed: nothing in this
+  // page may inherit a rounded corner from Bootstrap.
+  *,
+  *::before,
+  *::after {
+    border-radius: 0;
+  }
+
+  background: $bb-paper;
+  color: $bb-ink;
+  font-family: $bb-sans;
+  font-size: 1rem;
+  line-height: 1.5;
+  overflow-x: hidden;
+  // The shell's body is dark; the page owns its own substrate so a short
+  // viewport never shows the shell through.
+  min-height: 100dvh;
+
+  // -------------------------------------------------------------------
+  // shared primitives
+  // -------------------------------------------------------------------
+  &__kicker,
+  &__head-note,
+  &__group-title,
+  &__item-price,
+  &__item-size,
+  &__item-allergens,
+  &__method-id,
+  &__method-spec,
+  &__site-label,
+  &__site-hours dt,
+  &__action-label,
+  &__strip-cell,
+  &__footer-note {
+    font-family: $bb-mono;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  &__kicker {
+    font-size: 0.72rem;
+    color: $bb-coffee;
+    margin: 0;
+  }
+
+  &__head {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: baseline;
+    gap: 0.5rem 1.25rem;
+    padding: 2.75rem $bb-pad 0.9rem;
+    border-bottom: 2px solid $bb-ink;
+  }
+
+  &__head-title {
+    // Macro type: the structural infrastructure of the page.
+    font-size: clamp(1.9rem, 5.5vw, 3.4rem);
+    font-weight: 900;
+    line-height: 0.88;
+    letter-spacing: -0.03em;
+    text-transform: uppercase;
+    margin: 0;
+  }
+
+  &__head-note {
+    font-size: 0.7rem;
+    color: $bb-ink-soft;
+    text-align: right;
+  }
+
+  // -------------------------------------------------------------------
+  // 01 · technical strip
+  // -------------------------------------------------------------------
+  &__strip {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 1px;
+    background: $bb-rule-on-ink;
+    border-bottom: 2px solid $bb-ink;
+  }
+
+  &__strip-cell {
+    background: $bb-ink;
+    color: $bb-paper;
+    font-size: 0.7rem;
+    padding: 0.55rem $bb-pad;
+
+    &--mid {
+      text-align: center;
+    }
+
+    &--end {
+      text-align: right;
+      color: $bb-coffee-lift;
+    }
+  }
+
+  // -------------------------------------------------------------------
+  // 02 · hero
+  // -------------------------------------------------------------------
+  &__hero {
+    // Clipping the macro type is the point: the wordmark bleeds the grid.
+    overflow: hidden;
+    padding: clamp(2.5rem, 7vw, 5rem) $bb-pad 0;
+    border-bottom: 2px solid $bb-ink;
+  }
+
+  &__hero-title {
+    font-size: clamp(3.6rem, 17vw, 13rem);
+    font-weight: 900;
+    line-height: 0.82;
+    letter-spacing: -0.045em;
+    text-transform: uppercase;
+    margin: 0 0 clamp(1.25rem, 3vw, 2.25rem) -0.055em;
+    white-space: nowrap;
+  }
+
+  &__hero-bar {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 0.75rem 2rem;
+    align-items: baseline;
+    padding-bottom: 1.25rem;
+    border-top: 1px solid $bb-rule;
+    padding-top: 1rem;
+  }
+
+  &__hero-tagline {
+    font-size: clamp(0.95rem, 1.6vw, 1.15rem);
+    font-weight: 600;
+    margin: 0;
+    max-width: 44ch;
+  }
+
+  &__hero-tagline-en {
+    display: block;
+    font-family: $bb-mono;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: $bb-ink-soft;
+    margin-top: 0.3rem;
+  }
+
+  &__hero-index {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 0.35rem 1rem;
+    font-family: $bb-mono;
+    font-size: 0.68rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: $bb-ink-soft;
+    margin: 0;
+
+    span::before {
+      content: '+ ';
+      color: $bb-coffee;
+    }
+  }
+
+  // -------------------------------------------------------------------
+  // 03 · manifesto
+  // -------------------------------------------------------------------
+  &__manifesto {
+    padding: clamp(2.5rem, 6vw, 4.5rem) $bb-pad;
+    border-bottom: 2px solid $bb-ink;
+    // Asymmetric negative space, not centred.
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 1.5rem;
+
+    @media (min-width: 900px) {
+      grid-template-columns: 8rem minmax(0, 1fr) 14rem;
+      column-gap: 2rem;
+    }
+  }
+
+  &__manifesto-body {
+    font-size: clamp(1.15rem, 2.6vw, 2.05rem);
+    font-weight: 600;
+    line-height: 1.22;
+    letter-spacing: -0.015em;
+    margin: 0;
+    max-width: 30ch;
+  }
+
+  &__manifesto-aside {
+    font-family: $bb-mono;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    line-height: 1.7;
+    color: $bb-coffee;
+    margin: 0;
+  }
+
+  // -------------------------------------------------------------------
+  // 04 · la carta
+  // -------------------------------------------------------------------
+  &__groups {
+    // 1px gutters over an ink bed produce the hairlines without borders.
+    display: grid;
+    gap: 1px;
+    background: $bb-ink;
+    border-bottom: 2px solid $bb-ink;
+  }
+
+  &__group {
+    background: $bb-paper;
+    padding: 0 $bb-pad;
+  }
+
+  &__group-title {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.5rem 1rem;
+    font-size: 0.78rem;
+    color: $bb-ink;
+    margin: 0;
+    padding: 1.5rem 0 0.7rem;
+    border-bottom: 1px solid $bb-ink;
+  }
+
+  &__group-note {
+    color: $bb-coffee;
+    letter-spacing: 0.05em;
+  }
+
+  &__items {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 1px;
+    background: $bb-ink;
+  }
+
+  &__item {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    column-gap: 0.6rem;
+    row-gap: 0.35rem;
+    padding: 0.8rem $bb-pad 0.8rem 0;
+    background: $bb-paper;
+  }
+
+  &__item-name {
+    grid-column: 1;
+    font-weight: 600;
+    font-size: 0.98rem;
+    line-height: 1.3;
+  }
+
+  &__item-allergens {
+    font-size: 0.65rem;
+    color: $bb-ink-soft;
+    letter-spacing: 0.04em;
+    margin-left: 0.35rem;
+    vertical-align: 0.1em;
+  }
+
+  &__item-lead {
+    grid-column: 2;
+    align-self: end;
+    margin-bottom: 0.32rem;
+    border-bottom: 1px dotted $bb-ink-soft;
+  }
+
+  &__item-price {
+    grid-column: 3;
+    font-size: 0.86rem;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+
+  &__item-size {
+    font-size: 0.62rem;
+    color: $bb-ink-soft;
+    margin-right: 0.4rem;
+  }
+
+  &__item-detail {
+    grid-column: 1 / -1;
+    font-size: 0.82rem;
+    line-height: 1.55;
+    color: $bb-ink-soft;
+    max-width: 66ch;
+  }
+
+  &__supplements,
+  &__allergens {
+    padding: 1.75rem $bb-pad;
+    border-bottom: 2px solid $bb-ink;
+  }
+
+  &__supplements {
+    background: $bb-paper-deep;
+  }
+
+  &__supplements-title,
+  &__allergens-title {
+    font-family: $bb-mono;
+    font-size: 0.72rem;
+    letter-spacing: 0.09em;
+    color: $bb-coffee;
+    margin: 0 0 0.9rem;
+  }
+
+  &__supplements-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 0.45rem;
+    font-size: 0.88rem;
+
+    li::before {
+      content: '>>> ';
+      font-family: $bb-mono;
+      font-size: 0.72rem;
+      color: $bb-ink-soft;
+    }
+  }
+
+  // Explicit borders rather than the 1px ink bed used elsewhere. With 14 items
+  // and auto-fill, the trailing row is almost always partial, and the bed shows
+  // through the empty tracks as a solid block.
+  &__allergens-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(208px, 1fr));
+    margin: 0;
+    border-top: 1px solid $bb-ink;
+    border-left: 1px solid $bb-ink;
+  }
+
+  &__allergen {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 0.6rem;
+    align-items: baseline;
+    background: $bb-paper;
+    padding: 0.55rem 0.75rem;
+    border-right: 1px solid $bb-ink;
+    border-bottom: 1px solid $bb-ink;
+  }
+
+  &__allergen-code {
+    font-family: $bb-mono;
+    font-size: 0.72rem;
+    color: $bb-coffee;
+    margin: 0;
+  }
+
+  &__allergen-label {
+    font-size: 0.78rem;
+    line-height: 1.35;
+    color: $bb-ink-soft;
+    margin: 0;
+  }
+
+  // -------------------------------------------------------------------
+  // 05 · métodos
+  // -------------------------------------------------------------------
+  &__methods-grid {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 1px;
+    background: $bb-ink;
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    border-bottom: 2px solid $bb-ink;
+  }
+
+  &__method {
+    background: $bb-paper;
+    display: grid;
+    gap: 0.4rem;
+    padding: 1.5rem $bb-pad;
+  }
+
+  &__method-id {
+    font-size: 0.7rem;
+    color: $bb-coffee;
+  }
+
+  &__method-name {
+    font-size: clamp(1.15rem, 2.2vw, 1.5rem);
+    font-weight: 900;
+    line-height: 0.95;
+    letter-spacing: -0.025em;
+    text-transform: uppercase;
+  }
+
+  &__method-spec {
+    font-size: 0.7rem;
+    color: $bb-ink-soft;
+    letter-spacing: 0.06em;
+  }
+
+  // -------------------------------------------------------------------
+  // 06 · el local — the ink band
+  // -------------------------------------------------------------------
+  &__sites {
+    background: $bb-ink;
+    color: $bb-paper;
+  }
+
+  &__head--inverse {
+    border-bottom-color: $bb-paper;
+
+    .bb__head-note {
+      color: $bb-coffee-lift;
+    }
+
+    .bb__kicker {
+      color: $bb-coffee-lift;
+    }
+  }
+
+  &__sites-grid {
+    display: grid;
+    gap: 1px;
+    background: $bb-rule-on-ink;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  }
+
+  &__site {
+    background: $bb-ink;
+    padding: 2rem $bb-pad;
+    display: grid;
+    gap: 0.7rem;
+    align-content: start;
+  }
+
+  &__site-label {
+    font-size: 0.68rem;
+    color: $bb-coffee-lift;
+    margin: 0;
+  }
+
+  &__site-name {
+    font-size: clamp(1.5rem, 3.4vw, 2.3rem);
+    font-weight: 900;
+    line-height: 0.9;
+    letter-spacing: -0.03em;
+    text-transform: uppercase;
+    margin: 0;
+  }
+
+  &__site-address {
+    font-style: normal;
+    font-size: 0.92rem;
+    line-height: 1.5;
+    color: $bb-paper;
+  }
+
+  &__site-hours {
+    margin: 0;
+    border-top: 1px solid $bb-rule-on-ink;
+    padding-top: 0.7rem;
+
+    dt {
+      font-size: 0.66rem;
+      color: $bb-paper;
+      opacity: 1;
+      margin-bottom: 0.25rem;
+    }
+
+    dd {
+      margin: 0;
+      // The lift exists precisely for this: readable on the ink band.
+      color: $bb-coffee-lift;
+      font-family: $bb-mono;
+      font-size: 1.05rem;
+      letter-spacing: 0.03em;
+    }
+  }
+
+  &__site-hours-note {
+    display: block;
+    font-size: 0.66rem;
+    letter-spacing: 0.06em;
+    color: $bb-paper;
+    margin-top: 0.3rem;
+  }
+
+  &__site-tel {
+    justify-self: start;
+    font-family: $bb-mono;
+    font-size: 0.8rem;
+    letter-spacing: 0.05em;
+    color: $bb-paper;
+    text-decoration: none;
+    border-bottom: 1px solid $bb-coffee-lift;
+    padding-bottom: 0.15rem;
+    transition: color 0.18s linear;
+
+    &:hover,
+    &:focus-visible {
+      color: $bb-coffee-lift;
+    }
+
+    &:focus-visible {
+      outline: 2px solid $bb-paper;
+      outline-offset: 3px;
+    }
+  }
+
+  // -------------------------------------------------------------------
+  // 07 · pedidos
+  // -------------------------------------------------------------------
+  &__actions {
+    display: grid;
+    gap: 1px;
+    background: $bb-ink;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    border-bottom: 2px solid $bb-ink;
+  }
+
+  &__action {
+    background: $bb-paper;
+    display: grid;
+    gap: 0.4rem;
+    padding: 1.4rem $bb-pad;
+    text-decoration: none;
+    color: $bb-ink;
+    border-left: 4px solid $bb-paper;
+    transition: border-left-color 0.18s linear, background 0.18s linear;
+
+    &:hover,
+    &:focus-visible {
+      background: $bb-paper-deep;
+      border-left-color: $bb-coffee;
+    }
+
+    &:focus-visible {
+      outline: 2px solid $bb-coffee;
+      outline-offset: -4px;
+    }
+  }
+
+  &__action-label {
+    font-size: 0.68rem;
+    color: $bb-ink-soft;
+  }
+
+  &__action-value {
+    font-size: 1rem;
+    font-weight: 600;
+    word-break: break-word;
+  }
+
+  // -------------------------------------------------------------------
+  // footer
+  // -------------------------------------------------------------------
+  &__footer {
+    padding: 1.5rem $bb-pad 2.25rem;
+    background: $bb-paper;
+  }
+
+  &__footer-line {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 0.4rem 1.5rem;
+    font-family: $bb-mono;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: $bb-ink;
+    margin: 0 0 0.6rem;
+    padding-top: 1.25rem;
+    border-top: 2px solid $bb-ink;
+  }
+
+  &__footer-note {
+    font-size: 0.68rem;
+    color: $bb-ink-soft;
+    margin: 0;
+
+    a {
+      color: $bb-coffee;
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bb__action,
+  .bb__site-tel {
+    transition: none;
+  }
+}
