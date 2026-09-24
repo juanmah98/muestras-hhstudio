@@ -150,7 +150,57 @@ duotono papel/tinta. Esto además esquiva el problema de resolución que ya nos 
 - [ ] **B8** — Imágenes (2–3, duotono) si aportan. **Opcional y al final**: la página puede
   sostenerse sin imágenes, que es lo más fiel al arquetipo.
 
-## Decisiones pendientes del usuario
+## Review nativo — APROBADO y quemado (2026-09-24)
+
+**Linaje** `review-4164352cb23b8252`, tier **medium**, lente `review-reliability`,
+11 archivos / 1385 líneas. Candidato re-anclado con `baseRef` al commit previo
+(`e767f124649f67ec748240a53679cdc9edfa7fa5`) + `committedOnly: true`, **porque el candidato
+que ofrecía el preflight era un `base-diff` desde `e97e9bd` con 72 archivos y 2869 líneas,
+que re-incluía cinco commits ya aprobados** en los dos reviews anteriores.
+
+**Cierre**: `outcome: native-approved-acknowledgement-completed`, `authority: burned`,
+`burn_evidence: gentle-ai.review-acknowledged/v1`. Aprobado **al primer intento**
+(`prompt_bytes: 64110`, `result_bytes: 6140`).
+
+### Hallazgos — los 4 son NO bloqueantes
+
+`disposition: informational`. Ninguno abrió corrección. Son trabajo posterior y separado.
+
+- [ ] **BB-R1** (`R3-BB-INTCLEANUP`, WARNING) — `blackbird-cafe.component.ts:290-324`.
+  **Defecto real**: el `IntersectionObserver` creado en `ngAfterViewInit` nunca se
+  desconecta. `ngOnDestroy` sí existe, pero solo saca la clase del body. Fuga de observer.
+  Arreglo: guardar la instancia y `observer.disconnect()` en `ngOnDestroy`.
+- [ ] **BB-R2** (`R3-BB-NO-SPEC`, WARNING) — la página nueva **no tiene spec**, mientras que
+  `apro-clinica`, `home` y `not-found` sí. Cubrir al menos: que la ruta existe, que el título y
+  el `og:image` de la ruta se aplican, y que la leyenda de 14 alérgenos renderiza.
+- [ ] **BB-R3** (`R3-BB-SSR-BODY`, WARNING) — la clase `bb-paper-theme` **no se hornea** en el
+  HTML estático: Angular prerenderiza el contenido de `app-root`, no serializa los atributos
+  del `body`. Solo aplica post-hidratación. Mitigado con `min-height: 100dvh` en la raíz de la
+  página, así que el sustrato nunca deja ver el shell.
+- [ ] **BB-R4** (`R3-OG-COUNT-GUARD`, SUGGESTION) — `tools/make-og-image.ps1:483-489`. El guard
+  de cantidad es un número escrito a mano (hoy 10) que hay que subir al agregar cada tarjeta.
+
+## Verificación visual — Chrome headless
+
+Se sirvió el build con `python -m http.server` dentro de
+`dist/muestras-hhstudio/browser` y se capturó la página real con Chrome headless
+(`--headless=new --screenshot --window-size=…`). **Encontró dos defectos que el build y los
+tests no muestran**, y ambos se arreglaron antes de commitear:
+
+1. **Bloque marrón sólido en la grilla de alérgenos.** Con `auto-fill` y 14 ítems la última
+   fila queda parcial y el lecho de tinta del truco `gap: 1px` se veía como un rectángulo
+   macizo. Se pasó a bordes explícitos.
+   *Lección*: el truco del lecho de 1px solo sirve si los ítems llenan las filas, o con
+   `auto-fit` (que colapsa los tracks vacíos). `auto-fill` **no** los colapsa.
+2. **Debajo del footer se veía negro.** El `body` del shell es `--hh-bg: #121418`. Se agregó
+   `min-height: 100dvh` a la raíz de la página y la clase `bb-paper-theme` en
+   `ngOnInit` / `ngOnDestroy` más una regla global en `src/styles.scss`.
+
+Para capturar una región baja a resolución completa sin PIL: servir un shim HTML con un
+`<iframe>` de 9000px de alto desplazado con `style.top = -Ypx`, y capturar una ventana de
+altura fija.
+
+## Decisiones del usuario
 
 - [x] **Horarios**: el **horario de verano** del Facebook (ver arriba).
 - [x] **Segunda sede**: **sí**, se incluyen las dos (Ruzafa y Little Blackbird).
