@@ -118,6 +118,110 @@
     align-self: flex-start;
   }
 
+  // Informational strip, deliberately not a demo card: it is a guide, so it spans
+  // the full width and leads with a label instead of demo tags.
+  &__resource {
+    padding-bottom: 3rem;
+  }
+
+  &__resource-card {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: 1.75rem;
+    padding: 1.5rem 1.75rem;
+    border-radius: 8px;
+    background: rgba(78, 106, 127, 0.08);
+    border: 1px solid var(--hh-border);
+    border-left: 4px solid var(--hh-primary);
+    text-decoration: none;
+    color: inherit;
+    transition:
+      background 0.2s ease,
+      border-color 0.2s ease;
+
+    &:hover,
+    &:focus-visible {
+      background: rgba(78, 106, 127, 0.16);
+      border-left-color: var(--hh-accent);
+
+      .home__resource-cta i {
+        transform: translateX(4px);
+      }
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--hh-accent);
+      outline-offset: 2px;
+    }
+
+    @media (max-width: 767.98px) {
+      grid-template-columns: auto 1fr;
+      gap: 1rem 1.25rem;
+      padding: 1.25rem;
+    }
+  }
+
+  &__resource-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 3rem;
+    height: 3rem;
+    flex-shrink: 0;
+    border-radius: 50%;
+    background: rgba(229, 204, 152, 0.12);
+    color: var(--hh-accent);
+    font-size: 1.35rem;
+  }
+
+  &__resource-body {
+    min-width: 0;
+  }
+
+  &__resource-label {
+    display: inline-block;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    color: var(--hh-text-muted);
+    margin-bottom: 0.35rem;
+  }
+
+  &__resource-title {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--hh-text-primary);
+    margin-bottom: 0.35rem;
+  }
+
+  &__resource-desc {
+    font-size: 0.9rem;
+    color: var(--hh-text-secondary);
+    line-height: 1.55;
+    margin: 0;
+  }
+
+  &__resource-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--hh-accent);
+    white-space: nowrap;
+
+    i {
+      transition: transform 0.2s ease;
+    }
+
+    @media (max-width: 767.98px) {
+      grid-column: 2;
+      justify-self: start;
+    }
+  }
+
   &__footer {
     text-align: center;
     padding: 1.5rem 1rem;

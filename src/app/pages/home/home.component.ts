@@ -19,6 +19,16 @@ interface Section {
   icon: string;
 }
 
+// The SEO & IA page is a guide, not a demo, so it stays out of the demo grid and
+// is rendered as its own informational strip below it.
+interface Resource {
+  slug: string;
+  label: string;
+  title: string;
+  description: string;
+  icon: string;
+}
+
 @Component({
   selector: 'app-home',
   standalone: true,
@@ -103,16 +113,16 @@ export class HomeComponent implements AfterViewInit {
       status: 'available',
       icon: 'bi bi-cake2-fill',
     },
-    {
-      slug: 'seo-ia',
-      title: 'SEO & IA',
-      description:
-        'Showcase de servicios de posicionamiento, datos y automatización con IA. Auditoría técnica, schema markup y APIs de mapas.',
-      tags: ['Landing Page', 'SEO', 'IA'],
-      status: 'available',
-      icon: 'bi bi-graph-up-arrow',
-    },
   ];
+
+  readonly resource: Resource = {
+    slug: 'seo-ia',
+    label: 'Recurso',
+    title: 'SEO & IA',
+    description:
+      'Estrategia de posicionamiento para búsquedas con IA. Entendé qué miran ChatGPT, Perplexity y Gemini cuando alguien busca un negocio como el tuyo.',
+    icon: 'bi bi-graph-up-arrow',
+  };
 
   readonly currentYear = new Date().getFullYear();
 

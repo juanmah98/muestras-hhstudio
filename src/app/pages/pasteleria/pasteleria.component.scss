@@ -557,27 +557,6 @@ $shadow-nav: 0 2px 12px rgba(61, 43, 31, 0.06);
     background-color: $color-cream;
     position: relative;
     overflow: visible;
-
-    &::before {
-      content: '';
-      position: absolute;
-      top: 50%;
-      right: 0;
-      width: 320px;
-      height: 380px;
-      background: url('/assets/images/pasteleria/chef-hands.jpg') center/cover no-repeat;
-      opacity: 0.055;
-      pointer-events: none;
-      border-radius: 12px;
-      transform: translateY(-50%);
-
-      @media (max-width: 768px) {
-        width: 180px;
-        height: 220px;
-        opacity: 0.04;
-        right: -40px;
-      }
-    }
   }
 
   &__proceso-container {
