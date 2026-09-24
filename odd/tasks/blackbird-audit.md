@@ -30,16 +30,22 @@ Los IDs son los del audit. ✅ = arreglado · ⬜ = abierto · ❌ = falso posit
 
 ### Sustrato (S)
 
-- ⬜ **S1** (warn) — `.bb__sites{background:#0a0a0a}`: una sección de tinta a sangre en medio
-  de un documento de papel. El audit lo declara **dispositivo legítimo** (compartimento
-  reverso), no violación.
-- ⬜ **S2** (warn) — hay **CUATRO masas oscuras en dos tonalidades** (la franja, la banda, la
-  placa del manifiesto, la banda de sedes), no **una** reversión deliberada. Falta una regla
-  de cuándo cada una.
+- ✅ **S1** (warn) — `.bb__sites{background:#0a0a0a}`: una sección de tinta a sangre en medio
+  de un documento de papel. El audit lo declara **dispositivo legítimo** (compartimento reverso), no
+  violación. **Cerrado en U3**: es la **única** reversión deliberada de la página y ahora está escrito
+  en el archivo cuáles son las cuatro clases de superficie (`paper`, `paper-deep`, `ink`, `plate`) y
+  dónde se permite cada una.
+- ✅ **S2** (warn) — hay **CUATRO masas oscuras en dos tonalidades** (la franja, la banda, la placa del
+  manifiesto, la banda de sedes), no **una** reversión deliberada. Faltaba una regla de cuándo cada
+  una. **Cerrado en U3**: las cuatro masas pasan a **dos** — una reversión a tinta deliberada (la banda
+  de sedes) + **una sola familia fotográfica**, porque las dos placas ahora pasan por la misma trama
+  1-bit. La regla de cuándo cada superficie es oscura quedó escrita en el archivo.
 - ✅ **S3** (warn) — el `sepia(1)` del duotono agregaba croma a cada píxel y `brightness(0.72)`
   es multiplicativo (nunca llega a `#0a0a0a`) → las placas caían **dentro de la familia del
   acento**. **Arreglado** con `grayscale(1) contrast(1.35) brightness(0.82)`.
-- ⬜ **S4** (nit) — `#F4F4F0` **y** `#EAE8E3` como fondos sin regla de cuándo cada uno.
+- ✅ **S4** (nit) — `#F4F4F0` **y** `#EAE8E3` como fondos sin regla de cuándo cada uno.
+  **Cerrado en U3** con la regla escrita: `paper-deep` es **sólo** el `aside` de suplementos, que es
+  el único registro donde el lector paga un precio que no está en la carta.
 
 ### Geometría (G)
 
@@ -133,10 +139,22 @@ Los IDs son los del audit. ✅ = arreglado · ⬜ = abierto · ❌ = falso posit
 - ✅ **D3** (warn) — `+` significaba **viñeta** en el hero e **incremento de precio** en la
   carta, a un scroll de distancia. **Arreglado**: `/` en el hero.
 - ⬜ **D4** (nit) — `®` y `©` inline a 0.7rem = texto legal, no elemento estructural.
-- ⬜ **D5** (warn) — **toda la degradación analógica del §7 ausente**: sin halftone, sin
+- ✅ **D5** (warn) — **toda la degradación analógica del §7 ausente**: sin halftone, sin
   1-bit dithering, sin scanlines, sin grain. *"La sección más incumplida, y explica por qué
-  las superficies leen vector-clean."*
-- ⬜ **D6** (nit) — sin cruces, códigos de barras ni franjas de advertencia.
+  las superficies leen vector-clean."* **Cerrado en U3**: las placas pasan a
+  `grayscale(1) contrast(2.2) brightness(1.12)` — un rango 1-bit, sin medios tonos continuos que se
+  lean como fotografía — con una **trama de puntos determinista** encima en `mix-blend-mode: multiply`
+  (nunca opacidad: la dimensión Geometría del audit prohíbe translucidez y §7 pide *"low-opacity"*;
+  el blend resuelve la contradicción). Más el **grain global** del §7, también por `multiply`.
+  Sin scanlines a propósito: §7 las pide *"for terminal interfaces"* y esta página es Swiss Print.
+- ✅ **D6** (nit) — sin cruces, códigos de barras ni franjas de advertencia. **Cerrado en U3** con
+  los tres: cruces `+` sobre los extremos de cada regla de cabecera, código de barras como regla de
+  colofón en el pie, y franja de advertencia sobre los suplementos. Los cuatro patrones son **tiles
+  SVG, no gradientes** — un `repeating-linear-gradient` para fingir un código de barras sigue siendo
+  un gradiente, y la dimensión Geometría los prohíbe. **El cuarto dispositivo del §6 (datos de cadena
+  aleatorios tipo `REV 2.6` / `UNIT / D-01`) se descartó a conciencia**: inventar un número de revisión
+  o un código de unidad en la página de un negocio real es exactamente la fabricación de contenido que
+  ya nos costó caro con los parámetros de extracción. No se cambia integridad por un adorno.
 - ✅ **D7** — `<data>`, `<dl>`, `<address>`, `<dt>/<dd>`, líderes con `aria-hidden`. **PASS**
   (único hueco: no hay `<samp>/<kbd>/<output>`).
 
@@ -227,7 +245,7 @@ Cuatro unidades de trabajo, cada una un candidato de review chico. ⬜ pendiente
 | U1 | Tipografía y estados | T5, T6, L10, P9, P10 + comentario de `R3-plate-filter-reachability` | `.scss` | ✅ |
 | U2a | Sangre y medida | L1 (revertido y re-resuelto) | `.scss` | ✅ |
 | U2b | Grilla declarada | L2 (parcial: unidad y regla declaradas, medida acota los conteos) | `.scss` | ✅ |
-| U3 | Superficie | S2, S4, D5, D6 + BB-R8 | `.scss`, `.html` | ⬜ |
+| U3 | Superficie | S1, S2, S4, D5, D6 + BB-R8 | `.scss`, `.html` | ✅ |
 | U4 | Mono determinista | T3 | `.scss`, asset `woff2` | ⬜ |
 | U5 | Cierre y desviaciones | D2, D4 + BB-R9 + las disposiciones escritas | `.scss`, `.ts`, docs | ⬜ |
 
@@ -280,6 +298,34 @@ contenido) por **4 o 5 breakpoints a mano por registro** — o sea degrada el ma
 una coincidencia de bordes que hoy nadie ve. Queda disponible: si el usuario quiere el alineamiento
 literal, son ~40 líneas de media queries y una verificación en 320/480/768/1024/1320/2560.
 
+### U3 — cerrada
+
+**El movimiento que ordena la unidad**: S2 y D5 eran la misma causa. Las cuatro masas oscuras eran la
+franja y la banda de sedes (tinta real) **más las dos placas, que eran oscuras fotográficamente y no
+por tinta**, cada una en su propia tonalidad. Con las placas pasando por una trama 1-bit determinista
+las masas bajan de cuatro a dos, y la página pasa de dos familias fotográficas a una. El §7 pide
+justamente eso para Swiss Print (`1-bit dithering` con `multiply`), no las scanlines del modo terminal.
+
+**La contradicción del contrato, resuelta sin romper ninguno de los dos lados**: §7 pide grain
+*"low-opacity"* y la dimensión Geometría del audit prohíbe `opacity<1` (era un PASS, G4). Se resuelve
+con `mix-blend-mode: multiply`, que da el mismo resultado sin alfa. Y el tile de ruido lleva una curva
+`feComponentTransfer` que lo mantiene **casi blanco**: el `feTurbulence` crudo promedia gris medio, y
+multiplicar la página entera por gris medio la oscurecería a la mitad. Ninguno de los dos detalles se ve
+en el resultado, y sin ellos el cambio era un error visible.
+
+**Corrección terminológica que importa**: la trama es una **trama**, no un *halftone* de verdad — CSS
+no puede modular el tamaño del punto según el tono. El comentario del archivo lo dice así, para no
+dejar una afirmación que no coincide con la realidad (el error más frecuente de este repo).
+
+**Evidencia**: en el render a 2560px se ven la trama sobre las placas, el grain en multiply, las cruces
+en los extremos de las cuatro reglas de cabecera (blancas dentro de la banda de tinta), la franja sobre
+`[ SUPLEMENTOS ]` y el código de barras en el pie. A 320px `scrollWidth == innerWidth`. En el CSS
+compilado: `filter:grayscale(1) contrast(2.2) brightness(1.12)` y exactamente **2**
+`mix-blend-mode:multiply` (la trama de la placa y el grain de la página). Guardas del audit: sin
+`rgba(`/`hsla(`/`backdrop-filter`/gradientes (el único hit de `gradient` está **dentro del comentario
+que explica por qué no se usan**), sin `opacity<1`, y `border-radius` sólo en el reset a `0`.
+Build exit 0, tests 31/31.
+
 ### U1 — cerrada
 
 Build `exit 0`, **31/31 tests en 7 archivos**, y los 7 cambios confirmados línea por línea por un
@@ -322,8 +368,10 @@ frases del comentario que afirmaban algo que `brightness(0.82)` no puede hacer.
 - ⬜ **R3-plate-filter-reachability** (SUGGESTION, `scss:288-291`) — sobre el filtro neutro.
 - ⬜ **R3-ROUND-SEQUENCE / R3-HOVER-COLOR / R3-RULE-VARS / R3-NOWRAP-FLOOR** — sin descripción
   en el sobre, no accionables con precisión.
-- ⬜ **BB-R8 / BB-R9** — nits cosméticos viejos (alts casi duplicados de las placas; `detail: ''`
-  en el array `bar`). **No perseguir sueltos**: viajan con el próximo cambio real.
+- ⬜ **BB-R9** — `detail: ''` en el array `bar` (`.ts:271`/`273`). **No perseguir suelto**: viaja con
+  el próximo cambio real que toque el `.ts`.
+- ✅ **BB-R8** — los dos `alt` de las placas eran casi iguales y las placas son **textura decorativa**,
+  así que el alt correcto es **vacío**. Cerrado en U3: ambos pasaron a `alt=""`.
 
 ## Cómo volver a correr el audit
 
