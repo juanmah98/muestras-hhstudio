@@ -292,6 +292,25 @@ encontró tres defectos:
   descartaron las imágenes de tostadoras: la carta dice que el café lo tuesta *"por los mejores
   micro-tostadores"*, así que **ellos no tuestan**.
 
+### Review del fix T8 — APROBADO y quemado (2026-09-24)
+
+Linaje `review-e527ed5d56826fab`, 6 archivos / 177 líneas, `prompt_bytes: 25276`.
+**Dato de proceso**: el preflight ofrecía un `base-diff` de **74 archivos y 3130 líneas**.
+Re-anclar al commit previo bajó el candidato a **6 archivos / 177 líneas** y el prompt a la
+**quinta parte** del que se cayó por timeout (130 KB). Medir y re-anclar, siempre.
+
+2 hallazgos, ambos **SUGGESTION**, no bloqueantes:
+
+- [ ] **BB-R8** (`R3-band-plate-no-alt-context`, SUGGESTION) — `component.html:28-38`. Los dos
+alts de las placas son casi iguales ("Granos de café tostados" y "..., en detalle"). Como son
+textura decorativa, el alt correcto probablemente sea **vacío** (`alt=""`): repetir dos
+descripciones casi idénticas no aporta contexto, solo ruido para el lector de pantalla.
+- [ ] **BB-R9** (`R3-bar-detail-empty`, SUGGESTION) — `component.ts:269-272`. El array `bar`
+usa `detail: ''` en dos entradas. Más limpio: `detail?: string` opcional en el tipo.
+
+> **Los dos son cosméticos.** Arreglarlos abre un ciclo de review completo (forecast, corrida,
+> acknowledge) por ~4 líneas. Se registran y **no se tocan salvo que se junten con otro cambio.**
+
 ## Decisiones del usuario
 
 - [x] **Horarios**: el **horario de verano** del Facebook (ver arriba).
