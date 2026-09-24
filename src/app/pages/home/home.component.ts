@@ -1,5 +1,13 @@
-import { Component, AfterViewInit, ElementRef, ViewChildren, QueryList } from '@angular/core';
+import {
+  Component,
+  AfterViewInit,
+  ElementRef,
+  ViewChildren,
+  QueryList,
+  inject,
+} from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { SeoService } from '../../core/services/seo.service';
 import gsap from 'gsap';
 
 interface Section {
@@ -19,6 +27,18 @@ interface Section {
   styleUrl: './home.component.scss',
 })
 export class HomeComponent implements AfterViewInit {
+  private readonly seo = inject(SeoService);
+
+  constructor() {
+    this.seo.updateMetaTags({
+      title: 'HH Studio | Showcase de Proyectos',
+      description:
+        'Vidriera de proyectos de HH Studio. Desarrollo web, aplicaciones y software a medida. Mirá lo que hacemos.',
+      image: 'https://muestras.hhstudio.es/assets/seo-preview.jpg',
+      url: 'https://muestras.hhstudio.es/',
+    });
+  }
+
   readonly sections: Section[] = [
     {
       slug: 'apro-clinica',
@@ -82,6 +102,15 @@ export class HomeComponent implements AfterViewInit {
       tags: ['Landing Page', 'Pastelería', 'Repostería'],
       status: 'available',
       icon: 'bi bi-cake2-fill',
+    },
+    {
+      slug: 'seo-ia',
+      title: 'SEO & IA',
+      description:
+        'Showcase de servicios de posicionamiento, datos y automatización con IA. Auditoría técnica, schema markup y APIs de mapas.',
+      tags: ['Landing Page', 'SEO', 'IA'],
+      status: 'available',
+      icon: 'bi bi-graph-up-arrow',
     },
   ];
 

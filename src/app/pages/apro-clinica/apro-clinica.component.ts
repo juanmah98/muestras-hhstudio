@@ -5,7 +5,9 @@ import {
   ViewChildren,
   QueryList,
   HostListener,
+  inject,
 } from '@angular/core';
+import { SeoService } from '../../core/services/seo.service';
 import gsap from 'gsap';
 
 @Component({
@@ -15,6 +17,18 @@ import gsap from 'gsap';
   styleUrl: './apro-clinica.component.scss',
 })
 export class AproClinicaComponent implements AfterViewInit {
+  private readonly seo = inject(SeoService);
+
+  constructor() {
+    this.seo.updateMetaTags({
+      title: 'Apro Clínica | Centro médico-estético — HH Studio',
+      description:
+        'Demo de landing editorial para centro médico-estético: bento grid, animaciones sutiles y tratamiento premium de la marca.',
+      image: 'https://muestras.hhstudio.es/assets/og/apro-clinica.jpg',
+      url: 'https://muestras.hhstudio.es/apro-clinica',
+    });
+  }
+
   readonly currentYear = new Date().getFullYear();
   mobileMenuOpen = false;
   navScrolled = false;

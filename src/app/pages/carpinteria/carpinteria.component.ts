@@ -6,8 +6,10 @@ import {
   ViewChild,
   ViewChildren,
   QueryList,
+  inject,
 } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { SeoService } from '../../core/services/seo.service';
 import gsap from 'gsap';
 
 interface Service {
@@ -46,6 +48,18 @@ interface ProcessStep {
   styleUrl: './carpinteria.component.scss',
 })
 export class CarpinteriaComponent implements AfterViewInit {
+  private readonly seo = inject(SeoService);
+
+  constructor() {
+    this.seo.updateMetaTags({
+      title: 'ÁLAMO | Carpintería a medida — HH Studio',
+      description:
+        'Demo de showcase wabi-sabi para carpintería a medida: minimalismo japonés, proceso artesanal y galería de piezas.',
+      image: 'https://muestras.hhstudio.es/assets/og/carpinteria.jpg',
+      url: 'https://muestras.hhstudio.es/carpinteria',
+    });
+  }
+
   readonly currentYear = new Date().getFullYear();
   mobileMenuOpen = false;
   scrolled = false;

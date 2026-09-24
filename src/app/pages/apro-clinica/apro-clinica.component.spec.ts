@@ -198,4 +198,17 @@ describe('AproClinicaComponent', () => {
     const component = fixture.componentInstance;
     expect(component.categories.length).toBe(7);
   });
+
+  it('should apply the apro-clinica route metadata to the document', () => {
+    TestBed.createComponent(AproClinicaComponent);
+
+    expect(document.title).toBe(
+      'Apro Clínica | Centro médico-estético — HH Studio',
+    );
+    expect(
+      document
+        .querySelector('meta[property="og:image"]')
+        ?.getAttribute('content'),
+    ).toBe('https://muestras.hhstudio.es/assets/og/apro-clinica.jpg');
+  });
 });

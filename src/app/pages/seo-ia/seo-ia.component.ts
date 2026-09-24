@@ -1,6 +1,7 @@
-import { Component, AfterViewInit, ElementRef, ViewChildren, QueryList } from '@angular/core';
+import { Component, AfterViewInit, ElementRef, ViewChildren, QueryList, inject } from '@angular/core';
 import { DecimalPipe } from '@angular/common';
 import { RouterLink } from '@angular/router';
+import { SeoService } from '../../core/services/seo.service';
 import gsap from 'gsap';
 
 interface Source {
@@ -34,6 +35,18 @@ interface ChecklistItem {
   styleUrl: './seo-ia.component.scss',
 })
 export class SeoIaComponent implements AfterViewInit {
+  private readonly seo = inject(SeoService);
+
+  constructor() {
+    this.seo.updateMetaTags({
+      title: 'SEO & IA | Posicionamiento y automatización — HH Studio',
+      description:
+        'Demo de servicios de SEO y automatización con IA: auditoría técnica, contenido, schema markup y APIs de mapas.',
+      image: 'https://muestras.hhstudio.es/assets/og/seo-ia.jpg',
+      url: 'https://muestras.hhstudio.es/seo-ia',
+    });
+  }
+
   readonly sources: Source[] = [
     {
       number: '01',

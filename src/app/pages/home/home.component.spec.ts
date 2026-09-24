@@ -44,6 +44,17 @@ describe('HomeComponent', () => {
   it('should have sections defined', () => {
     const fixture = TestBed.createComponent(HomeComponent);
     const component = fixture.componentInstance;
-    expect(component.sections.length).toBe(7);
+    expect(component.sections.length).toBe(8);
+  });
+
+  it('should apply the home route metadata to the document', () => {
+    TestBed.createComponent(HomeComponent);
+
+    expect(document.title).toBe('HH Studio | Showcase de Proyectos');
+    expect(
+      document
+        .querySelector('meta[property="og:image"]')
+        ?.getAttribute('content'),
+    ).toBe('https://muestras.hhstudio.es/assets/seo-preview.jpg');
   });
 });

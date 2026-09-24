@@ -7,9 +7,11 @@ import {
   ViewChildren,
   QueryList,
   OnInit,
+  inject,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
+import { SeoService } from '../../core/services/seo.service';
 import gsap from 'gsap';
 
 interface ServiceItem {
@@ -64,6 +66,18 @@ interface TrustBadge {
   styleUrl: './electricista.component.scss',
 })
 export class ElectricistaComponent implements AfterViewInit, OnInit {
+  private readonly seo = inject(SeoService);
+
+  constructor() {
+    this.seo.updateMetaTags({
+      title: 'VOLTIO | Electricista profesional — HH Studio',
+      description:
+        'Demo de portfolio industrial dark para electricista: galería de proyectos, certificaciones, zonas de servicio y urgencias 24h.',
+      image: 'https://muestras.hhstudio.es/assets/og/electricista.jpg',
+      url: 'https://muestras.hhstudio.es/electricista',
+    });
+  }
+
   readonly currentYear = new Date().getFullYear();
   mobileMenuOpen = false;
   scrolled = false;

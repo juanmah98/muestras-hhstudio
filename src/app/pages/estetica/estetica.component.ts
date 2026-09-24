@@ -5,9 +5,11 @@ import {
   ElementRef,
   ViewChildren,
   QueryList,
+  inject,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
+import { SeoService } from '../../core/services/seo.service';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
@@ -60,6 +62,18 @@ interface NavLink {
   styleUrl: './estetica.component.scss',
 })
 export class EsteticaComponent implements AfterViewInit {
+  private readonly seo = inject(SeoService);
+
+  constructor() {
+    this.seo.updateMetaTags({
+      title: 'LUMINA | Centro de estética premium — HH Studio',
+      description:
+        'Demo de centro de estética premium con estética Soft Luxe: reserva online, antes y después y precios transparentes.',
+      image: 'https://muestras.hhstudio.es/assets/og/estetica.jpg',
+      url: 'https://muestras.hhstudio.es/estetica',
+    });
+  }
+
   readonly currentYear = new Date().getFullYear();
   mobileMenuOpen = false;
   scrolled = false;
