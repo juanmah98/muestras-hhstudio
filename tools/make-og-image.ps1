@@ -460,12 +460,39 @@ $cardSeoIa = @{
   RubroDotColor  = (C 150 134 100 255)
 }
 
-$cards = @($cardSite, $cardAproClinica, $cardSalud, $cardCarpinteria, $cardReformas, $cardElectricista, $cardEstetica, $cardPasteleria, $cardSeoIa)
+# Blackbird is the one demo on a LIGHT substrate (unbleached paper and carbon
+# ink), so its card is light too. In a feed where every other card is dark, a
+# paper card is the thing that stands out, and it keeps the page's identity.
+$cardBlackbird = @{
+  Out            = (Join-Path $OUT_DIR "blackbird-cafe.jpg")
+  BgTop          = (HexColor "#f4f4f0")
+  BgBot          = (Lighten (HexColor "#f4f4f0") 18)
+  Accent         = (HexColor "#6b4423")
+  TextPrimary    = (HexColor "#0a0a0a")
+  TextSecondary  = (HexColor "#4a4a46")
+  BrandColor     = (HexColor "#6b4423")
+  FooterColor    = (HexColor "#6b4423")
+  Headline2Color = (HexColor "#6b4423")
+  Brand          = "BLACKBIRD"
+  Headline1      = "BLACKBIRD"
+  Headline2      = ("Caf" + $eacute + " de especialidad")
+  HeadlineFont   = "Segoe UI"
+  HeadlineStyle  = [System.Drawing.FontStyle]::Bold
+  Subline        = ("Pasteler" + $iacute + "a artesana / Caf" + $eacute + " de especialidad")
+  Footer         = "muestras.hhstudio.es/blackbird-cafe"
+  Motif          = "bars"
+  MotifColor     = (WithAlpha (HexColor "#0a0a0a") 38)
+  Rubros         = @()
+  RubroTextColor = (C 152 164 177 255)
+  RubroDotColor  = (C 150 134 100 255)
+}
+
+$cards = @($cardSite, $cardAproClinica, $cardSalud, $cardCarpinteria, $cardReformas, $cardElectricista, $cardEstetica, $cardPasteleria, $cardSeoIa, $cardBlackbird)
 
 # --- Run ---
 if (-not (Test-Path $OUT_DIR)) { $null = New-Item -ItemType Directory -Path $OUT_DIR -Force }
 
 # Guard against the mixed-EOL @() parsing bug collapsing the card list.
-if ($cards.Count -ne 9) { throw ("Expected 9 cards, got " + $cards.Count) }
+if ($cards.Count -ne 10) { throw ("Expected 10 cards, got " + $cards.Count) }
 
 foreach ($card in $cards) { Draw-Card $card }

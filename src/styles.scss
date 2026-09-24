@@ -43,3 +43,12 @@ h1, h2, h3, h4, h5, h6 {
   font-family: 'Montserrat', sans-serif;
   font-weight: 700;
 }
+
+// The BLACKBIRD demo renders on an unbleached-paper substrate while the rest of
+// the shell is dark. The page adds this class while it is mounted, so the root
+// background follows it and neither overscroll nor a short viewport flashes the
+// dark theme behind a light page.
+body.bb-paper-theme {
+  background-color: #f4f4f0;
+  color: #0a0a0a;
+}

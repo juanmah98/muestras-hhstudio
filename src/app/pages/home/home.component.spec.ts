@@ -44,7 +44,7 @@ describe('HomeComponent', () => {
   it('should have sections defined', () => {
     const fixture = TestBed.createComponent(HomeComponent);
     const component = fixture.componentInstance;
-    expect(component.sections.length).toBe(7);
+    expect(component.sections.length).toBe(8);
   });
 
   it('should render the resource strip outside the demo grid', () => {
@@ -56,8 +56,8 @@ describe('HomeComponent', () => {
 
     expect(resourceCard).toBeTruthy();
     expect(resourceCard?.getAttribute('href')).toBe('/seo-ia');
-    // Seven demos in the grid; the guide is not one of them.
-    expect(compiled.querySelectorAll('.home__card').length).toBe(7);
+    // Eight demos in the grid; the guide is not one of them.
+    expect(compiled.querySelectorAll('.home__card').length).toBe(8);
   });
 
   it('should apply the home route metadata to the document', () => {

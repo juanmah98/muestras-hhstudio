@@ -113,6 +113,15 @@ export class HomeComponent implements AfterViewInit {
       status: 'available',
       icon: 'bi bi-cake2-fill',
     },
+    {
+      slug: 'blackbird-cafe',
+      title: 'BLACKBIRD Café',
+      description:
+        'Café de especialidad y pastelería artesana en València. Brutalismo suizo: papel y tinta, un solo acento y ni un solo borde redondeado.',
+      tags: ['Landing Page', 'Cafetería', 'Café de especialidad'],
+      status: 'available',
+      icon: 'bi bi-cup-hot-fill',
+    },
   ];
 
   readonly resource: Resource = {
