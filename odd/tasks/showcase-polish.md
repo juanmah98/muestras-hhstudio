@@ -216,19 +216,19 @@ Verificados con evidencia, no inferidos. Los archivos y líneas están en el his
 
 ### Defecto preexistente encontrado (NO es de este trabajo)
 
-- [ ] **T13** — `npm test` está en rojo **desde el refactor `609b0ff`**, no por este trabajo.
-  `src/app/pages/apro-clinica/apro-clinica.component.spec.ts` testea una forma del
-  componente que ya no existe: `categories`, `visibleCategories`, `visibleCount`, `showAll`,
-  `hasMore`, `showAllCategories()`, `toggleCategory()`, `expandedIndex`, y las clases
-  `.apro__services-category-header` / `.apro__services-fade` / `.apro__btn--solid`.
-  El componente actual solo expone `currentYear`, `mobileMenuOpen`, `navScrolled`,
-  `onWindowScroll`, `ngAfterViewInit`, `toggleMobileMenu`, `closeMobileMenu`, `scrollTo`.
-  **Verificado como preexistente**: las referencias están en `HEAD`, y el componente en
-  `HEAD` tampoco define esos miembros.
+- [ ] **T13** — `npm test` está en rojo **desde `46472ea`** (corregido: antes dije `609b0ff`;
+  el verificador independiente lo rastreó más atrás). `apro-clinica.component.spec.ts`
+  **nació** referenciando una forma del componente que nunca existió: `categories`,
+  `visibleCategories`, `visibleCount`, `showAll`, `hasMore`, `showAllCategories()`,
+  `toggleCategory()`, `expandedIndex`, y las clases `.apro__services-category-header` /
+  `.apro__services-fade` / `.apro__btn--solid`. El componente nunca definió esos miembros en
+  `HEAD`, `HEAD~1`, `609b0ff` ni `46472ea`.
 
   El builder `@angular/build:unit-test` compila todo el bundle de specs junto, así que **un
   solo error de TS impide que corra cualquier test**. Consecuencia concreta: los 3 tests de
-  metadata agregados en T7b están escritos pero **no pudieron ejecutarse**.
+  metadata agregados en T7b están escritos y verificados **por inspección** (los strings
+  esperados coinciden byte a byte con los de los componentes), pero **no pueden ejecutarse**.
+  El spec del home y el de not-found tampoco corren.
 
   *Pregunta de producto antes de tocarlo*: ¿la feature de acordeón de servicios con
   "Ver todos los servicios" se **eliminó a propósito** en el refactor premium, o se perdió?
@@ -238,6 +238,13 @@ Verificados con evidencia, no inferidos. Los archivos y líneas están en el his
   *Evidencia primaria alternativa ya observada*: la prueba end-to-end en `dist/` demuestra
   que los meta tags se aplican en el pipeline real de prerender, que es más fuerte que el
   unit test que no puede correr.
+- [ ] **T14** — Nit: canonical del 404. `not-found.component.ts` pasa
+  `url: 'https://muestras.hhstudio.es/404'`, así que `SeoService` emite un canonical
+  apuntando a una URL que no existe. Impacto real **bajo**, verificado: la ruta `**` no se
+  prerenderiza (el builder emite 9 HTML de ruta y ningún `404.html`), así que los scrapers
+  sin JS nunca lo ven; solo lo vería un bot con JS en una página que igual no se indexa.
+  Arreglo: sacar `url` de esa llamada (deja el canonical por defecto) o agregar
+  `<meta name="robots" content="noindex">`.
 
 ### Dependen de imágenes nuevas (T2/T4)
 
