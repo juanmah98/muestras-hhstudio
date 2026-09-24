@@ -176,6 +176,13 @@ que re-incluía cinco commits ya aprobados** en los dos reviews anteriores.
   *Limitación honesta*: sin spec (ver BB-R2) la verificación es build + tests + inspección del
   código, más el veredicto del reviewer sobre el arreglo. No hay aserción automática de que el
   observer se cierre.
+
+  **Review del arreglo — APROBADO y quemado** (`review-fe472e8a42a22c8e`, 2026-09-24).
+  Candidato re-anclado a **2 archivos / 44 líneas** (`baseRef` al commit previo) en vez de los
+  **72 archivos / 2919 líneas** que ofrecía el preflight. `prompt_bytes: 15344` contra 64110 del
+  review de la página: **la cuarta parte**, por el solo hecho de acotar el candidato.
+  2 hallazgos no bloqueantes: `R3-001` (WARNING, `component.ts:327`) y `R3-002` (SUGGESTION,
+  `component.ts:64-67`) — ambos sobre el código que el arreglo tocó.
 - [x] **BB-R2** (`R3-BB-NO-SPEC`, WARNING) — **CERRADO COMO DISPOSICIÓN ACEPTADA, no como
   defecto.** El WARNING era la opinión de la lente de confiabilidad, no política del proyecto.
 
