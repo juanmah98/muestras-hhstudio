@@ -4,9 +4,11 @@
     "open-design": {
       "enabled": true,
       "type": "local",
-      "command": ["npx", "-y", "open-design-mcp"],
+      "command": ["C:\\Users\\halo-\\AppData\\Local\\Programs\\Open Design\\Open Design.exe", "C:\\Users\\halo-\\AppData\\Local\\Programs\\Open Design\\resources\\app\\prebundled\\daemon\\daemon-cli.mjs", "mcp"],
       "env": {
-        "OD_DAEMON_URL": "http://127.0.0.1:53853"
+        "OD_DATA_DIR": "C:\\Users\\halo-\\AppData\\Roaming\\Open Design\\namespaces\\release-stable-win\\data",
+        "OD_SIDECAR_IPC_PATH": "\\\\.\\pipe\\open-design-release-stable-win-daemon",
+        "ELECTRON_RUN_AS_NODE": "1"
       }
     },
     "supabase-hhstudio": {
