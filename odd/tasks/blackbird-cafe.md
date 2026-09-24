@@ -166,13 +166,35 @@ que re-incluía cinco commits ya aprobados** en los dos reviews anteriores.
 
 `disposition: informational`. Ninguno abrió corrección. Son trabajo posterior y separado.
 
-- [ ] **BB-R1** (`R3-BB-INTCLEANUP`, WARNING) — `blackbird-cafe.component.ts:290-324`.
-  **Defecto real**: el `IntersectionObserver` creado en `ngAfterViewInit` nunca se
-  desconecta. `ngOnDestroy` sí existe, pero solo saca la clase del body. Fuga de observer.
-  Arreglo: guardar la instancia y `observer.disconnect()` en `ngOnDestroy`.
-- [ ] **BB-R2** (`R3-BB-NO-SPEC`, WARNING) — la página nueva **no tiene spec**, mientras que
-  `apro-clinica`, `home` y `not-found` sí. Cubrir al menos: que la ruta existe, que el título y
-  el `og:image` de la ruta se aplican, y que la leyenda de 14 alérgenos renderiza.
+- [x] **BB-R1** (`R3-BB-INTCLEANUP`, WARNING) — **ARREGLADO.**
+  El `IntersectionObserver` creado en `ngAfterViewInit` nunca se desconectaba: `ngOnDestroy`
+  existía pero solo sacaba la clase del body. Fuga real de observer (mantiene vivos los
+  element refs después de destruida la vista).
+  Ahora la instancia se guarda en `private revealObserver?: IntersectionObserver` y
+  `ngOnDestroy` hace `disconnect()` y la limpia. Verificado: build exit 0, 31/31 tests,
+  y el cierre presente en el código.
+  *Limitación honesta*: sin spec (ver BB-R2) la verificación es build + tests + inspección del
+  código, más el veredicto del reviewer sobre el arreglo. No hay aserción automática de que el
+  observer se cierre.
+- [x] **BB-R2** (`R3-BB-NO-SPEC`, WARNING) — **CERRADO COMO DISPOSICIÓN ACEPTADA, no como
+  defecto.** El WARNING era la opinión de la lente de confiabilidad, no política del proyecto.
+
+  **Decisión del usuario:** *"specs no harán falta ya que usamos ODD"*.
+
+  El razonamiento es sólido y vale escribirlo: **ODD ya aporta la disciplina de verificación**
+  —build, prerender con contenido real por ruta, capturas reales con Chrome headless, y el
+  review nativo— y agregar un spec por demo escala la suite **linealmente con la cantidad de
+  demos** para re-afirmar cosas que la verificación de prerender ya prueba de punta a punta.
+
+  **Qué cubre Blackbird entonces, sin spec propio:**
+  - `home.component.spec.ts` afirma que la grilla tiene **8 demos** (cubre la integración al índice).
+  - El build verifica que la ruta se prerenderiza (`Prerendered 10 static routes`) y que el HTML
+    estático lleva su `<title>` y su `og:image` absoluta con contenido real (25.505 chars).
+  - Las capturas con Chrome headless verifican el render de las dos mitades de la página.
+  - El review nativo aprobado cubrió el conjunto. **NO agregar spec para esta página.**
+
+  Si alguna vez se revisa esta página otra vez, este punto va a reaparecer como WARNING:
+  **es esperado y aceptado**, no reabrir por eso.
 - [ ] **BB-R3** (`R3-BB-SSR-BODY`, WARNING) — la clase `bb-paper-theme` **no se hornea** en el
   HTML estático: Angular prerenderiza el contenido de `app-root`, no serializa los atributos
   del `body`. Solo aplica post-hidratación. Mitigado con `min-height: 100dvh` en la raíz de la
