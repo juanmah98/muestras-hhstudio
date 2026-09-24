@@ -44,7 +44,20 @@ describe('HomeComponent', () => {
   it('should have sections defined', () => {
     const fixture = TestBed.createComponent(HomeComponent);
     const component = fixture.componentInstance;
-    expect(component.sections.length).toBe(8);
+    expect(component.sections.length).toBe(7);
+  });
+
+  it('should render the resource strip outside the demo grid', () => {
+    const fixture = TestBed.createComponent(HomeComponent);
+    fixture.detectChanges();
+    const compiled = fixture.nativeElement as HTMLElement;
+
+    const resourceCard = compiled.querySelector('.home__resource-card');
+
+    expect(resourceCard).toBeTruthy();
+    expect(resourceCard?.getAttribute('href')).toBe('/seo-ia');
+    // Seven demos in the grid; the guide is not one of them.
+    expect(compiled.querySelectorAll('.home__card').length).toBe(7);
   });
 
   it('should apply the home route metadata to the document', () => {

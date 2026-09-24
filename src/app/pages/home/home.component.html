@@ -47,6 +47,29 @@
     </div>
   </section>
 
+  <section class="home__resource" aria-labelledby="home-resource-title">
+    <div class="container">
+      <a class="home__resource-card" routerLink="/seo-ia" #sectionCard>
+        <div class="home__resource-icon" aria-hidden="true">
+          <i [class]="resource.icon"></i>
+        </div>
+
+        <div class="home__resource-body">
+          <span class="home__resource-label">{{ resource.label }}</span>
+          <h3 class="home__resource-title" id="home-resource-title">
+            {{ resource.title }}
+          </h3>
+          <p class="home__resource-desc">{{ resource.description }}</p>
+        </div>
+
+        <span class="home__resource-cta">
+          Ver la guía
+          <i class="bi bi-arrow-right" aria-hidden="true"></i>
+        </span>
+      </a>
+    </div>
+  </section>
+
   <footer class="home__footer">
     <p>
       HH Studio &copy; {{ currentYear }} &mdash;

@@ -337,6 +337,22 @@ Verificados con evidencia, no inferidos. Los archivos y líneas están en el his
   demos y darle **una card de otro tipo**. Ojo con `home.component.spec.ts`, que ahora afirma
   que `sections` tiene 8 elementos — si `seo-ia` sale de ese array, el test vuelve a 7.
 
+- [x] **T16** — Home: la tarjeta de `seo-ia` dejó de parecer un demo. **Hecho.**
+  `seo-ia` salió del array `sections` (que volvió a **7 demos**) y se convirtió en un
+  `readonly resource` aparte, renderizado como **tira informativa a ancho completo debajo de la
+  grilla**, antes del footer.
+  - **Estructura distinta, no una card más**: grilla horizontal `auto 1fr auto` (ícono en
+    círculo + cuerpo + CTA "Ver la guía"), borde izquierdo de 4px en vez de borde completo,
+    fondo translúcido del primario, y una **eyebrow "Recurso"** en mayúsculas en lugar de los
+    tags de demo. En mobile colapsa a dos columnas con el CTA abajo.
+  - El bloque `.home` es flex column y `.home__grid` tiene `flex: 1`, así que la tira queda
+    empujada abajo por construcción.
+  - **Verificado en el HTML prerenderizado**: orden `grid < resource < footer`, 7 hrefs de
+    demo sin `seo-ia` entre ellos, `href="/seo-ia"` en la tira, label y título correctos.
+  - Test nuevo que lo fija: la tira existe, linkea a `/seo-ia`, y la grilla tiene exactamente 7
+    `.home__card`. El spec pasó de 8 a 7 en `sections`.
+  - `npm test` 7/7 archivos, **31/31 tests**.
+
 ### Al final
 
 - [ ] **T8** — Revisión de diseño con OD (`design-review`) sobre el piloto ya limpio.
