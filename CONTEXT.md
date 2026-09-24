@@ -138,7 +138,25 @@ El índice del home (`src/app/pages/home/home.component.ts`) lista 7 demos en es
 - **Accesibilidad**: Contraste mínimo WCAG AA (4.5:1 para texto normal). Todos los elementos interactivos deben ser navegables por teclado.
 - **Performance**: Imágenes optimizadas (WebP), lazy loading nativo (`loading="lazy"`), componentes con lazy loading de Angular.
 - **SEO**: Tags Open Graph y Twitter Cards por sección. `SeoService` en `core/services/` para actualizar meta tags dinámicamente.
-- **SSR**: La app usa SSR híbrido de Angular 22. GSAP se ejecuta del lado del cliente post-hydration. Las rutas estáticas se prerenderizan para SEO.
+- **Prerender estático (no SSR)**: la app se prerenderiza con `outputMode: "static"`
+  (configuración `production` de `angular.json`), con entrypoints `src/main.server.ts` y
+  `src/app/app.config.server.ts`. El build emite un HTML estático por ruta
+  (`dist/muestras-hhstudio/browser/<ruta>/index.html`) y `prerendered-routes.json` lista las
+  9 rutas reales.
+  - **No hay servidor SSR en runtime**: el deploy sigue siendo estático. No existe
+    `src/server.ts` y el build no emite carpeta `server/`.
+  - El catch-all `**` (not-found) **no** se prerenderiza: el builder saltea toda ruta que
+    contenga `*`. Por eso el fallback SPA de `vercel.json` apunta a `/index.csr.html` (el
+    shell CSR), no a `/index.html` — que ahora es el home prerenderizado. Si apuntara a
+    `index.html`, una URL inexistente devolvería el home con HTTP 200 (soft 404).
+    *Limitación conocida*: una URL inexistente sigue devolviendo HTTP 200 con el not-found
+    renderizado en cliente, exactamente como antes de habilitar el prerender.
+  - El script `serve:ssr:muestras-hhstudio` de `package.json` apunta a
+    `dist/muestras-hhstudio/server/server.mjs`, que **no se genera**: config muerta del
+    scaffold de Angular SSR, pendiente de limpiar.
+  - GSAP se ejecuta del lado del cliente post-hydration. Las guardas
+    `typeof window === 'undefined'` ya existían en las 9 páginas prerenderizadas, así que el
+    prerender en Node no ejecuta código de browser.
 - **Dominio**: El dominio canónico de producción es `muestras.hhstudio.es` (verificado en los meta tags de `src/index.html`). El footer del home enlaza a `hhstudio.es`.
 - **Deploy**: Vercel (free tier) con adaptador SSR automático. Sin funciones serverless adicionales al inicio.
 - **README desactualizado**: `README.md` todavía menciona `hhstudio.com.ar`; está out of date.
