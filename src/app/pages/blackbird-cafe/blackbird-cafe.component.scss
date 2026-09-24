@@ -110,6 +110,16 @@ $bb-pad: clamp(1.15rem, 4vw, 3.5rem);
   // -------------------------------------------------------------------
   // 01 · technical strip
   // -------------------------------------------------------------------
+  // A ledger needs a measure. The page had none anywhere, and
+  // `.container{max-width:1320px}` was defined in this file and never used by
+  // anything, so on a wide display the price sat roughly two metres from the
+  // name it belongs to. Capping main also brings the ink band in from the
+  // viewport edge, which the audit wanted for a different reason.
+  &__main {
+    max-width: 1320px;
+    margin-inline: auto;
+  }
+
   &__strip {
     position: sticky;
     top: 0;
@@ -205,7 +215,7 @@ $bb-pad: clamp(1.15rem, 4vw, 3.5rem);
     margin: 0;
 
     span::before {
-      content: '+ ';
+      content: '/ ';
       color: $bb-coffee;
     }
   }
@@ -349,8 +359,16 @@ $bb-pad: clamp(1.15rem, 4vw, 3.5rem);
     grid-template-columns: auto 1fr auto;
     column-gap: 0.6rem;
     row-gap: 0.35rem;
-    padding: 0.8rem $bb-pad 0.8rem 0;
+    // No right padding: the group already insets by $bb-pad, and adding it here
+    // too put the price column at 112px while every other element on the page
+    // sits on the 56px line.
+    padding: 0.8rem 0;
     background: $bb-paper;
+    // Baseline, not the default stretch: the leader is an empty span, and
+    // `align-self: end` parked it at the bottom of the row, so on a name that
+    // wraps the leader detached to the last line while the price stayed on the
+    // first.
+    align-items: baseline;
   }
 
   &__item-name {
@@ -363,15 +381,13 @@ $bb-pad: clamp(1.15rem, 4vw, 3.5rem);
   &__item-allergens {
     font-size: 0.65rem;
     color: $bb-ink-soft;
-    letter-spacing: 0.04em;
+    letter-spacing: 0.05em;
     margin-left: 0.35rem;
     vertical-align: 0.1em;
   }
 
   &__item-lead {
     grid-column: 2;
-    align-self: end;
-    margin-bottom: 0.32rem;
     border-bottom: 1px dotted $bb-ink-soft;
   }
 
@@ -383,7 +399,7 @@ $bb-pad: clamp(1.15rem, 4vw, 3.5rem);
   }
 
   &__item-size {
-    font-size: 0.62rem;
+    font-size: 0.66rem;
     color: $bb-ink-soft;
     margin-right: 0.4rem;
   }
@@ -590,7 +606,7 @@ $bb-pad: clamp(1.15rem, 4vw, 3.5rem);
       color: $bb-coffee-lift;
       font-family: $bb-mono;
       font-size: 1.05rem;
-      letter-spacing: 0.03em;
+      letter-spacing: 0.05em;
     }
   }
 
@@ -598,6 +614,7 @@ $bb-pad: clamp(1.15rem, 4vw, 3.5rem);
     display: block;
     font-size: 0.66rem;
     letter-spacing: 0.06em;
+    text-transform: uppercase;
     color: $bb-paper;
     margin-top: 0.3rem;
   }
@@ -615,7 +632,12 @@ $bb-pad: clamp(1.15rem, 4vw, 3.5rem);
 
     &:hover,
     &:focus-visible {
-      color: $bb-coffee-lift;
+      // Invert instead of dimming. The old hover dropped this from 17.96:1 to
+      // 6.64:1, using a 63% contrast reduction as the signal for
+      // "interactive", which is the wrong direction for a state change.
+      background: $bb-coffee;
+      color: $bb-paper;
+      border-bottom-color: $bb-coffee;
     }
 
     &:focus-visible {
@@ -642,13 +664,19 @@ $bb-pad: clamp(1.15rem, 4vw, 3.5rem);
     padding: 1.4rem $bb-pad;
     text-decoration: none;
     color: $bb-ink;
-    border-left: 4px solid $bb-paper;
-    transition: border-left-color 0.18s linear, background 0.18s linear;
+    // The 4px marker bar is gone. It broke the 1px gutter the rest of the page
+    // is built on: the ink rule ended up 56px from the first cell and 60px from
+    // the second. The hover signal is now the label, not the frame.
+    transition: background 0.18s linear;
 
     &:hover,
     &:focus-visible {
       background: $bb-paper-deep;
-      border-left-color: $bb-coffee;
+
+      .bb__action-value {
+        text-decoration: underline;
+        text-underline-offset: 0.25em;
+      }
     }
 
     &:focus-visible {
