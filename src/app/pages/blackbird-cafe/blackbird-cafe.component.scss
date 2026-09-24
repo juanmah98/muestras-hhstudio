@@ -36,15 +36,11 @@
 // letterforms"), and it is also what the audit's L9 finding says: trapping
 // macro type inside the frame is the fragile move, not the bold one.
 //
-// The measure therefore lives on the TEXT, never on the page, and it is applied
-// as right padding rather than as max-width: padding shrinks the content box
-// while the element's own 2px rule still spans the full width. So the rules
-// bleed and the text inside them keeps the measure. It lands on the four
-// registers that carry right-aligned text or an open-ended run — the section
-// heads, whose note annotates the column below it; the ledger, where an
-// unmeasured dot leader puts the price two metres from its name; and the two
-// asides, whose allergen matrix would otherwise thin out to twelve columns and
-// leave its trailing row as a bordered void.
+// The measure therefore lives on the CONTENT, never on the page: one declared
+// value, $bb-measure, applied to every register that carries text and left
+// anchored rather than centred. Bands, plates and the strip bleed, and the space
+// the measure leaves on the right is the page's negative space. A single centred
+// page cap is what put 300px of dead paper on both sides of a 1920px display.
 //
 // An earlier revision capped main at that same 1320px instead, which bought the
 // ledger its measure with 300px of dead paper per side on a 1920px display.
@@ -68,25 +64,59 @@ $bb-coffee-lift: #c08a5e;
 $bb-rule: $bb-ink-soft;
 $bb-rule-on-ink: $bb-paper;
 
+// ---------------------------------------------------------------------
+// Which surface is allowed to be dark, and where (audit S2 and S4).
+//
+// Before this rule the page had FOUR dark masses at three different darknesses:
+// the strip and the local band in real ink, and two photographic plates that were
+// dark PHOTOGRAPHICALLY rather than by ink, each at its own tonality. The paper
+// claim was interrupted four times by things that did not agree with each other.
+//
+//   paper        the default ground, everywhere
+//   paper-deep   the supplements aside only: the single register a reader pays
+//                from at a price that is not on the menu
+//   ink          the local band, which is the page's ONE deliberate reversal, plus
+//                the strip's cells. Everywhere else ink is a 1px hairline, never
+//                an area.
+//   plate        the two photographic plates, and they are the page's only
+//                photographic masses. Both go through the same 1-bit screen, so
+//                there is one photographic tonality instead of two.
+// ---------------------------------------------------------------------
+
+// §7 surface devices, as SVG tiles. Tiles and not gradients on purpose: the
+// page's geometry rules forbid gradients outright, and a repeating-linear-gradient
+// faking a barcode is still a gradient. Ink only and no alpha anywhere, so the
+// transparency rule holds as well.
+$bb-screen: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4'%3E%3Ccircle cx='2' cy='2' r='.7' fill='%230a0a0a'/%3E%3C/svg%3E");
+$bb-stripe: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Crect width='8' height='3' fill='%230a0a0a'/%3E%3C/svg%3E");
+$bb-barcode: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='22' height='9'%3E%3Cg fill='%230a0a0a'%3E%3Crect width='2' height='9'/%3E%3Crect x='4' width='1' height='9'/%3E%3Crect x='7' width='3' height='9'/%3E%3Crect x='12' width='1' height='9'/%3E%3Crect x='15' width='2' height='9'/%3E%3Crect x='19' width='1' height='9'/%3E%3C/g%3E%3C/svg%3E");
+$bb-grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3CfeComponentTransfer%3E%3CfeFuncR type='linear' slope='.14' intercept='.86'/%3E%3CfeFuncG type='linear' slope='.14' intercept='.86'/%3E%3CfeFuncB type='linear' slope='.14' intercept='.86'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
+
 $bb-mono: ui-monospace, 'SFMono-Regular', 'Cascadia Mono', Menlo, Consolas,
   'Liberation Mono', monospace;
 $bb-sans: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
 
 $bb-pad: clamp(1.15rem, 4vw, 3.5rem);
 
-// The one measure on the page: the width of the text registers. Every band,
-// plate and rule bleeds; only text is measured. See the note at the top of this
-// file for why this lives on the text and not on the page.
+// The one measure on the page: the width of the content column. Bands, plates
+// and the strip bleed; content is measured. See the note at the top of this file
+// for why this lives on the content and not on the page.
+//
+// It is applied once, as a grouped `max-width` in the "the measure" block at the
+// end of the `.bb` block, so the policy is stated in one place instead of
+// repeated per register.
 $bb-measure: 1320px;
 
-// Records the measure as right padding rather than as max-width. A rule that is
-// capped stops mid-page while the register under it continues, which reads as a
-// mistake; padding keeps the rule full width and shrinks only the content box.
-// max() with $bb-pad is what makes it a no-op on a narrow display, where
-// `100% - $bb-measure` goes to zero or negative.
-@mixin bb-measure {
-  padding-right: max(#{$bb-pad}, calc(100% - #{$bb-measure}));
-}
+// Every register's column count comes from one declared unit and one stated
+// rule, instead of four bare numbers buried in four grid declarations (audit
+// L2). The rule: the unit is the narrowest width that still holds the widest
+// thing a cell of that register has to carry. The measure above then bounds how
+// many units fit, so on a wide display the registers land on 6, 4, 3 and 2
+// columns without any of them needing its own magic number.
+$bb-col-allergen: 208px; // the code plus the shortest allergen label
+$bb-col-method: 230px; // the longest method name at its set size
+$bb-col-action: 240px; // the label plus the phone number
+$bb-col-site: 280px; // the address and the hours side by side
 
 :host {
   display: block;
@@ -101,7 +131,27 @@ $bb-measure: 1320px;
     border-radius: 0;
   }
 
+  position: relative;
   background: $bb-paper;
+
+  // Mechanical noise (§7): ONE grain over the whole sheet, which is what makes the
+  // page read as a single printed object instead of as stacked digital sections.
+  // Blended in multiply rather than drawn with opacity, because the page's
+  // geometry rules forbid translucency and multiply achieves the same result
+  // without it. The transfer curve inside the SVG is what keeps the tile near
+  // white: raw turbulence averages mid-grey, and multiplying a whole page by
+  // mid-grey would halve its brightness.
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 30;
+    pointer-events: none;
+    background-image: $bb-grain;
+    background-size: 160px 160px;
+    background-repeat: repeat;
+    mix-blend-mode: multiply;
+  }
   color: $bb-ink;
   font-family: $bb-sans;
   font-size: 1rem;
@@ -139,16 +189,35 @@ $bb-measure: 1320px;
   }
 
   &__head {
+    position: relative;
     display: grid;
     grid-template-columns: auto 1fr auto;
     align-items: baseline;
     gap: 0.5rem 1.25rem;
     padding: 2.75rem $bb-pad 0.9rem;
-    // Measured like the ledger below it, so the right-hand note ("precios en
-    // euros") keeps sitting above the price column it annotates. Applied as
-    // padding so the 2px rule under the head still spans the page.
-    @include bb-measure;
     border-bottom: 2px solid $bb-ink;
+
+    // §6: crosshairs at grid intersections. They mark the two ends of the head
+    // rule, which is where this page's grid lines stop, and they straddle the
+    // rule rather than floating near it.
+    &::before,
+    &::after {
+      content: '+';
+      position: absolute;
+      bottom: -0.4rem;
+      font-family: $bb-mono;
+      font-size: 0.75rem;
+      line-height: 1;
+      color: $bb-ink;
+    }
+
+    &::before {
+      left: 0;
+    }
+
+    &::after {
+      right: 0;
+    }
   }
 
   &__head-title {
@@ -305,7 +374,9 @@ $bb-measure: 1320px;
   // accent family, and with the band full-bleed that was the largest accent
   // mass on the page. `brightness(0.72)` is multiplicative and can never reach
   // #0a0a0a either. Grayscale plus contrast is neutral, deterministic, needs no
-  // blending context, and lets the plates approach ink.
+  // blending context, and lets the plates approach ink. The screen below is the
+  // other half of the move: a filter on its own produces a contrasty photograph,
+  // and it is the dot ruling that makes it read as a printed plate instead.
   //
   // It is also what keeps stock texture honest. There is no photograph of the
   // shop, its staff or its equipment anywhere on this page, because a stock
@@ -322,7 +393,28 @@ $bb-measure: 1320px;
       width: 100%;
       height: 100%;
       object-fit: cover;
-      filter: grayscale(1) contrast(1.35) brightness(0.82);
+      // 1-bit rather than merely monochrome. Contrast this high pushes the tone
+      // curve onto its two ends, so the plate has no continuous midtones left to
+      // read as photography, and the brightness lift keeps the highlights from
+      // collapsing with them.
+      filter: grayscale(1) contrast(2.2) brightness(1.12);
+    }
+
+    // The screen a printer would have used. It is a screen and not a true
+    // halftone, and that distinction is worth keeping straight: CSS cannot
+    // modulate dot size by tone, so this lays one deterministic ruling over the
+    // plate instead of translating tone into dot density. What it does is put the
+    // plate back on the page as ink on paper rather than as a window. Multiply,
+    // never opacity, so the paper shows through the highlight dots.
+    &::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background-image: $bb-screen;
+      background-size: 4px 4px;
+      background-repeat: repeat;
+      mix-blend-mode: multiply;
     }
 
     &--band {
@@ -376,10 +468,6 @@ $bb-measure: 1320px;
   &__group {
     background: $bb-paper;
     padding: 0 $bb-pad;
-    // The one register that is a table, and a table needs a measure: without it
-    // the dot leader stretches the price two metres from its name on a wide
-    // display. The bed and the hairlines still bleed, because this is padding.
-    @include bb-measure;
   }
 
   &__group-title {
@@ -470,15 +558,24 @@ $bb-measure: 1320px;
   &__supplements,
   &__allergens {
     padding: 1.75rem $bb-pad;
-    // Measured so the allergen matrix keeps the six columns it is drawn for
-    // instead of thinning out to twelve and leaving its trailing row as a
-    // bordered void. The band's 2px rule still spans the page.
-    @include bb-measure;
     border-bottom: 2px solid $bb-ink;
   }
 
   &__supplements {
     background: $bb-paper-deep;
+
+    // §6's thick warning stripe. It marks the one register on the page where a
+    // reader pays a price that is not on the menu, which is the only thing on
+    // this page a hazard device is honest about.
+    &::before {
+      content: '';
+      display: block;
+      height: 0.5rem;
+      margin-bottom: 1.25rem;
+      background-image: $bb-stripe;
+      background-size: 8px 0.5rem;
+      background-repeat: repeat-x;
+    }
   }
 
   &__supplements-title,
@@ -511,7 +608,7 @@ $bb-measure: 1320px;
   // through the empty tracks as a solid block.
   &__allergens-list {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(208px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax($bb-col-allergen, 1fr));
     margin: 0;
     border-top: 1px solid $bb-ink;
     border-left: 1px solid $bb-ink;
@@ -560,7 +657,7 @@ $bb-measure: 1320px;
     display: grid;
     gap: 1px;
     background: $bb-ink;
-    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax($bb-col-method, 1fr));
     border-bottom: 2px solid $bb-ink;
   }
 
@@ -601,6 +698,11 @@ $bb-measure: 1320px;
   &__head--inverse {
     border-bottom-color: $bb-paper;
 
+    &::before,
+    &::after {
+      color: $bb-paper;
+    }
+
     .bb__head-note {
       color: $bb-paper;
     }
@@ -614,7 +716,7 @@ $bb-measure: 1320px;
     display: grid;
     gap: 1px;
     background: $bb-rule-on-ink;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax($bb-col-site, 1fr));
   }
 
   &__site {
@@ -711,7 +813,7 @@ $bb-measure: 1320px;
     display: grid;
     gap: 1px;
     background: $bb-ink;
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax($bb-col-action, 1fr));
     border-bottom: 2px solid $bb-ink;
   }
 
@@ -762,6 +864,18 @@ $bb-measure: 1320px;
   &__footer {
     padding: 1.5rem $bb-pad 2.25rem;
     background: $bb-paper;
+
+    // §6's barcode, as the colophon rule. Repeating vertical bars, drawn as an
+    // SVG tile so the page keeps its promise of no gradients.
+    &::before {
+      content: '';
+      display: block;
+      height: 0.6rem;
+      margin-bottom: 1rem;
+      background-image: $bb-barcode;
+      background-size: auto 0.6rem;
+      background-repeat: repeat-x;
+    }
   }
 
   &__footer-line {
@@ -798,6 +912,31 @@ $bb-measure: 1320px;
         outline-offset: 3px;
       }
     }
+  }
+
+  // -------------------------------------------------------------------
+  // the measure
+  // -------------------------------------------------------------------
+  // Everything that carries content sits on $bb-measure; everything that is a
+  // band, a plate or the strip bleeds. A cap and its own rule must agree, so it
+  // is one grouped declaration rather than one per register.
+  //
+  // The ledger and the section heads are in here because an unmeasured dot
+  // leader stretches the price two metres from the name it belongs to, and
+  // because a head's note annotates the column below it. The allergen register
+  // is in here because with no measure it thins from six columns to twelve on a
+  // wide display and leaves its trailing row as a bordered void. The manifesto
+  // is in here so its kitchen-hours note stops detaching to the far edge.
+  &__head,
+  &__groups,
+  &__methods-grid,
+  &__sites-grid,
+  &__actions,
+  &__manifesto,
+  &__supplements,
+  &__allergens,
+  &__footer-line {
+    max-width: $bb-measure;
   }
 }
 

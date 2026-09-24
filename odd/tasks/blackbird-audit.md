@@ -30,16 +30,22 @@ Los IDs son los del audit. ✅ = arreglado · ⬜ = abierto · ❌ = falso posit
 
 ### Sustrato (S)
 
-- ⬜ **S1** (warn) — `.bb__sites{background:#0a0a0a}`: una sección de tinta a sangre en medio
-  de un documento de papel. El audit lo declara **dispositivo legítimo** (compartimento
-  reverso), no violación.
-- ⬜ **S2** (warn) — hay **CUATRO masas oscuras en dos tonalidades** (la franja, la banda, la
-  placa del manifiesto, la banda de sedes), no **una** reversión deliberada. Falta una regla
-  de cuándo cada una.
+- ✅ **S1** (warn) — `.bb__sites{background:#0a0a0a}`: una sección de tinta a sangre en medio
+  de un documento de papel. El audit lo declara **dispositivo legítimo** (compartimento reverso), no
+  violación. **Cerrado en U3**: es la **única** reversión deliberada de la página y ahora está escrito
+  en el archivo cuáles son las cuatro clases de superficie (`paper`, `paper-deep`, `ink`, `plate`) y
+  dónde se permite cada una.
+- ✅ **S2** (warn) — hay **CUATRO masas oscuras en dos tonalidades** (la franja, la banda, la placa del
+  manifiesto, la banda de sedes), no **una** reversión deliberada. Faltaba una regla de cuándo cada
+  una. **Cerrado en U3**: las cuatro masas pasan a **dos** — una reversión a tinta deliberada (la banda
+  de sedes) + **una sola familia fotográfica**, porque las dos placas ahora pasan por la misma trama
+  1-bit. La regla de cuándo cada superficie es oscura quedó escrita en el archivo.
 - ✅ **S3** (warn) — el `sepia(1)` del duotono agregaba croma a cada píxel y `brightness(0.72)`
   es multiplicativo (nunca llega a `#0a0a0a`) → las placas caían **dentro de la familia del
   acento**. **Arreglado** con `grayscale(1) contrast(1.35) brightness(0.82)`.
-- ⬜ **S4** (nit) — `#F4F4F0` **y** `#EAE8E3` como fondos sin regla de cuándo cada uno.
+- ✅ **S4** (nit) — `#F4F4F0` **y** `#EAE8E3` como fondos sin regla de cuándo cada uno.
+  **Cerrado en U3** con la regla escrita: `paper-deep` es **sólo** el `aside` de suplementos, que es
+  el único registro donde el lector paga un precio que no está en la carta.
 
 ### Geometría (G)
 
@@ -84,8 +90,11 @@ Los IDs son los del audit. ✅ = arreglado · ⬜ = abierto · ❌ = falso posit
   la **única** página de la vidriera capada así. **Arreglo final**: la medida se movió de la *página*
   al *texto*, aplicada como `padding-right` y no como `max-width`, así las reglas y los lechos sangran
   completos y sólo el texto respeta los 1320px. Ver U2a.
-- ⬜ **L2** (warn) — cuatro `minmax(208/230/240/280px)` mágicos, cuatro conteos de columna no
-  controlados. Solo `.bb__manifesto` es una composición declarada.
+- ✅ **L2** (warn) — cuatro `minmax(208/230/240/280px)` mágicos, cuatro conteos de columna no
+  controlados. **Cerrado en la parte que importa (U2b)**: los cuatro valores son ahora tokens
+  declarados con la regla escrita, y la medida de 1320px acota el conteo de todos los registros
+  (6 / 4 / 3 / 2 columnas a pantalla ancha). **No hecho**: la alineación literal de pistas entre
+  secciones (12 pistas con `span`, o `subgrid`) — ver U2.
 - ✅ **L3** (warn) — el precio a **112px** mientras todo lo demás está en la línea de 56px
   (doble inset: el grupo insetea por `$bb-pad` y la fila sumaba otro). **Arreglado.**
 - ✅ **L4** (warn) — el líder de puntos se desprendía: es un span vacío y `align-self: end` lo
@@ -130,10 +139,22 @@ Los IDs son los del audit. ✅ = arreglado · ⬜ = abierto · ❌ = falso posit
 - ✅ **D3** (warn) — `+` significaba **viñeta** en el hero e **incremento de precio** en la
   carta, a un scroll de distancia. **Arreglado**: `/` en el hero.
 - ⬜ **D4** (nit) — `®` y `©` inline a 0.7rem = texto legal, no elemento estructural.
-- ⬜ **D5** (warn) — **toda la degradación analógica del §7 ausente**: sin halftone, sin
+- ✅ **D5** (warn) — **toda la degradación analógica del §7 ausente**: sin halftone, sin
   1-bit dithering, sin scanlines, sin grain. *"La sección más incumplida, y explica por qué
-  las superficies leen vector-clean."*
-- ⬜ **D6** (nit) — sin cruces, códigos de barras ni franjas de advertencia.
+  las superficies leen vector-clean."* **Cerrado en U3**: las placas pasan a
+  `grayscale(1) contrast(2.2) brightness(1.12)` — un rango 1-bit, sin medios tonos continuos que se
+  lean como fotografía — con una **trama de puntos determinista** encima en `mix-blend-mode: multiply`
+  (nunca opacidad: la dimensión Geometría del audit prohíbe translucidez y §7 pide *"low-opacity"*;
+  el blend resuelve la contradicción). Más el **grain global** del §7, también por `multiply`.
+  Sin scanlines a propósito: §7 las pide *"for terminal interfaces"* y esta página es Swiss Print.
+- ✅ **D6** (nit) — sin cruces, códigos de barras ni franjas de advertencia. **Cerrado en U3** con
+  los tres: cruces `+` sobre los extremos de cada regla de cabecera, código de barras como regla de
+  colofón en el pie, y franja de advertencia sobre los suplementos. Los cuatro patrones son **tiles
+  SVG, no gradientes** — un `repeating-linear-gradient` para fingir un código de barras sigue siendo
+  un gradiente, y la dimensión Geometría los prohíbe. **El cuarto dispositivo del §6 (datos de cadena
+  aleatorios tipo `REV 2.6` / `UNIT / D-01`) se descartó a conciencia**: inventar un número de revisión
+  o un código de unidad en la página de un negocio real es exactamente la fabricación de contenido que
+  ya nos costó caro con los parámetros de extracción. No se cambia integridad por un adorno.
 - ✅ **D7** — `<data>`, `<dl>`, `<address>`, `<dt>/<dd>`, líderes con `aria-hidden`. **PASS**
   (único hueco: no hay `<samp>/<kbd>/<output>`).
 
@@ -223,8 +244,8 @@ Cuatro unidades de trabajo, cada una un candidato de review chico. ⬜ pendiente
 |---|---|---|---|---|
 | U1 | Tipografía y estados | T5, T6, L10, P9, P10 + comentario de `R3-plate-filter-reachability` | `.scss` | ✅ |
 | U2a | Sangre y medida | L1 (revertido y re-resuelto) | `.scss` | ✅ |
-| U2b | Grilla de columnas compartida | L2 | `.scss` | ⬜ |
-| U3 | Superficie | S2, S4, D5, D6 + BB-R8 | `.scss`, `.html` | ⬜ |
+| U2b | Grilla declarada | L2 (parcial: unidad y regla declaradas, medida acota los conteos) | `.scss` | ✅ |
+| U3 | Superficie | S1, S2, S4, D5, D6 + BB-R8 | `.scss`, `.html` | ✅ |
 | U4 | Mono determinista | T3 | `.scss`, asset `woff2` | ⬜ |
 | U5 | Cierre y desviaciones | D2, D4 + BB-R9 + las disposiciones escritas | `.scss`, `.ts`, docs | ⬜ |
 
@@ -232,32 +253,78 @@ Cuatro unidades de trabajo, cada una un candidato de review chico. ⬜ pendiente
  de agregar la trama 1-bit, porque el 1-bit interactúa con el ancho de la banda (S3 ya había marcado
  que una masa de acento a sangre es la que erosiona la escasez del acento).
 
-### U2a — cerrada
+### U2 — cerrada (U2a + U2b)
 
-El idioma que resuelve esto, y que conviene no olvidar: **la medida se aplica como `padding-right`, no
-como `max-width`.** Un `max-width` capa el elemento *y su regla*, así que la regla de 2px de una
-cabecera termina a mitad de página mientras el registro de abajo sigue a sangre — se lee como error.
-El `padding` encoge sólo la caja de contenido, así que **la regla sangra y el texto adentro respeta la
-medida**. Se implementó como `@mixin bb-measure` y se aplica a los cuatro registros con texto alineado
-a la derecha o corrida abierta: las cabeceras de sección, el grupo del ledger, y los dos `<aside>`
-(suplementos y alérgenos).
+**El diseño final, en una frase**: todo lo que carga contenido se sienta en `$bb-measure` (1320px,
+anclado a la izquierda); todo lo que es banda, placa o franja sangra. El espacio que la medida deja a
+la derecha **es** el espacio negativo de la página. Se aplica **una sola vez**, como `max-width` en un
+bloque agrupado, y no repetido por registro.
+
+**La evolución del mecanismo vale como lección** (es lo más útil de esta unidad): el primer intento usó
+`padding-right` en lugar de `max-width`, y era el mecanismo **correcto para ese estado intermedio** —
+un `max-width` capa el elemento *y su regla*, así que la regla de 2px de una cabecera quedaba cortada a
+mitad de página arriba de un registro todavía a sangre, y se leía como error. El padding encogía sólo
+la caja de contenido, así que la regla sangraba y el texto adentro respetaba la medida.
+
+**Ese truco dejó de ser el correcto en cuanto el usuario decidió medir también los registros de
+celdas**: con todos los bloques en la misma columna, la regla de cada uno y su caja ya coinciden, y
+mantener el padding sólo servía para dejar sangrando reglas que el usuario había pedido acortar. Se
+reemplazó por `max-width` agrupado. **Moraleja: el mecanismo correcto depende del estado del diseño, no
+de una preferencia general** — y el de la etapa anterior queda documentado acá para no volver a
+inventarlo.
 
 Dos defectos propios, encontrados **mirando el render** y no razonando:
 1. Las cabeceras con `max-width` dejaban su regla cortada a 1320px arriba de un registro a sangre.
 2. La matriz de alérgenos, sin medida, pasaba de 6 a 12 columnas a 2560px y su fila final dejaba una
-   banda entera vacía *y con borde* — una regresión introducida al quitar el cap.
+   banda entera vacía *y con borde* — una regresión introducida al quitar el cap. El propio archivo ya
+   explicaba por qué esa matriz usa bordes por celda y no el lecho de tinta: es la misma causa.
 
-**Evidencia medida (no estimada)**: borde derecho de la nota de cabecera = **1320px** = borde derecho
-del precio, a 2560 y a 1920px; `scrollWidth == innerWidth` en 2560, 1920 y **320** (sin scroll
-horizontal); la regla de 2px de cada cabecera y las hairlines del ledger ahora **sí** spannean el ancho
-completo. Build exit 0, tests 31/31.
+**Evidencia medida (no estimada)**: borde derecho de la nota de cabecera = borde derecho del precio =
+**1284px** (o sea 1320 menos el inset de `$bb-pad`), a 2560 y a 1920px; registros de métodos, sedes,
+pedidos y manifiesto en **1320px**; la lista de alérgenos en 1284px; `scrollWidth == innerWidth` en
+2560, 1920 y **320** (sin scroll horizontal). Build exit 0, tests 31/31.
 
-**Observaciones sin resolver, para el usuario**: el manifiesto (`02`) tiene la misma clase de problema —
-su nota de cocina queda al borde derecho, a ~2400px de su texto, a 2560px. El audit lo llamó *“una de
-las dos composiciones asimétricas legítimas”*, así que **no se tocó**: el mismo mixin lo comprimiría a
-sus proporciones diseñadas (`11rem / 1fr / 14rem` dentro de 1320px), que es defendible, pero es una
-decisión de composición. También queda a criterio si los registros de celdas (métodos, sedes, pedidos)
-debieran medirse: hoy sangran y sus celdas a 2560px van de 640 a 1280px.
+**U2b — qué se hizo de L2 y qué no.** Se hizo: los cuatro `minmax()` mágicos pasaron a **tokens
+declarados** (`$bb-col-allergen/method/action/site`) con la regla escrita — *la unidad es el ancho más
+chico que todavía aguanta lo más ancho que una celda de ese registro tiene que cargar* — y la medida
+ahora **acota el conteo** de todos los registros, así que a pantalla ancha caen en 6 / 4 / 3 / 2
+columnas sin ningún número suelto. Prueba de que el renombre es inerte: los valores compilados siguen
+siendo `minmax(208px,1fr)`, `230px`, `240px`, `280px`, exactos.
+
+**No se hizo, y se decidió a conciencia**: la alineación literal de pistas entre secciones (un sistema
+de 12 pistas con `span` declarado por celda, o `subgrid`). Se evaluó en detalle y se descartó porque
+reemplaza un mecanismo **auto-ajustado por construcción** (`auto-fill`/`auto-fit` + mínimo derivado del
+contenido) por **4 o 5 breakpoints a mano por registro** — o sea degrada el mantenimiento para ganar
+una coincidencia de bordes que hoy nadie ve. Queda disponible: si el usuario quiere el alineamiento
+literal, son ~40 líneas de media queries y una verificación en 320/480/768/1024/1320/2560.
+
+### U3 — cerrada
+
+**El movimiento que ordena la unidad**: S2 y D5 eran la misma causa. Las cuatro masas oscuras eran la
+franja y la banda de sedes (tinta real) **más las dos placas, que eran oscuras fotográficamente y no
+por tinta**, cada una en su propia tonalidad. Con las placas pasando por una trama 1-bit determinista
+las masas bajan de cuatro a dos, y la página pasa de dos familias fotográficas a una. El §7 pide
+justamente eso para Swiss Print (`1-bit dithering` con `multiply`), no las scanlines del modo terminal.
+
+**La contradicción del contrato, resuelta sin romper ninguno de los dos lados**: §7 pide grain
+*"low-opacity"* y la dimensión Geometría del audit prohíbe `opacity<1` (era un PASS, G4). Se resuelve
+con `mix-blend-mode: multiply`, que da el mismo resultado sin alfa. Y el tile de ruido lleva una curva
+`feComponentTransfer` que lo mantiene **casi blanco**: el `feTurbulence` crudo promedia gris medio, y
+multiplicar la página entera por gris medio la oscurecería a la mitad. Ninguno de los dos detalles se ve
+en el resultado, y sin ellos el cambio era un error visible.
+
+**Corrección terminológica que importa**: la trama es una **trama**, no un *halftone* de verdad — CSS
+no puede modular el tamaño del punto según el tono. El comentario del archivo lo dice así, para no
+dejar una afirmación que no coincide con la realidad (el error más frecuente de este repo).
+
+**Evidencia**: en el render a 2560px se ven la trama sobre las placas, el grain en multiply, las cruces
+en los extremos de las cuatro reglas de cabecera (blancas dentro de la banda de tinta), la franja sobre
+`[ SUPLEMENTOS ]` y el código de barras en el pie. A 320px `scrollWidth == innerWidth`. En el CSS
+compilado: `filter:grayscale(1) contrast(2.2) brightness(1.12)` y exactamente **2**
+`mix-blend-mode:multiply` (la trama de la placa y el grain de la página). Guardas del audit: sin
+`rgba(`/`hsla(`/`backdrop-filter`/gradientes (el único hit de `gradient` está **dentro del comentario
+que explica por qué no se usan**), sin `opacity<1`, y `border-radius` sólo en el reset a `0`.
+Build exit 0, tests 31/31.
 
 ### U1 — cerrada
 
@@ -301,8 +368,10 @@ frases del comentario que afirmaban algo que `brightness(0.82)` no puede hacer.
 - ⬜ **R3-plate-filter-reachability** (SUGGESTION, `scss:288-291`) — sobre el filtro neutro.
 - ⬜ **R3-ROUND-SEQUENCE / R3-HOVER-COLOR / R3-RULE-VARS / R3-NOWRAP-FLOOR** — sin descripción
   en el sobre, no accionables con precisión.
-- ⬜ **BB-R8 / BB-R9** — nits cosméticos viejos (alts casi duplicados de las placas; `detail: ''`
-  en el array `bar`). **No perseguir sueltos**: viajan con el próximo cambio real.
+- ⬜ **BB-R9** — `detail: ''` en el array `bar` (`.ts:271`/`273`). **No perseguir suelto**: viaja con
+  el próximo cambio real que toque el `.ts`.
+- ✅ **BB-R8** — los dos `alt` de las placas eran casi iguales y las placas son **textura decorativa**,
+  así que el alt correcto es **vacío**. Cerrado en U3: ambos pasaron a `alt=""`.
 
 ## Cómo volver a correr el audit
 
