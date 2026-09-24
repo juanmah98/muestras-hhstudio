@@ -154,9 +154,46 @@ Verificados con evidencia, no inferidos. Los archivos y líneas están en el his
   de borrar: 2,673,302 bytes (2.55 MB), 0 referencias en el repo entero, sin paths
   dinámicos. `git rm` de los 10 archivos. `public/assets/images/` pasó de 34
   archivos / ~3.85 MB a 24 archivos / 1.3 MB.
-- [ ] **T12** — Corregir la afirmación falsa de SSR/prerender en `CONTEXT.md`.
-- [ ] **T7a** — Habilitar prerender estático (`outputMode: "static"` + entrypoints
-  server en `angular.json`).
+- [x] **T12** — Corregir la afirmación falsa de SSR/prerender en `CONTEXT.md`.
+  **Hecho.** El bullet "SSR" fue reemplazado por "Prerender estático (no SSR)": el estado
+  real (entrypoints, 9 rutas, catch-all salteado, fallback a `index.csr.html`) más las dos
+  deudas escritas en voz alta (`src/server.ts` inexistente, `serve:ssr` apuntando a un
+  archivo que no se genera).
+- [x] **T7a** — Habilitar prerender estático.
+  **Hecho.** `angular.json`: `"server": "src/main.server.ts"` en `options` y
+  `"outputMode": "static"` **solo** en `production` (así `ng serve` no cambia).
+  Nuevos: `src/main.server.ts` (con `BootstrapContext`) y `src/app/app.config.server.ts`
+  (`provideServerRendering` desde `@angular/ssr`). `tsconfig.app.json` suma
+  `src/main.server.ts` a `files` para que se type-checke.
+
+  **Corrección a mi propio plan**: pedí una entrada `"prerender"` con la lista inline de 9
+  rutas. **Eso no es expresable en Angular 22**:
+  - el schema del builder acepta solo `routesFile` / `discoverRoutes` (`additionalProperties: false`);
+  - con `outputMode` presente, `prerender` se **ignora y emite warning**
+    (`@angular/build/.../options.js`).
+
+  **Corrección de una afirmación mía (verificada por verificador independiente)**: le
+  indicé al writer que `provideServerRendering` **no** está exportado por
+  `@angular/platform-server`. **Falso**: sí lo está en 22.0.2
+  (`node_modules/@angular/platform-server/types/platform-server.d.ts:50`, `@publicApi`).
+  Mi grep buscó en el nivel raíz del paquete y el archivo vive en `types/`. `@angular/ssr`
+  sigue siendo el import correcto para v22 (es el que usa el scaffold oficial), así que no
+  hay cambio de código; la afirmación de la consigna era falsa y queda anotada.
+
+  Se usó `discoverRoutes` (default con `server` + `outputMode: "static"`), que rinde
+  exactamente las 9 rutas porque el builder saltea deliberadamente toda ruta con `*`.
+
+  **Verificado**: `npm run build` exit 0, 11.2s, `prerendered-routes.json` con las 9 rutas
+  (sin `**`), 9 directorios con HTML real (home 6.312 chars dentro de `<app-root>`),
+  sin carpeta `server/`. Un solo warning, el preexistente de `pasteleria.component.scss`.
+  `Initial` 682.50 kB / 136.83 kB transfer (baseline 685.23 / 134.26).
+- [x] **T7a-bis** — Regresión de soft-404 prevenida.
+  `vercel.json` mandaba el fallback SPA a `/index.html`, que ahora **es el home
+  prerenderizado**: una URL inexistente habría servido el home con HTTP 200. Se cambió el
+  destino a `/index.csr.html` (shell CSR), que reproduce exactamente el comportamiento
+  previo al prerender.
+  *Prueba de que Vercel resuelve filesystem antes que rewrites*: si no, `/main-abc.js` y
+  `/assets/*` también caerían en el catch-all y la app no cargaría nunca.
 - [ ] **T7b** — Conectar `SeoService` en las 10 rutas, ahora sí con efecto real
   sobre las previews sociales.
 - [ ] **T9** — Agregar `seo-ia` al índice del home (8 demos).
@@ -184,7 +221,7 @@ Verificados con evidencia, no inferidos. Los archivos y líneas están en el his
 | # | Unidad de trabajo | Tareas | Commit previsto |
 |---|---|---|---|
 | A | Imágenes huérfanas | T5 | `chore(assets): drop unreferenced images` |
-| B | Prerender | T7a + T12 | `feat(prerender): emit per-route HTML so social previews work` |
+| B | Prerender | T7a + T7a-bis + T12 | `feat(prerender): emit per-route HTML so social previews work` |
 | C | Metadata por ruta | T7b + T9 | `feat(seo): per-route metadata across the showcase` |
 | D | Imaginería piloto | T2 | `fix(estetica): native-resolution imagery` |
 | E | Imaginería resto | T4 | `fix(imagery): native-resolution hero imagery` |
