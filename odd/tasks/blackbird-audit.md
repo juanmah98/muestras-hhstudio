@@ -89,11 +89,11 @@ Los IDs son los del audit. ✅ = arreglado · ⬜ = abierto · ❌ = falso posit
 
 - ✅ **L1** (warn) — **sin medida de página en ningún lado**, y `.container{max-width:1320px}`
   **definido en el mismo archivo y nunca usado**. A 2560px el precio quedaba a ~2.2 m del nombre.
-  **Primer intento**: capar `.bb__main` a 1320px. **Revertido** — el usuario vio los márgenes en un
-  monitor ancho y los rechazó (a 1920px eran 300px de papel muerto por lado; a 2560px, 620px), y era
-  la **única** página de la vidriera capada así. **Arreglo final**: la medida se movió de la *página*
-  al *texto*, aplicada como `padding-right` y no como `max-width`, así las reglas y los lechos sangran
-  completos y sólo el texto respeta los 1320px. Ver U2a.
+  **Se probaron dos arreglos y los dos los rechazó el dueño de la página**: capar `.bb__main` a 1320px
+  (300px de papel muerto por lado a 1920px) y después mover esa medida a cada registro como
+  `max-width` (cada regla de sección cortada a mitad de página). **Estado final: la página entera va a
+  ancho completo, y L1 queda como desviación aceptada y escrita en el archivo** — el precio puede
+  quedar a la distancia que dé el ancho de la pantalla. Ver U6.
 - ✅ **L2** (warn) — cuatro `minmax(208/230/240/280px)` mágicos, cuatro conteos de columna no
   controlados. **Cerrado en la parte que importa (U2b)**: los cuatro valores son ahora tokens
   declarados con la regla escrita, y la medida de 1320px acota el conteo de todos los registros
@@ -114,9 +114,12 @@ Los IDs son los del audit. ✅ = arreglado · ⬜ = abierto · ❌ = falso posit
 - ✅ **L7** — la matriz de alérgenos cierra sin dobles en cualquier conteo, sobre un `<dl>`
   real. **PASS.**
 - ⬜ **L8** (nit) — solo dos composiciones asimétricas; catorce gutters idénticos.
-- ⬜ **L9** (nit) — el type oversize está calibrado para quedar **dentro** de su gutter, o sea
-  lo contrario de "viewport-bleeding". *(Nota: bleed en mobile causa scroll horizontal, así que
-  puede ser una desviación deliberada.)*
+- ✅ **L9** (nit) — el type oversize estaba calibrado para quedar **dentro** de su gutter, o sea lo
+  contrario de "viewport-bleeding". **Cerrado en U6**: el título del hero dejó de topar a `13rem` y
+  ahora **resuelve su tamaño** desde el ancho disponible, así que llena la pantalla en cualquier
+  monitor. Medido: **94.0%** del ancho disponible a 1920px y **92.5%** a 2560px. No *sangra* (no cruza
+  el borde) porque el sangrado real a 320px produce scroll horizontal; se queda en el borde con ~6% de
+  aire, que además absorbe una sustitución de fuente.
 - ✅ **L10** (nit) — regla doble de 2px en el único límite acciones/footer. **Arreglado** en U1: se
   quitó el `border-top` de `.bb__footer-line`; queda el `border-bottom` de `.bb__actions`, que es el
   que cierra un compartimento de `gap: 1px`. El `padding-top` se mantuvo para no colapsar el ritmo.
@@ -183,9 +186,12 @@ Los IDs son los del audit. ✅ = arreglado · ⬜ = abierto · ❌ = falso posit
   en U1: `transition` + hover/focus que **suben** el contraste (a `$bb-ink`, + underline) + outline
   propio en `:focus-visible`, y sumado al bloque `prefers-reduced-motion`.
 - ✅ **P10** (nit) — `.bb__action:hover` a `#eae8e3` da ΔL de 0.035 en OKLab contra 0.06–0.12
-  requeridos. **Arreglado** en U1: el hover pasa a `$bb-coffee` con texto en papel → ΔL ~0.55, y es
-  el acento señalando *acción*, que es exactamente su función desde C3. El outline de foco pasó a
-  `$bb-ink` porque un anillo marrón sobre fondo marrón era invisible.
+  requeridos. **Primero** se arregló en U1 con el acento de fondo (ΔL ~0.55); **el dueño pidió después
+  volver al marco**, así que **U6 lo dejó en el borde y nada más**. Sigue cumpliendo la remediación del
+  audit por la puerta que el propio audit abre (*"or accept via another signal"*): un marco de tinta de
+  2px sobre papel es una señal fuerte, y se dibuja con `outline` con offset negativo para no tocar el
+  gutter de 1px (el error de G5). Verificado: `outline 2px solid #0a0a0a`, `offset -4px`, **sin cambio
+  de `background`** en el estado.
 
 ## WHAT NOT TO CHANGE (textual del audit)
 
@@ -259,6 +265,7 @@ Cuatro unidades de trabajo, cada una un candidato de review chico. ⬜ pendiente
 | U3 | Superficie | S1, S2, S4, D5, D6 + BB-R8 | `.scss`, `.html` | ✅ |
 | U4 | Mono determinista | T3 | `.scss`, `index.html` | ✅ |
 | U5 | Cierre y desviaciones | D2, D4 + BB-R9 + las disposiciones escritas | `.scss`, `.html`, `.ts` | ✅ |
+| U6 | Ancho completo (revierte la medida) | L1 (desviación aceptada), L9, P10, hover de Pedidos | `.scss` | ✅ |
 
 **U2 va antes que U3 a propósito**: conviene ver la página a sangre completa en 1920 y 2560px *antes*
  de agregar la trama 1-bit, porque el 1-bit interactúa con el ancho de la banda (S3 ya había marcado
@@ -334,6 +341,39 @@ texto. La hipótesis del reviewer ("unos píxeles arriba") **no es alcanzable**:
 blockificado no tiene line box, así que por especificación su baseline se sintetiza desde el borde
 inferior, y eso es exactamente el comportamiento observado. Sub-píxel, imperceptible, y coherente con
 la medición física previa (la caja del líder mide ancho-de-pista × 1px). **Falso positivo.**
+
+### U6 — ancho completo (revierte la medida de U2)
+
+Feedback del dueño mirando la página: *"Antes todo cubría el ancho entero, está bien pero Carta debería
+respetarlo, el hero también, En la barra también, Pedidos también. El hover que tienen teléfono, email e
+instagram me gustaba como antes, que resaltás el borde solamente. El footer tampoco tiene el ancho
+completo."*
+
+Se eliminó **la medida entera** (los nueve selectores agrupados y el token `$bb-measure`, sin dejar
+declaraciones muertas) y se subió el techo del título del hero. Verificado midiendo:
+
+| | 1920px | 2560px |
+|---|---|---|
+| Título del hero (ancho de texto vs disponible) | **1696 / 1804 = 94.0%** | **2260 / 2444 = 92.5%** |
+| `.bb__head` / `.bb__groups` / `.bb__allergens` | **1920** = ancho completo | **2560** |
+| `scrollWidth` vs `innerWidth` | igual ✓ | igual ✓ |
+
+El hover de las tres celdas de Pedidos pasó a **marco y nada más** (`outline` inset, sin `background`,
+sin subrayado, sin transición), verificado forzando el estado y leyendo el estilo computado: `outline 2px
+solid rgb(10,10,10)`, `offset -4px`, `background rgb(244,244,240)` **sin cambio**.
+
+**Lo que el título pasó a hacer, y por qué es una fórmula y no un número**: antes era
+`clamp(2.4rem, 13.6vw, 13rem)`, y el techo de `13rem` es lo que dejaba media pantalla vacía a partir de
+1530px. Ahora resuelve `(100vw − 2 × $bb-pad) / 6.2`: el 6.2 es el avance medido de la palabra (5.8420
+em) más ~6% de aire, así que el título llena en la misma proporción a 320px que a 2560px, y el aire
+es lo que absorbe una fuente de fallback más ancha que Inter sin volver a amputar la D.
+
+**Dos observaciones honestas sobre el resultado**:
+1. **El defecto L1 vuelve**, y ahora es una desviación aceptada y escrita en el archivo: sin medida, el
+   líder de puntos puede separar el precio del nombre por todo el ancho de la pantalla.
+2. **La matriz de alérgenos a 2560px vuelve a repartirse en 12 columnas** y su fila final queda parcial
+   (el borde por celda evita el bloque de tinta, que es lo que el archivo ya explicaba). A 1920px se ve
+   bien; si molesta a pantallas muy anchas, la unidad `$bb-col-allergen` es la perilla.
 
 ### U3 — cerrada
 

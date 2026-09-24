@@ -28,26 +28,23 @@
 // workaround, and the audit agreed.
 // ---------------------------------------------------------------------
 // ---------------------------------------------------------------------
-// Full bleed, measured text.
+// Full bleed, everywhere.
 //
 // The page runs to the viewport edge: the strip, the plate bands, the ink
-// reversal, the registers and every 2px rule span the full width. That is what
-// the archetype asks for (skill 2.1, "oversized, viewport-bleeding
-// letterforms"), and it is also what the audit's L9 finding says: trapping
-// macro type inside the frame is the fragile move, not the bold one.
+// reversal, the registers, the section rules and the footer all span the full
+// width, and the hero title scales with the viewport instead of stopping at a
+// fixed size. That is what the archetype asks for (skill 2.1, "oversized,
+// viewport-bleeding letterforms") and it is also what audit L9 asked for.
 //
-// The measure therefore lives on the CONTENT, never on the page: one declared
-// value, $bb-measure, applied to every register that carries text and left
-// anchored rather than centred. Bands, plates and the strip bleed, and the space
-// the measure leaves on the right is the page's negative space. A single centred
-// page cap is what put 300px of dead paper on both sides of a 1920px display.
+// Two earlier revisions are recorded here so neither is restored by mistake: a
+// page cap at 1320px, which put 300px of dead paper on each side of a 1920px
+// display, and then that same cap moved onto each register as a content measure,
+// which stopped every section rule mid-page. The page's owner rejected both in
+// favour of the full width.
 //
-// An earlier revision capped main at that same 1320px instead, which bought the
-// ledger its measure with 300px of dead paper per side on a 1920px display.
-// main.bb__main is now the page root and carries no declarations of its own.
-//
-// L1 of the audit asked for a page measure and L9 asked for bleed. They are not
-// in conflict: L1 is a text-measure rule, L9 is a composition rule.
+// The known cost is audit L1: with no measure at all, a dot leader can separate a
+// price from its name by the full width of the display. That is now an accepted
+// deviation rather than an oversight.
 // ---------------------------------------------------------------------
 $bb-paper: #f4f4f0;
 $bb-paper-deep: #eae8e3;
@@ -103,15 +100,6 @@ $bb-mono: 'JetBrains Mono', ui-monospace, 'SFMono-Regular', 'Cascadia Mono', Men
 $bb-sans: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
 
 $bb-pad: clamp(1.15rem, 4vw, 3.5rem);
-
-// The one measure on the page: the width of the content column. Bands, plates
-// and the strip bleed; content is measured. See the note at the top of this file
-// for why this lives on the content and not on the page.
-//
-// It is applied once, as a grouped `max-width` in the "the measure" block at the
-// end of the `.bb` block, so the policy is stated in one place instead of
-// repeated per register.
-$bb-measure: 1320px;
 
 // Every register's column count comes from one declared unit and one stated
 // rule, instead of four bare numbers buried in four grid declarations (audit
@@ -303,11 +291,17 @@ $bb-col-site: 280px; // the address and the hours side by side
     //
     // The previous floor was 3.6rem, and at a 320px viewport that floor FLOORED
     // UP to 57.6px against only 48.5px of room: `white-space: nowrap` plus
-    // `overflow: hidden` then amputated about 53px of the final D with nothing
-    // to show it had happened. 13.6vw clears the measured limit of 15.75vw with
-    // roughly a 10% margin, which also absorbs a font-substitution fallback
-    // that renders wider than Inter.
-    font-size: clamp(2.4rem, 13.6vw, 13rem);
+    // `overflow: hidden` then amputated about 53px of the final D with nothing to
+    // show it had happened.
+    //
+    // The size is solved rather than guessed: the content box is the viewport
+    // minus both paddings, and dividing by 6.2 instead of the measured 5.8420 em
+    // of advance leaves about 6% of slack. That slack absorbs a font-substitution
+    // fallback that renders wider than Inter, and it is the same proportion at
+    // 320px as at 2560px -- so the title fills the width on every display instead
+    // of stopping at a fixed size and leaving the right half of a wide monitor
+    // empty. 26rem is the ceiling, reached past 2691px.
+    font-size: clamp(2.4rem, calc((100vw - 2 * #{$bb-pad}) / 6.2), 26rem);
     font-weight: 900;
     line-height: 0.9;
     letter-spacing: -0.045em;
@@ -854,23 +848,13 @@ $bb-col-site: 280px; // the address and the hours side by side
     padding: 1.4rem $bb-pad;
     text-decoration: none;
     color: $bb-ink;
-    // The 4px marker bar is gone. It broke the 1px gutter the rest of the page
-    // is built on: the ink rule ended up 56px from the first cell and 60px from
-    // the second. The hover signal is now the label, not the frame.
-    transition: background 0.18s linear;
-
+    // The frame is the whole signal, which is how this page behaved before an
+    // audit pass moved the signal into the background. It is drawn with an inset
+    // outline and not with a border, because an outline takes no layout space:
+    // the 4px marker bar this page used earlier shifted the 1px gutter the rest
+    // of the page is built on (audit G5), and an outline cannot. No transition,
+    // deliberately: the frame either is or is not there.
     &:hover,
-    &:focus-visible {
-      background: $bb-coffee;
-      color: $bb-paper;
-
-      .bb__action-value {
-        text-decoration: underline;
-        text-decoration-color: $bb-rule-on-ink;
-        text-underline-offset: 0.25em;
-      }
-    }
-
     &:focus-visible {
       outline: 2px solid $bb-ink;
       outline-offset: -4px;
@@ -945,49 +929,20 @@ $bb-col-site: 280px; // the address and the hours side by side
   }
 
   // -------------------------------------------------------------------
-  // the measure
+  // composition notes
   // -------------------------------------------------------------------
-  // Everything that carries content sits on $bb-measure; everything that is a
-  // band, a plate or the strip bleeds. A cap and its own rule must agree, so it
-  // is one grouped declaration rather than one per register.
-  //
-  // The ledger and the section heads are in here because an unmeasured dot
-  // leader stretches the price two metres from the name it belongs to, and
-  // because a head's note annotates the column below it. The allergen register
-  // is in here because with no measure it thins from six columns to twelve on a
-  // wide display and leaves its trailing row as a bordered void. The manifesto
-  // is in here so its kitchen-hours note stops detaching to the far edge.
-  //
-  // Interaction worth knowing, raised by review as R3-MEASURE-ALLERGEN-CELL-BORDERS:
-  // the allergen register's cells carry their own right and bottom borders instead
-  // of sitting on the 1px ink bed, because with 14 items the trailing row is almost
-  // always partial and the bed would show through the empty tracks as a solid
-  // block. This cap therefore shortens the register but never the cells' own
-  // edges, and a partial trailing row is the expected outcome, not an overflow.
-  //
   // Deliberately NOT done, so that a later pass does not "fix" a decision:
-  //   - No letterform bleeds the viewport. Skill 2.1 asks for bleeding letterforms
-  //     and audit L9 flagged their absence, but bleed at 320px produces horizontal
-  //     scroll and competes with the hero's optical negative margin, which the
-  //     audit itself protects in its WHAT-NOT-TO-CHANGE list.
+  //   - No register is measured. Audit L1 wanted a measure so a dot leader could
+  //     not separate a price from its name by the width of the display. The
+  //     page's owner chose the full width instead, twice, so that stands as an
+  //     accepted deviation and not as an oversight. The note at the top of this
+  //     file records what the two rejected revisions were.
   //   - Two asymmetric compositions only, the manifesto and the hero bar, which
   //     audit L8 called thin. The space this page spends on asymmetry is the
-  //     measure's own right-hand void, not more broken columns.
-  &__head,
-  &__groups,
-  &__methods-grid,
-  &__sites-grid,
-  &__actions,
-  &__manifesto,
-  &__supplements,
-  &__allergens,
-  &__footer-line {
-    max-width: $bb-measure;
-  }
+  //     full-width field the type sits in, not more broken columns.
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .bb__action,
   .bb__site-tel,
   .bb__footer-note a {
     transition: none;
