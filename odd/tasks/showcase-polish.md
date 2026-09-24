@@ -214,30 +214,65 @@ Verificados con evidencia, no inferidos. Los archivos y líneas están en el his
   El footer del home usa `hhstudio.es` (correcto). El `README.md` dice
   `hhstudio.com.ar` -> desactualizado.
 
-### Defecto preexistente encontrado (NO es de este trabajo)
+### Defectos preexistentes encontrados (no eran de este trabajo)
 
-- [ ] **T13** — `npm test` está en rojo **desde el refactor `609b0ff`**, no por este trabajo.
-  `src/app/pages/apro-clinica/apro-clinica.component.spec.ts` testea una forma del
-  componente que ya no existe: `categories`, `visibleCategories`, `visibleCount`, `showAll`,
-  `hasMore`, `showAllCategories()`, `toggleCategory()`, `expandedIndex`, y las clases
-  `.apro__services-category-header` / `.apro__services-fade` / `.apro__btn--solid`.
-  El componente actual solo expone `currentYear`, `mobileMenuOpen`, `navScrolled`,
-  `onWindowScroll`, `ngAfterViewInit`, `toggleMobileMenu`, `closeMobileMenu`, `scrollTo`.
-  **Verificado como preexistente**: las referencias están en `HEAD`, y el componente en
-  `HEAD` tampoco define esos miembros.
+- [x] **T13** — `npm test` estaba en rojo **desde `46472ea`**. **Arreglado.** Decisión del
+  usuario: la feature del acordeón se había eliminado a propósito, así que los tests
+  obsoletos se borran. Al destrabar el compile aparecieron **tres causas raíz más, todas de
+  infraestructura de tests y todas preexistentes**, que el compile roto venía enmascarando:
 
-  El builder `@angular/build:unit-test` compila todo el bundle de specs junto, así que **un
-  solo error de TS impide que corra cualquier test**. Consecuencia concreta: los 3 tests de
-  metadata agregados en T7b están escritos pero **no pudieron ejecutarse**.
+  1. **`window.matchMedia` no existe en jsdom.** Rompía todo test que llamara
+     `detectChanges()`, porque las 9 páginas lo leen en `ngAfterViewInit` para
+     `prefers-reduced-motion`. → `src/test-setup.ts` con polyfill, registrado vía el
+     `setupFiles` del builder.
+  2. **`IntersectionObserver` tampoco existe en jsdom** (8 páginas lo usan). → shim no-op que
+     **nunca invoca el callback**, a propósito: el callback dispara GSAP y jsdom no tiene motor
+     de layout, así que dispararlo solo animaría valores que ninguna aserción puede observar.
+     También `Element.prototype.scrollIntoView` y `window.scrollTo`.
+  3. **El spy de `document.getElementById` filtraba a los tests siguientes.** Sin
+     `restoreMocks`, Angular dejaba de encontrar su propio root de tests → `NG05104` con
+     selectores `#root9`/`#root10`. Esto es lo que hacía fallar los 3 tests de metadata de
+     T7b: no estaban mal, venían después del spy. → `restoreMocks: true` en `vitest.config.ts`.
 
-  *Pregunta de producto antes de tocarlo*: ¿la feature de acordeón de servicios con
-  "Ver todos los servicios" se **eliminó a propósito** en el refactor premium, o se perdió?
-  Según la respuesta, el arreglo es borrar los tests obsoletos (feature eliminada) o
-  reimplementar la feature (se perdió). **No borro tests por mi cuenta.**
+  **Bonus de mérito propio**: `src/test-setup.ts` no estaba en la compilación de TS, así que
+  el shim se bundleaba **sin chequear tipos**. Al agregarlo a `tsconfig.spec.json`, el
+  type-check reveló que al shim le faltaba `scrollMargin` (requerido por la interfaz
+  `IntersectionObserver` en `lib.dom.d.ts`). O sea: el arreglo se veía verde *porque* nadie
+  lo type-checkeaba.
 
-  *Evidencia primaria alternativa ya observada*: la prueba end-to-end en `dist/` demuestra
-  que los meta tags se aplican en el pipeline real de prerender, que es más fuerte que el
-  unit test que no puede correr.
+  **También se reparó `node_modules`**: faltaba `@rolldown/binding-win32-x64-msvc`, que sí
+  figura en `package-lock.json` (bug de optional deps de npm, `npm/cli#4828`). Instalado con
+  `--no-save`: `package.json` y el lockfile quedaron sin tocar.
+
+  **Migración autorizada por el usuario**: el runner avisaba que el `buildTarget` usaba el
+  builder legacy `@angular-devkit/build-angular:application`. Migrado a
+  `@angular/build:application`; el warning desapareció y el build sigue verde.
+
+  **Resultado verificado**: `npm test` → **7/7 archivos, 30/30 tests, cero warnings**.
+  `npm run build` → exit 0, 9 rutas prerenderizadas, un solo warning (el preexistente de
+  `pasteleria.component.scss`), `Initial` 683.59 kB / 136.43 kB.
+- [x] **T14** — Nit: canonical del 404. **Hecho.** Se sacó `url` de la llamada de
+  `not-found`, así que ya no emite un canonical hacia una URL inexistente.
+
+### Defectos preexistentes nuevos, NO arreglados
+
+- [ ] **T15** — **La integración de Supabase está muerta y es una bomba latente.**
+  `src/environments/environment.ts` y `environment.development.ts` tienen **placeholders**
+  (`'URL_DE_SUPABASE_AQUI'`, `'ANON_KEY_DE_SUPABASE_AQUI'`), y `environment.ts` declara
+  `production: false` con un comentario que dice "cámbialo a true".
+  - **No hay `fileReplacements` en `angular.json`**, así que `environment.ts` es el único que
+    se usa y `production` nunca se pone en `true`. Es un campo muerto.
+  - `SupabaseService` **no lo inyecta nadie**: cero usos en todo `src/`.
+    `@supabase/supabase-js` se importa solo desde ahí.
+  - `createClient` con una URL placeholder **lanza** `Invalid supabaseUrl`. Como el servicio
+    es `providedIn: 'root'`, el constructor explotaba al inyectarlo.
+  - **Arreglado parcialmente y de forma defensiva**: el cliente ahora se crea **lazy** (en el
+    getter `client`), así que falla al usarse y no al inyectarse. La API pública no cambió.
+
+  *Decisión pendiente del usuario*: ¿se conecta Supabase de verdad (credenciales + token de
+  config), o se elimina el servicio, su spec y la dependencia? Hoy es andamiaje que nadie usa.
+  `vi.mock` con imports relativos está prohibido por el sistema de tests de Angular, así que
+  no se puede simplemente mockear el environment desde el spec.
 
 ### Dependen de imágenes nuevas (T2/T4)
 

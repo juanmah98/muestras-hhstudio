@@ -18,7 +18,6 @@ export class NotFoundComponent {
       description:
         'La página que buscás no existe. Volvé al índice de demos de HH Studio.',
       image: 'https://muestras.hhstudio.es/assets/seo-preview.jpg',
-      url: 'https://muestras.hhstudio.es/404',
     });
   }
 }

@@ -6,18 +6,19 @@ import { environment } from '../../../../environments/environment';
   providedIn: 'root'
 })
 export class SupabaseService {
-  private supabase: SupabaseClient;
+  private supabase?: SupabaseClient;
 
-  constructor() {
-    // Inicializamos el cliente de Supabase usando nuestras variables de entorno
-    this.supabase = createClient(
+  // The client is created on first use rather than on construction.
+  // environment.ts currently ships placeholder credentials and createClient
+  // rejects a malformed URL, so building the client eagerly makes injecting
+  // this service throw and take down whatever injected it. Failing on use
+  // instead keeps a missing configuration a local problem.
+  get client(): SupabaseClient {
+    this.supabase ??= createClient(
       environment.supabase.url,
       environment.supabase.key
     );
-  }
 
-  // Getter público para acceder al cliente desde otros componentes
-  get client(): SupabaseClient {
     return this.supabase;
   }
 }
