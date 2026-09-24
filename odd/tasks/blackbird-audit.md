@@ -84,8 +84,11 @@ Los IDs son los del audit. ✅ = arreglado · ⬜ = abierto · ❌ = falso posit
   la **única** página de la vidriera capada así. **Arreglo final**: la medida se movió de la *página*
   al *texto*, aplicada como `padding-right` y no como `max-width`, así las reglas y los lechos sangran
   completos y sólo el texto respeta los 1320px. Ver U2a.
-- ⬜ **L2** (warn) — cuatro `minmax(208/230/240/280px)` mágicos, cuatro conteos de columna no
-  controlados. Solo `.bb__manifesto` es una composición declarada.
+- ✅ **L2** (warn) — cuatro `minmax(208/230/240/280px)` mágicos, cuatro conteos de columna no
+  controlados. **Cerrado en la parte que importa (U2b)**: los cuatro valores son ahora tokens
+  declarados con la regla escrita, y la medida de 1320px acota el conteo de todos los registros
+  (6 / 4 / 3 / 2 columnas a pantalla ancha). **No hecho**: la alineación literal de pistas entre
+  secciones (12 pistas con `span`, o `subgrid`) — ver U2.
 - ✅ **L3** (warn) — el precio a **112px** mientras todo lo demás está en la línea de 56px
   (doble inset: el grupo insetea por `$bb-pad` y la fila sumaba otro). **Arreglado.**
 - ✅ **L4** (warn) — el líder de puntos se desprendía: es un span vacío y `align-self: end` lo
@@ -223,7 +226,7 @@ Cuatro unidades de trabajo, cada una un candidato de review chico. ⬜ pendiente
 |---|---|---|---|---|
 | U1 | Tipografía y estados | T5, T6, L10, P9, P10 + comentario de `R3-plate-filter-reachability` | `.scss` | ✅ |
 | U2a | Sangre y medida | L1 (revertido y re-resuelto) | `.scss` | ✅ |
-| U2b | Grilla de columnas compartida | L2 | `.scss` | ⬜ |
+| U2b | Grilla declarada | L2 (parcial: unidad y regla declaradas, medida acota los conteos) | `.scss` | ✅ |
 | U3 | Superficie | S2, S4, D5, D6 + BB-R8 | `.scss`, `.html` | ⬜ |
 | U4 | Mono determinista | T3 | `.scss`, asset `woff2` | ⬜ |
 | U5 | Cierre y desviaciones | D2, D4 + BB-R9 + las disposiciones escritas | `.scss`, `.ts`, docs | ⬜ |
@@ -232,32 +235,50 @@ Cuatro unidades de trabajo, cada una un candidato de review chico. ⬜ pendiente
  de agregar la trama 1-bit, porque el 1-bit interactúa con el ancho de la banda (S3 ya había marcado
  que una masa de acento a sangre es la que erosiona la escasez del acento).
 
-### U2a — cerrada
+### U2 — cerrada (U2a + U2b)
 
-El idioma que resuelve esto, y que conviene no olvidar: **la medida se aplica como `padding-right`, no
-como `max-width`.** Un `max-width` capa el elemento *y su regla*, así que la regla de 2px de una
-cabecera termina a mitad de página mientras el registro de abajo sigue a sangre — se lee como error.
-El `padding` encoge sólo la caja de contenido, así que **la regla sangra y el texto adentro respeta la
-medida**. Se implementó como `@mixin bb-measure` y se aplica a los cuatro registros con texto alineado
-a la derecha o corrida abierta: las cabeceras de sección, el grupo del ledger, y los dos `<aside>`
-(suplementos y alérgenos).
+**El diseño final, en una frase**: todo lo que carga contenido se sienta en `$bb-measure` (1320px,
+anclado a la izquierda); todo lo que es banda, placa o franja sangra. El espacio que la medida deja a
+la derecha **es** el espacio negativo de la página. Se aplica **una sola vez**, como `max-width` en un
+bloque agrupado, y no repetido por registro.
+
+**La evolución del mecanismo vale como lección** (es lo más útil de esta unidad): el primer intento usó
+`padding-right` en lugar de `max-width`, y era el mecanismo **correcto para ese estado intermedio** —
+un `max-width` capa el elemento *y su regla*, así que la regla de 2px de una cabecera quedaba cortada a
+mitad de página arriba de un registro todavía a sangre, y se leía como error. El padding encogía sólo
+la caja de contenido, así que la regla sangraba y el texto adentro respetaba la medida.
+
+**Ese truco dejó de ser el correcto en cuanto el usuario decidió medir también los registros de
+celdas**: con todos los bloques en la misma columna, la regla de cada uno y su caja ya coinciden, y
+mantener el padding sólo servía para dejar sangrando reglas que el usuario había pedido acortar. Se
+reemplazó por `max-width` agrupado. **Moraleja: el mecanismo correcto depende del estado del diseño, no
+de una preferencia general** — y el de la etapa anterior queda documentado acá para no volver a
+inventarlo.
 
 Dos defectos propios, encontrados **mirando el render** y no razonando:
 1. Las cabeceras con `max-width` dejaban su regla cortada a 1320px arriba de un registro a sangre.
 2. La matriz de alérgenos, sin medida, pasaba de 6 a 12 columnas a 2560px y su fila final dejaba una
-   banda entera vacía *y con borde* — una regresión introducida al quitar el cap.
+   banda entera vacía *y con borde* — una regresión introducida al quitar el cap. El propio archivo ya
+   explicaba por qué esa matriz usa bordes por celda y no el lecho de tinta: es la misma causa.
 
-**Evidencia medida (no estimada)**: borde derecho de la nota de cabecera = **1320px** = borde derecho
-del precio, a 2560 y a 1920px; `scrollWidth == innerWidth` en 2560, 1920 y **320** (sin scroll
-horizontal); la regla de 2px de cada cabecera y las hairlines del ledger ahora **sí** spannean el ancho
-completo. Build exit 0, tests 31/31.
+**Evidencia medida (no estimada)**: borde derecho de la nota de cabecera = borde derecho del precio =
+**1284px** (o sea 1320 menos el inset de `$bb-pad`), a 2560 y a 1920px; registros de métodos, sedes,
+pedidos y manifiesto en **1320px**; la lista de alérgenos en 1284px; `scrollWidth == innerWidth` en
+2560, 1920 y **320** (sin scroll horizontal). Build exit 0, tests 31/31.
 
-**Observaciones sin resolver, para el usuario**: el manifiesto (`02`) tiene la misma clase de problema —
-su nota de cocina queda al borde derecho, a ~2400px de su texto, a 2560px. El audit lo llamó *“una de
-las dos composiciones asimétricas legítimas”*, así que **no se tocó**: el mismo mixin lo comprimiría a
-sus proporciones diseñadas (`11rem / 1fr / 14rem` dentro de 1320px), que es defendible, pero es una
-decisión de composición. También queda a criterio si los registros de celdas (métodos, sedes, pedidos)
-debieran medirse: hoy sangran y sus celdas a 2560px van de 640 a 1280px.
+**U2b — qué se hizo de L2 y qué no.** Se hizo: los cuatro `minmax()` mágicos pasaron a **tokens
+declarados** (`$bb-col-allergen/method/action/site`) con la regla escrita — *la unidad es el ancho más
+chico que todavía aguanta lo más ancho que una celda de ese registro tiene que cargar* — y la medida
+ahora **acota el conteo** de todos los registros, así que a pantalla ancha caen en 6 / 4 / 3 / 2
+columnas sin ningún número suelto. Prueba de que el renombre es inerte: los valores compilados siguen
+siendo `minmax(208px,1fr)`, `230px`, `240px`, `280px`, exactos.
+
+**No se hizo, y se decidió a conciencia**: la alineación literal de pistas entre secciones (un sistema
+de 12 pistas con `span` declarado por celda, o `subgrid`). Se evaluó en detalle y se descartó porque
+reemplaza un mecanismo **auto-ajustado por construcción** (`auto-fill`/`auto-fit` + mínimo derivado del
+contenido) por **4 o 5 breakpoints a mano por registro** — o sea degrada el mantenimiento para ganar
+una coincidencia de bordes que hoy nadie ve. Queda disponible: si el usuario quiere el alineamiento
+literal, son ~40 líneas de media queries y una verificación en 320/480/768/1024/1320/2560.
 
 ### U1 — cerrada
 
